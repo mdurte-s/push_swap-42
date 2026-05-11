@@ -6,7 +6,7 @@
 /*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/20 12:46:45 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/04/27 14:17:38 by mdurte-s         ###   ########.fr       */
+/*   Updated: 2026/05/11 12:26:21 by mdurte-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@
 
 typedef struct s_list
 {
-	void			*content;
+	int				*index;
+	int				*content;
 	struct s_list	*next;
 }					t_list;
 
@@ -42,12 +43,12 @@ size_t	ft_strlcpy(char *restrict dst, const char *restrict src, size_t n);
 size_t	ft_strlcat(char *restrict dst, const char *restrict src, size_t n);
 
 void	*ft_memset(void *b, int c, size_t len);
-void	*ft_bzero(void *s, size_t n);
 void	*ft_memcpy(void *restrict dest, const void *restrict src, size_t n);
 void	*ft_memmove(void *dest, const void *src, size_t len);
 void	*ft_memchr(const void *s, int c, size_t n);
 void	*ft_calloc(size_t nmemb, size_t size);
 
+void	ft_bzero(void *s, size_t n);
 void	ft_striteri(char *s, void (*f)(unsigned int, char *));
 void	ft_putchar_fd(char c, int fd);
 void	ft_putstr_fd(char *s, int fd);

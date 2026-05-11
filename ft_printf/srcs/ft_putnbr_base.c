@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putnbr_base.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdurte-s <mdurte-s@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/29 20:14:54 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/05/01 10:05:02 by mdurte-s         ###   ########.fr       */
+/*   Updated: 2026/05/11 12:28:43 by mdurte-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static int	validate_dup_sign(char *str);
 
 void	putnbr_b(long int nb, char *base, int *counter)
 {
-	if (ft_strlen(base) > 1 && validate_dup_sign(base) == 1)
+	if (ft_strlen_printf(base) > 1 && validate_dup_sign(base) == 1)
 	{
 		if (nb < 0)
 		{
@@ -24,8 +24,8 @@ void	putnbr_b(long int nb, char *base, int *counter)
 			nb = nb * -1;
 		}
 		if (nb >= (long int)ft_strlen(base))
-			putnbr_b(nb / (long int)ft_strlen(base), base, counter);
-		ft_putchar(base[nb % (long int)ft_strlen(base)], counter);
+			putnbr_b(nb / (long int)ft_strlen_printf(base), base, counter);
+		ft_putchar(base[nb % (long int)ft_strlen_printf(base)], counter);
 	}
 }
 

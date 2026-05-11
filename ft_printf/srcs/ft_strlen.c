@@ -6,11 +6,11 @@
 /*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/28 12:09:17 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/04/29 16:43:30 by mdurte-s         ###   ########.fr       */
+/*   Updated: 2026/05/11 12:28:14 by mdurte-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_strlen(char *str)
+int	ft_strlen_printf(char *str)
 {
 	long int	i;
 

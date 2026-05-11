@@ -6,7 +6,7 @@
 /*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/28 11:36:07 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/04/29 17:25:20 by mdurte-s         ###   ########.fr       */
+/*   Updated: 2026/05/11 12:27:53 by mdurte-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 
 int		ft_printf(const char *str, ...);
 
-int		ft_strlen(char *str);
+int		ft_strlen_printf(char *str);
 int		validate(char c);
 
 void	ft_putchar(int c, int *counter);
