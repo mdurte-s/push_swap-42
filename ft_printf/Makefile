@@ -1,33 +1,40 @@
-NAME	= libftprintf.a
+# --- Program ---------------------------------------------------------------- #
 
-CC		= cc
-CFLAGS	= -Wall -Wextra -Werror
+NAME		= libftprintf.a
 
-SRCDIR	= srcs
-INCDIR	= includes
+# --- Flags ------------------------------------------------------------------ #
 
-SRCS	= ${SRCDIR}/ft_putchar.c \
-		${SRCDIR}/ft_putstr.c \
-		${SRCDIR}/ft_strlen.c \
-		${SRCDIR}/ft_putnbr_base.c \
-		${SRCDIR}/conversion.c \
-		ft_printf.c
+CC			= cc
+CFLAGS		= -Wall -Wextra -Werror
+RM			= rm -f
 
-OBJS	= ${SRCS:.c=.o}
+# --- Paths ------------------------------------------------------------------ #
 
-RM		= rm -f
+SRCDIR		= srcs
+INCDIR		= includes
+OBJDIR		= objs
 
+# --- Sources ---------------------------------------------------------------- #
+
+SRCS		= ${SRCDIR}/ft_putchar.c	${SRCDIR}/ft_putstr.c \
+			${SRCDIR}/ft_strlen.c		${SRCDIR}/ft_putnbr_base.c \
+			${SRCDIR}/conversion.c		${SRCDIR}/ft_printf.c
+
+OBJS		= $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
+
+# --- Rules ------------------------------------------------------------------ #
 
 all:		$(NAME)
 
 $(NAME):	$(OBJS)
 			ar -rcs $@ $(OBJS)
 
-%.o:%.c
-			$(CC) $(CFLAGS) -I $(INCDIR) -c $< -o $@
+$(OBJDIR)/%.o: $(SRCDIR)/%.c
+			@mkdir -p $(@D)
+			$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-			$(RM) $(OBJS)
+			$(RM) -r $(OBJDIR)
 
 fclean: clean
 			$(RM) $(NAME)

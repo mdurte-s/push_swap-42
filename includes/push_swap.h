@@ -6,7 +6,7 @@
 /*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/08 11:37:26 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/05/11 12:37:44 by mdurte-s         ###   ########.fr       */
+/*   Updated: 2026/05/11 22:11:11 by mdurte-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,8 @@
 
 /* --- includes ------------------------------------------------------------- */
 
-#include "../libft/libft.h"
-#include "../ft_printf/includes/ft_printf.h"
-#include <stdlib.h>
+# include "../libft/includes/libft.h"
+# include "../ft_printf/includes/ft_printf.h"
 
 /* --- functions ------------------------------------------------------------ */
 
@@ -37,6 +36,7 @@ void	rev_rotate_b(t_list **stack_b);
 void	rev_rotate_r(t_list **stack_a, t_list **stack_b);
 
 int		validate_arg(int argc, char **argv, t_list **stack_a);
-void    argv_to_int(char *argv, int *nb);
+int		argv_to_int(char *argv, int *nb);
+void	print_stacks(t_list *stack_a, t_list *stack_b);
 
 #endif

@@ -6,11 +6,11 @@
 /*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/29 20:14:54 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/05/11 12:28:43 by mdurte-s         ###   ########.fr       */
+/*   Updated: 2026/05/11 20:11:30 by mdurte-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "../includes/ft_printf.h"
 
 static int	validate_dup_sign(char *str);
 
@@ -23,7 +23,7 @@ void	putnbr_b(long int nb, char *base, int *counter)
 			ft_putchar('-', counter);
 			nb = nb * -1;
 		}
-		if (nb >= (long int)ft_strlen(base))
+		if (nb >= (long int)ft_strlen_printf(base))
 			putnbr_b(nb / (long int)ft_strlen_printf(base), base, counter);
 		ft_putchar(base[nb % (long int)ft_strlen_printf(base)], counter);
 	}
