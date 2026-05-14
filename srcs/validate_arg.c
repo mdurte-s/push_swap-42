@@ -6,7 +6,7 @@
 /*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/11 09:54:05 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/05/14 17:23:39 by mdurte-s         ###   ########.fr       */
+/*   Updated: 2026/05/14 17:47:11 by mdurte-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	validate_arg(int argc, char **argv, t_list **stack_a)
 	strategy = 0;
 	if (check_flags(argv, &index, &bench, &strategy) == 0)
 		return (0);
-	if (check_first_argv(&argc, argv, &index) == 0)
+	if (check_first_argv(&argc, &argv, &index) == 0)
 		return (0);
 	while (++index < argc)
 	{
@@ -42,16 +42,16 @@ int	validate_arg(int argc, char **argv, t_list **stack_a)
 	return (1);
 }
 
-int	check_first_argv(int *argc, char **argv, int *index)
+int	check_first_argv(int *argc, char ***argv, int *index)
 {
-	if (*index + 2 == *argc && ft_strchr((argv[*index + 1]), ' '))
+	if (*index + 2 == *argc && ft_strchr((*argv)[(*index) + 1], ' '))
 	{
-		*argc = (int)count_strings((argv[*index + 1]), ' ');
-		argv = ft_split((argv[*index + 1]), ' ');
+		*argc = (int)count_strings((*argv)[(*index) + 1], ' ');
+		*argv = ft_split((*argv)[(*index) + 1], ' ');
 		*index = -1;
 		return (1);
 	}
-	else if (*index + 2 != *argc && ft_strchr((argv[*index + 1]), ' '))
+	else if (*index + 2 != *argc && ft_strchr((*argv)[(*index) + 1], ' '))
 		return (0);
 	else
 		return (1);
