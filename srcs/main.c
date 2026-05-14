@@ -6,7 +6,7 @@
 /*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/08 11:38:35 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/05/11 22:37:21 by mdurte-s         ###   ########.fr       */
+/*   Updated: 2026/05/14 15:32:20 by mdurte-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,19 +26,8 @@ int	main(int argc, char **argv)
 		ft_putstr_fd("Error\n", 2);
 		return (1);
 	}
-	/* swap_a(&stack_a);
-	print_stacks(stack_a, stack_b);
-	push_a(&stack_a, &stack_b);
+	swap_a(&stack_a);
 	push_b(&stack_a, &stack_b);
-	push_b(&stack_a, &stack_b);
-	print_stacks(stack_a, stack_b);
-	rotate_a(&stack_a);
-	rotate_b(&stack_b);
-	rotate_r(&stack_a, &stack_b);
-	print_stacks(stack_a, stack_b);
-	rev_rotate_a(&stack_a);
-	rev_rotate_b(&stack_b);
-	rev_rotate_r(&stack_a, &stack_b); */
 	print_stacks(stack_a, stack_b);
 	return (0);
 }

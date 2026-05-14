@@ -6,7 +6,7 @@
 /*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/20 12:46:45 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/05/11 20:26:29 by mdurte-s         ###   ########.fr       */
+/*   Updated: 2026/05/14 14:55:24 by mdurte-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@
 typedef struct s_list
 {
 	int				index;
+	int				bench;
+	int				strategy;
 	int				*content;
 	struct s_list	*next;
 }					t_list;
@@ -75,5 +77,7 @@ char	**ft_split(char const *s, char c);
 t_list	*ft_lstnew(void *content);
 t_list	*ft_lstlast(t_list *lst);
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
+
+t_list	*ft_lstnew_ps(int *index, int *bench, int *strategy, int *nb);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/22 10:17:53 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/05/11 19:53:51 by mdurte-s         ###   ########.fr       */
+/*   Updated: 2026/05/14 15:19:04 by mdurte-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,21 @@ t_list	*ft_lstnew(void *content)
 	if (!lst)
 		return (0);
 	lst->content = content;
+	lst->next = NULL;
+	return (lst);
+}
+
+t_list	*ft_lstnew_ps(int *index, int *bench, int *strategy, int *nb)
+{
+	t_list	*lst;
+
+	lst = malloc(sizeof(t_list));
+	if (!lst)
+		return (0);
+	lst->index = *index;
+	lst->bench = *bench;
+	lst->strategy = *strategy;
+	lst->content = nb;
 	lst->next = NULL;
 	return (lst);
 }

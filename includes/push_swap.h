@@ -6,7 +6,7 @@
 /*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/08 11:37:26 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/05/11 22:11:11 by mdurte-s         ###   ########.fr       */
+/*   Updated: 2026/05/14 17:22:46 by mdurte-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,12 @@ void	rev_rotate_r(t_list **stack_a, t_list **stack_b);
 
 int		validate_arg(int argc, char **argv, t_list **stack_a);
 int		argv_to_int(char *argv, int *nb);
+int     check_flags(char **av, int *i, int *b, int *s);
+
+size_t	count_strings(char const *s, char c);
+
 void	print_stacks(t_list *stack_a, t_list *stack_b);
+int 	check_first_argv(int *argc, char **argv, int *index);
+
 
 #endif
