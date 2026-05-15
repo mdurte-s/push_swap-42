@@ -24,8 +24,8 @@ SRCS		= $(SRCDIR)/swap.c \
 			$(SRCDIR)/push.c \
 			$(SRCDIR)/rotate.c \
 			$(SRCDIR)/rev_rotate.c \
-			$(SRCDIR)/validate_arg.c \
-			$(SRCDIR)/count_strings.c \
+			$(SRCDIR)/check_args_flags_repeated.c \
+			$(SRCDIR)/check_utils.c \
 			$(SRCDIR)/main.c \
 
 OBJS		= $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)

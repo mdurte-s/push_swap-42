@@ -6,7 +6,7 @@
 /*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/08 11:38:35 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/05/14 15:32:20 by mdurte-s         ###   ########.fr       */
+/*   Updated: 2026/05/15 11:30:42 by mdurte-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,41 +21,37 @@ int	main(int argc, char **argv)
 	stack_b = NULL;
 	if (argc == 1)
 		return (1);
-	if (validate_arg(argc, argv, &stack_a) == 0)
-	{
-		ft_putstr_fd("Error\n", 2);
-		return (1);
-	}
+	if (check_argv(argc, argv, &stack_a) == 0)
+		return (ft_putstr_fd("Error\n", 2), 1);
 	swap_a(&stack_a);
 	push_b(&stack_a, &stack_b);
 	print_stacks(stack_a, stack_b);
 	return (0);
 }
 
-void    print_stacks(t_list *stack_a, t_list *stack_b)
+void	print_stacks(t_list *stack_a, t_list *stack_b)
 {
 	t_list	*new_a;
 	t_list	*new_b;
-	
+
 	new_a = stack_a;
 	new_b = stack_b;
-    while (new_a || new_b)
-    {
-        if (new_a)
-        {
-            ft_printf("%d", *new_a->content);
-            new_a = new_a->next;
-        }
-        else
-            ft_printf(" ");
-
-        ft_printf(" | ");
-        if (new_b)
-        {
-            ft_printf("%d", *new_b->content);
-            new_b = new_b->next;
-        }
-        ft_printf("\n");
-    }
-    ft_printf("_ | _\na | b\n\n");
+	while (new_a || new_b)
+	{
+		if (new_a)
+		{
+			ft_printf("%d", *new_a->content);
+			new_a = new_a->next;
+		}
+		else
+			ft_printf(" ");
+		ft_printf(" | ");
+		if (new_b)
+		{
+			ft_printf("%d", *new_b->content);
+			new_b = new_b->next;
+		}
+		ft_printf("\n");
+	}
+	ft_printf("_ | _\na | b\n\n");
 }
