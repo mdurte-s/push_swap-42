@@ -6,7 +6,7 @@
 /*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/20 12:46:45 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/05/14 14:55:24 by mdurte-s         ###   ########.fr       */
+/*   Updated: 2026/05/15 12:10:55 by mdurte-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,10 @@ t_list	*ft_lstnew(void *content);
 t_list	*ft_lstlast(t_list *lst);
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 
+/* --- adapted functions to push_swap --------------------------------------- */
+
 t_list	*ft_lstnew_ps(int *index, int *bench, int *strategy, int *nb);
+void	ft_lstclear_ps(t_list **lst,  void (*del)(void *));
+void	del(void *content);
 
 #endif

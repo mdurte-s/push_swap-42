@@ -6,7 +6,7 @@
 /*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/23 09:58:47 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/05/11 19:53:35 by mdurte-s         ###   ########.fr       */
+/*   Updated: 2026/05/15 12:11:03 by mdurte-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,31 @@ void	ft_lstclear(t_list **lst, void (*del)(void *))
 	*lst = NULL;
 }
 
-/*void	delete(void *content)
+void	ft_lstclear_ps(t_list **lst, void (*del)(void *))
+{
+	t_list	*new;
+
+	if (!lst || !*lst)
+		return ;
+	while (*lst)
+	{
+		new = (*lst)->next;
+		del((*lst)->content);
+		del(&(*lst)->index);
+		del(&(*lst)->bench);
+		del(&(*lst)->strategy);
+		free(lst);
+		*lst = new;
+	}
+	*lst = NULL;
+}
+
+void	del(void *content)
 {
 	free(content);
 }
 
-void	print_lst(t_list *lst)
+/*void	print_lst(t_list *lst)
 {
 	t_list	*new;
 
