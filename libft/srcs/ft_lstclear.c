@@ -46,25 +46,6 @@ void	ft_lstclear(t_list **lst, void (*del)(void *))
 	*lst = NULL;
 }
 
-void	ft_lstclear_ps(t_list **lst, void (*del)(void *))
-{
-	t_list	*new;
-
-	if (!lst || !*lst)
-		return ;
-	while (*lst)
-	{
-		new = (*lst)->next;
-		del((*lst)->content);
-		del(&(*lst)->index);
-		del(&(*lst)->bench);
-		del(&(*lst)->strategy);
-		free(lst);
-		*lst = new;
-	}
-	*lst = NULL;
-}
-
 void	del(void *content)
 {
 	free(content);

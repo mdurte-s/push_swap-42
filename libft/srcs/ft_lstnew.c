@@ -30,22 +30,22 @@ t_list	*ft_lstnew(void *content)
 
 	lst = malloc(sizeof(t_list));
 	if (!lst)
-		return (0);
+		return (NULL);
 	lst->content = content;
 	lst->next = NULL;
 	return (lst);
 }
 
-t_list	*ft_lstnew_ps(int *index, int *bench, int *strategy, int *nb)
+t_list	*ft_lstnew_ps(int index, int bench, int strategy, int *nb)
 {
 	t_list	*lst;
 
 	lst = malloc(sizeof(t_list));
 	if (!lst)
-		return (0);
-	lst->index = *index;
-	lst->bench = *bench;
-	lst->strategy = *strategy;
+		return (NULL);
+	lst->index = index;
+	lst->bench = bench;
+	lst->strategy = strategy;
 	lst->content = nb;
 	lst->next = NULL;
 	return (lst);

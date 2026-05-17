@@ -29,12 +29,12 @@ t_list	*create_stack(char **argv, int index, int bench, int strategy)
 	{
 		nb = (int *)malloc(sizeof(int));
 		if (!nb)
-			return (0);
+			return (free(nb), ft_lstclear(&stack, del), NULL);
 		if (argv_to_int(argv[index], nb) == 0)
-			return (0);
-		new = ft_lstnew_ps(&index, &bench, &strategy, nb);
+			return (free(nb), ft_lstclear(&stack, del), NULL);
+		new = ft_lstnew_ps(index, bench, strategy, nb);
 		if (!new)
-			return (0);
+			return (free(nb), ft_lstclear(&stack, del), NULL);
 		ft_lstadd_back(&stack, new);
 	}
 	return (stack);
@@ -51,6 +51,8 @@ int	argv_to_int(char *argv, int *nb)
 	res = 0;
 	if (argv[i] == '-' || argv[i] == '+')
 	{
+		if (ft_isdigit(argv[i + 1]) == 0)
+			return (0);
 		signal = 44 - argv[i];
 		i++;
 	}

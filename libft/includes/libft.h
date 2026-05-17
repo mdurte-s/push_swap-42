@@ -80,8 +80,7 @@ t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 
 /* --- adapted functions to push_swap --------------------------------------- */
 
-t_list	*ft_lstnew_ps(int *index, int *bench, int *strategy, int *nb);
-void	ft_lstclear_ps(t_list **lst,  void (*del)(void *));
+t_list	*ft_lstnew_ps(int index, int bench, int strategy, int *nb);
 void	del(void *content);
 
 #endif

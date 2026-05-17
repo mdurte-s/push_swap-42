@@ -12,20 +12,22 @@
 
 #include "../includes/push_swap.h"
 
-int	check_argv(int argc, char **argv, t_list **stack_a)
+int	check_argv(int argc, char ***argv, t_list **stack_a, int *is_split)
 {
 	int		index;
 	int		bench;
 	int		strategy;
+	char	**temp_argv;
 
 	bench = 0;
 	strategy = 0;
-	if (check_flags(argv, &index, &bench, &strategy) == 0)
+	if (check_flags(*argv, &index, &bench, &strategy) == 0)
 		return (0);
-	if (check_first_argv(&argc, &argv, &index) == 0)
+	if (check_first_argv(&argc, argv, &index, is_split) == 0)
 		return (0);
-	*stack_a = create_stack(argv, index, bench, strategy);
-	if (!stack_a)
+	temp_argv = *argv;
+	*stack_a = create_stack(temp_argv, index, bench, strategy);
+	if (!*stack_a)
 		return (0);
 	if (check_repeated(*stack_a) == 0)
 		return (0);
@@ -52,13 +54,14 @@ int	check_repeated(t_list *stack_a)
 	return (1);
 }
 
-int	check_first_argv(int *argc, char ***argv, int *index)
+int	check_first_argv(int *argc, char ***argv, int *index, int *is_split)
 {
 	if (*index + 2 == *argc && ft_strchr((*argv)[(*index) + 1], ' '))
 	{
 		*argc = (int)count_strings((*argv)[(*index) + 1], ' ');
 		*argv = ft_split((*argv)[(*index) + 1], ' ');
 		*index = -1;
+		*is_split = 1;
 		return (1);
 	}
 	else if (*index + 2 != *argc && ft_strchr((*argv)[(*index) + 1], ' '))
