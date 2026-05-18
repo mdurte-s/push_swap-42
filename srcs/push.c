@@ -6,7 +6,7 @@
 /*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/11 09:39:49 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/05/11 22:21:13 by mdurte-s         ###   ########.fr       */
+/*   Updated: 2026/05/18 17:54:25 by mdurte-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,26 +14,36 @@
 
 /* Take the first element at the top of b and put it at the top of a.
 Do nothing if b is empty. */
-void	push_a(t_list **stack_a, t_list **stack_b)
+void	push_a(t_ctx *ctx)
 {
-	if (!stack_b || !*stack_b)
+	t_list	*temp;
+
+	if (ctx->total_b < 1)
 		return ;
-	ft_lstadd_front(stack_a, *stack_b);
-	(*stack_b) = (*stack_b)->next;
-	ft_printf("pa\n");
+	temp = ctx->stack_b;
+	ctx->stack_b = ctx->stack_b->next;
+	temp->next = ctx->stack_a;
+	ctx->stack_a = temp;
+	ctx->total_b--;
+	ctx->total_a++;
+	(ctx->bench.pa)++;
+	ft_printf_fd(1, "pa\n");
 }
 
 /* Take the first element at the top of a and put it at the top of b.
 Do nothing if a is empty. */
-void	push_b(t_list **stack_a, t_list **stack_b)
+void	push_b(t_ctx *ctx)
 {
 	t_list	*temp;
 
-	if (!stack_a || !*stack_a)
+	if (ctx->total_a < 1)
 		return ;
-	temp = (*stack_a);
-	(*stack_a) = (*stack_a)->next;
-	temp->next = *stack_b;
-	*stack_b = temp;
-	ft_printf("pb\n");
+	temp = ctx->stack_a;
+	ctx->stack_a = ctx->stack_a->next;
+	temp->next = ctx->stack_b;
+	ctx->stack_b = temp;
+	ctx->total_b++;
+	ctx->total_a--;
+	(ctx->bench.pb)++;
+	ft_printf_fd(1, "pb\n");
 }

@@ -6,30 +6,13 @@
 /*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/23 15:01:20 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/05/11 19:53:41 by mdurte-s         ###   ########.fr       */
+/*   Updated: 2026/05/18 16:04:19 by mdurte-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/libft.h"
 
-/*void	test(void *content);
-
-int	main(void)
-{
-	t_list	*node1;
-	t_list	*node2;
-	t_list	*node3;
-
-	node1 = ft_lstnew("1");
-	node2 = ft_lstnew("2");
-	node3 = ft_lstnew("3");
-	node1->next = node2;
-	node2->next = node3;
-	ft_lstiter(node1, test);
-	return (0);
-}*/
-
-void	ft_lstiter(t_list *lst, void (*f)(void *))
+void	ft_lstiter(t_list *lst, void (*f)(int))
 {
 	if (!lst || !f)
 		return ;

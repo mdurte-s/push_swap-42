@@ -6,38 +6,29 @@
 /*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/14 13:54:14 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/05/15 12:08:15 by mdurte-s         ###   ########.fr       */
+/*   Updated: 2026/05/18 16:43:37 by mdurte-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/push_swap.h"
 
-t_list	*create_stack(char **argv, int index, int bench, int strategy)
+int	create_stack(char **argv, int index, t_ctx *ctx)
 {
-	int		*nb;
-	t_list	*stack;
+	int		nb;
 	t_list	*new;
 
-	nb = 0;
-	stack = NULL;
-	while (index != -1)
+	while (argv[index])
 	{
-		argv++;
-		(index)--;
-	}
-	while (argv[++index])
-	{
-		nb = (int *)malloc(sizeof(int));
-		if (!nb)
-			return (free(nb), ft_lstclear(&stack, del), NULL);
-		if (argv_to_int(argv[index], nb) == 0)
-			return (free(nb), ft_lstclear(&stack, del), NULL);
-		new = ft_lstnew_ps(index, bench, strategy, nb);
+		if (argv_to_int(argv[index], &nb) == 0)
+			return (0);
+		new = ft_lstnew(nb);
 		if (!new)
-			return (free(nb), ft_lstclear(&stack, del), NULL);
-		ft_lstadd_back(&stack, new);
+			return (0);
+		ft_lstadd_back(&(ctx->stack_a), new);
+		(ctx->total_a)++;
+		index++;
 	}
-	return (stack);
+	return (1);
 }
 
 int	argv_to_int(char *argv, int *nb)

@@ -1,27 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putstr.c                                        :+:      :+:    :+:   */
+/*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/28 11:36:26 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/05/11 20:11:36 by mdurte-s         ###   ########.fr       */
+/*   Created: 2026/04/28 12:09:17 by mdurte-s          #+#    #+#             */
+/*   Updated: 2026/05/18 11:14:14 by mdurte-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/ft_printf.h"
-
-void	ft_putstr(char *str, int *counter)
+int	strlen_printf(char *str)
 {
-	int	i;
+	long int	i;
 
 	i = 0;
-	if (!str)
-		str = "(null)";
-	while (str[i])
-	{
-		ft_putchar(str[i], counter);
+	while (str[i] != '\0')
 		i++;
-	}
+	return (i);
 }

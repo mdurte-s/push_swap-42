@@ -6,45 +6,30 @@
 /*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/28 11:35:52 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/05/11 20:10:52 by mdurte-s         ###   ########.fr       */
+/*   Updated: 2026/05/18 12:01:13 by mdurte-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_printf.h"
 
-void	conversion(char flag, va_list args, int *c)
+void	conversion(char flag, va_list arg, int *c, int fd)
 {
 	if (flag == 'c')
-		ft_putchar(va_arg(args, int), c);
+		put_char(va_arg(arg, int), c, fd);
 	else if (flag == 's')
-		ft_putstr(va_arg(args, char *), c);
+		put_str(va_arg(arg, char *), c, fd);
 	else if (flag == 'p')
-		ft_putptr(va_arg(args, void *), c);
+		put_ptr(va_arg(arg, void *), c, fd);
 	else if (flag == 'd' || flag == 'i')
-		putnbr_b((long int)va_arg(args, int), "0123456789", c);
+		put_nbr((long int)va_arg(arg, int), "0123456789", c, fd);
 	else if (flag == 'u')
-		putnbr_b((long int)va_arg(args, unsigned int), "0123456789", c);
+		put_nbr((long int)va_arg(arg, unsigned int), "0123456789", c, fd);
 	else if (flag == 'x')
-		putnbr_b((long int)va_arg(args, unsigned int), "0123456789abcdef", c);
+		put_nbr((long int)va_arg(arg, unsigned int), "0123456789abcdef", c, fd);
 	else if (flag == 'X')
-		putnbr_b((long int)va_arg(args, unsigned int), "0123456789ABCDEF", c);
+		put_nbr((long int)va_arg(arg, unsigned int), "0123456789ABCDEF", c, fd);
 	else if (flag == '%')
-		ft_putchar('%', c);
-}
-
-void	ft_putptr(void *ptr, int *c)
-{
-	if (ptr == 0)
-		ft_putstr("(nil)", c);
-	else if (ptr == (void *)LONG_MIN)
-		ft_putstr("0x8000000000000000", c);
-	else if (ptr == (void *)ULONG_MAX)
-		ft_putstr("0xffffffffffffffff", c);
-	else
-	{
-		ft_putstr("0x", c);
-		putnbr_b((long int)ptr, "0123456789abcdef", c);
-	}
+		put_char('%', c, fd);
 }
 
 int	validate(char c)

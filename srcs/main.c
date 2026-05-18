@@ -6,7 +6,7 @@
 /*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/08 11:38:35 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/05/15 12:10:50 by mdurte-s         ###   ########.fr       */
+/*   Updated: 2026/05/18 17:41:23 by mdurte-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,29 +14,34 @@
 
 int	main(int argc, char **argv)
 {
-	t_list	*stack_a;
-	t_list	*stack_b;
-	int		is_split;
+	t_ctx	ctx;
 
-	stack_a = NULL;
-	stack_b = NULL;
-	is_split = 0;
+	ft_bzero(&ctx, sizeof(t_ctx));
 	if (argc == 1)
 		return (1);
-	if (check_argv(argc, &argv, &stack_a, &is_split) == 0)
-	{
-		if (is_split == 1)
-			free_array(argv);
-		return (ft_putstr_fd("Error\n", 2), ft_lstclear(&stack_a, del), 1);
-	}
-	swap_a(&stack_a);
-	push_b(&stack_a, &stack_b);
-	print_stacks(stack_a, stack_b);
-	ft_lstclear(&stack_a, del);
-	ft_lstclear(&stack_b, del);
-	if (is_split == 1)
-		free_array(argv);
+	if (check_argv(argc, argv, &ctx) == 0)
+		return (ft_printf_fd(2, "Error\n"), ft_lstclear(&(ctx.stack_a)), 1);
+	swap_a(&ctx, 0);
+	push_b(&ctx);
+	if (ctx.bench.is_bench == 1)
+		print_bench(&ctx);
+	print_stacks(ctx.stack_a, ctx.stack_b);
+	ft_lstclear(&ctx.stack_a);
+	ft_lstclear(&ctx.stack_b);
 	return (0);
+}
+
+void	print_bench(t_ctx *ctx)
+{
+	ft_printf_fd(2, "[bench] disorder: %i\n", ctx->bench.disorder);
+	ft_printf_fd(2, "[bench] strategy: %i\n", ctx->strategy);
+	ft_printf_fd(2, "[bench] total_ops: %i\n", ctx->bench.total);
+	ft_printf_fd(2, "[bench] sa: %i sb: %i ss: %i pa: %i pb: %i\n",
+		ctx->bench.sa, ctx->bench.sb, ctx->bench.ss, ctx->bench.pa,
+		ctx->bench.pb);
+	ft_printf_fd(2, "[bench] ra: %i rb: %i rr: %i rra: %i rrb: %i rrr: %i\n",
+		ctx->bench.ra, ctx->bench.rb, ctx->bench.rr, ctx->bench.rra,
+		ctx->bench.rrb, ctx->bench.rrr);
 }
 
 void	print_stacks(t_list *stack_a, t_list *stack_b)
@@ -50,27 +55,27 @@ void	print_stacks(t_list *stack_a, t_list *stack_b)
 	{
 		if (new_a)
 		{
-			ft_printf("%d", *new_a->content);
+			ft_printf_fd(1, "%d", new_a->content);
 			new_a = new_a->next;
 		}
 		else
-			ft_printf(" ");
-		ft_printf(" | ");
+			ft_printf_fd(1, " ");
+		ft_printf_fd(1, " | ");
 		if (new_b)
 		{
-			ft_printf("%d", *new_b->content);
+			ft_printf_fd(1, "%d", new_b->content);
 			new_b = new_b->next;
 		}
-		ft_printf("\n");
+		ft_printf_fd(1, "\n");
 	}
-	ft_printf("_ | _\na | b\n\n");
+	ft_printf_fd(1, "_ | _\na | b\n\n");
 }
 
 void	free_array(char **array)
 {
 	int	i;
 
-	if (!array)
+	if ((size_t)array[0] == (size_t)1)
 		return ;
 	i = -1;
 	while (array[++i])

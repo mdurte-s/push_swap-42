@@ -6,7 +6,7 @@
 /*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/11 09:43:10 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/05/11 22:34:57 by mdurte-s         ###   ########.fr       */
+/*   Updated: 2026/05/18 17:50:43 by mdurte-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,57 +14,55 @@
 
 /* Shift down all elements of stack a by one.
 The last element becomes the first one. */
-void	rev_rotate_a(t_list **stack_a)
+void	rev_rotate_a(t_ctx *ctx, int rrr)
 {
 	t_list	*temp_1;
 	t_list	*temp_2;
 
-	if (!(*stack_a) || !(*stack_a)->next)
-		return ;
-	temp_1 = (*stack_a);
-	temp_2 = ft_lstlast(*stack_a);
-	while ((*stack_a)->next)
+	if (ctx->total_a > 1)
 	{
-		if (!((*stack_a)->next->next))
-		{
-			(*stack_a)->next = NULL;
-			break ;
-		}
-		(*stack_a) = (*stack_a)->next;
+		temp_1 = ctx->stack_a;
+		temp_2 = ft_lstlast(ctx->stack_a);
+		while (ctx->stack_a->next->next)
+			ctx->stack_a = ctx->stack_a->next;
+		ctx->stack_a->next = NULL;
+		ctx->stack_a = temp_2;
+		ctx->stack_a->next = temp_1;
 	}
-	(*stack_a) = temp_2;
-	(*stack_a)->next = temp_1;
-	ft_printf("rra\n");
+	if (rrr)
+		return ;
+	ctx->bench.rra++;
+	ft_printf_fd(1, "rra\n");
 }
 
 /* Shift down all elements of stack b by one.
 The last element becomes the first one. */
-void	rev_rotate_b(t_list **stack_b)
+void	rev_rotate_b(t_ctx *ctx, int rrr)
 {
 	t_list	*temp_1;
 	t_list	*temp_2;
 
-	if (!(*stack_b) || !(*stack_b)->next)
-		return ;
-	temp_1 = (*stack_b);
-	temp_2 = ft_lstlast(*stack_b);
-	while ((*stack_b)->next)
+	if (ctx->total_b > 1)
 	{
-		if (!((*stack_b)->next->next))
-		{
-			(*stack_b)->next = NULL;
-			break ;
-		}
-		*stack_b = (*stack_b)->next;
+		temp_1 = ctx->stack_b;
+		temp_2 = ft_lstlast(ctx->stack_b);
+		while (ctx->stack_b->next->next)
+			ctx->stack_b = ctx->stack_b->next;
+		ctx->stack_b->next = NULL;
+		ctx->stack_b = temp_2;
+		ctx->stack_b->next = temp_1;
 	}
-	(*stack_b) = temp_2;
-	(*stack_b)->next = temp_1;
-	ft_printf("rrb\n");
+	if (rrr)
+		return ;
+	ctx->bench.rrb++;
+	ft_printf_fd(1, "rrb\n");
 }
 
 /* rra and rrb at the same time. */
-void	rev_rotate_r(t_list **stack_a, t_list **stack_b)
+void	rev_rotate_r(t_ctx *ctx)
 {
-	rev_rotate_a(stack_a);
-	rev_rotate_b(stack_b);
+	rev_rotate_a(ctx, 1);
+	rev_rotate_b(ctx, 1);
+	ctx->bench.rrr++;
+	ft_printf_fd(1, "rrr\n");
 }

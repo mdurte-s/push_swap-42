@@ -6,32 +6,25 @@
 /*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/11 09:54:05 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/05/15 11:34:53 by mdurte-s         ###   ########.fr       */
+/*   Updated: 2026/05/18 17:40:04 by mdurte-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/push_swap.h"
 
-int	check_argv(int argc, char ***argv, t_list **stack_a, int *is_split)
+int	check_argv(int argc, char **argv, t_ctx *ctx)
 {
-	int		index;
-	int		bench;
-	int		strategy;
-	char	**temp_argv;
+	int	index;
 
-	bench = 0;
-	strategy = 0;
-	if (check_flags(*argv, &index, &bench, &strategy) == 0)
+	if (check_flags(argv, &index, ctx) == 0)
 		return (0);
-	if (check_first_argv(&argc, argv, &index, is_split) == 0)
+	if (check_is_split(argc, &argv, &index) == 0)
 		return (0);
-	temp_argv = *argv;
-	*stack_a = create_stack(temp_argv, index, bench, strategy);
-	if (!*stack_a)
-		return (0);
-	if (check_repeated(*stack_a) == 0)
-		return (0);
-	return (1);
+	if (create_stack(argv, index, ctx) == 0)
+		return (free_array(argv), 0);
+	if (check_repeated(ctx->stack_a) == 0)
+		return (free_array(argv), 0);
+	return (free_array(argv), 1);
 }
 
 int	check_repeated(t_list *stack_a)
@@ -45,7 +38,7 @@ int	check_repeated(t_list *stack_a)
 		j = i->next;
 		while (j)
 		{
-			if (*j->content == *i->content)
+			if (j->content == i->content)
 				return (0);
 			j = j->next;
 		}
@@ -54,47 +47,48 @@ int	check_repeated(t_list *stack_a)
 	return (1);
 }
 
-int	check_first_argv(int *argc, char ***argv, int *index, int *is_split)
+int	check_is_split(int argc, char ***argv, int *index)
 {
-	if (*index + 2 == *argc && ft_strchr((*argv)[(*index) + 1], ' '))
+	if (ft_strchr((*argv)[*index], ' '))
 	{
-		*argc = (int)count_strings((*argv)[(*index) + 1], ' ');
-		*argv = ft_split((*argv)[(*index) + 1], ' ');
-		*index = -1;
-		*is_split = 1;
-		return (1);
+		if (*index + 1 != argc)
+			return (0);
+		else
+		{
+			*argv = ft_split((*argv)[*index], ' ');
+			*index = 0;
+		}
 	}
-	else if (*index + 2 != *argc && ft_strchr((*argv)[(*index) + 1], ' '))
-		return (0);
 	else
-		return (1);
+		(*argv)[0] = (char *)1;
+	return (1);
 }
 
-int	check_flags(char **av, int *i, int *b, int *s)
+int	check_flags(char **av, int *i, t_ctx *ctx)
 {
 	int	x;
 
 	x = -1;
 	while (av[++x])
 	{
-		if (ft_strncmp(av[x], "--bench", (size_t)15) == 0 && *b != 0)
+		if (ft_strncmp(av[x], "--bench", 15) == 0 && ctx->bench.is_bench != 0)
 			return (0);
-		else if ((ft_strncmp(av[x], "--simple", (size_t)15) == 0
-				|| ft_strncmp(av[x], "--medium", (size_t)15) == 0
-				|| ft_strncmp(av[x], "--complex", (size_t)15) == 0
-				|| ft_strncmp(av[x], "--adaptative", (size_t)15) == 0)
-			&& *s != 0)
+		else if ((ft_strncmp(av[x], "--simple", 9) == 0 || ft_strncmp(av[x],
+					"--medium", 9) == 0 || ft_strncmp(av[x], "--complex",
+					10) == 0 || ft_strncmp(av[x], "--adaptive", 11) == 0)
+			&& ctx->strategy != 0)
 			return (0);
-		else if (ft_strncmp(av[x], "--bench", (size_t)15) == 0 && *b == 0)
-			*b = 1;
-		else if (ft_strncmp(av[x], "--simple", (size_t)15) == 0 && *s == 0)
-			*s = 1;
-		else if (ft_strncmp(av[x], "--medium", (size_t)15) == 0 && *s == 0)
-			*s = 2;
-		else if (ft_strncmp(av[x], "--complex", (size_t)15) == 0 && *s == 0)
-			*s = 3;
-		else if (ft_strncmp(av[x], "--adaptative", (size_t)15) == 0 && *s == 0)
-			*s = 4;
+		else if (ft_strncmp(av[x], "--bench", 8) == 0
+			&& ctx->bench.is_bench == 0)
+			ctx->bench.is_bench = 1;
+		else if (ft_strncmp(av[x], "--simple", 9) == 0 && ctx->strategy == 0)
+			ctx->strategy = 1;
+		else if (ft_strncmp(av[x], "--medium", 9) == 0 && ctx->strategy == 0)
+			ctx->strategy = 2;
+		else if (ft_strncmp(av[x], "--complex", 10) == 0 && ctx->strategy == 0)
+			ctx->strategy = 3;
+		else if (ft_strncmp(av[x], "--adaptive", 11) == 0 && ctx->strategy == 0)
+			ctx->strategy = 4;
 	}
-	return (*i = (*b == 1) + (*s != 0), 1);
+	return (*i = 1 + (ctx->bench.is_bench == 1) + (ctx->strategy != 0), 1);
 }
