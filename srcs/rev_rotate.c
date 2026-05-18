@@ -6,7 +6,7 @@
 /*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/11 09:43:10 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/05/18 17:50:43 by mdurte-s         ###   ########.fr       */
+/*   Updated: 2026/05/18 19:05:56 by mdurte-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ void	rev_rotate_a(t_ctx *ctx, int rrr)
 	}
 	if (rrr)
 		return ;
+	ctx->bench.total++;
 	ctx->bench.rra++;
 	ft_printf_fd(1, "rra\n");
 }
@@ -54,6 +55,7 @@ void	rev_rotate_b(t_ctx *ctx, int rrr)
 	}
 	if (rrr)
 		return ;
+	ctx->bench.total++;
 	ctx->bench.rrb++;
 	ft_printf_fd(1, "rrb\n");
 }
@@ -63,6 +65,7 @@ void	rev_rotate_r(t_ctx *ctx)
 {
 	rev_rotate_a(ctx, 1);
 	rev_rotate_b(ctx, 1);
+	ctx->bench.total++;
 	ctx->bench.rrr++;
 	ft_printf_fd(1, "rrr\n");
 }

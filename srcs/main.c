@@ -6,7 +6,7 @@
 /*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/08 11:38:35 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/05/18 17:41:23 by mdurte-s         ###   ########.fr       */
+/*   Updated: 2026/05/18 19:04:19 by mdurte-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,54 @@
 int	main(int argc, char **argv)
 {
 	t_ctx	ctx;
+	int		i;
+	int		min_i;
+	int		min;
+	int		is_rra;
+	t_list	*current;
 
 	ft_bzero(&ctx, sizeof(t_ctx));
 	if (argc == 1)
 		return (1);
 	if (check_argv(argc, argv, &ctx) == 0)
 		return (ft_printf_fd(2, "Error\n"), ft_lstclear(&(ctx.stack_a)), 1);
-	swap_a(&ctx, 0);
-	push_b(&ctx);
+	while (ctx.total_a > 0)
+	{
+		i = 0;
+		min_i = 0;
+		current = ctx.stack_a;
+		min = current->content;
+		while (current)
+		{
+			if (current->content < min)
+			{
+				min_i = i;
+				min = current->content;
+			}
+			i++;
+			current = current->next;
+		}
+		if (min_i > ctx.total_a - min_i)
+		{
+			min_i = ctx.total_a - min_i;
+			is_rra = 1;
+		}
+		else
+			is_rra = 0;
+		while (min_i--)
+		{
+			if (is_rra)
+				rev_rotate_a(&ctx, 0);
+			else
+				rotate_a(&ctx, 0);
+		}
+		push_b(&ctx);
+	}
+	while (ctx.total_b > 0)
+		push_a(&ctx);
 	if (ctx.bench.is_bench == 1)
 		print_bench(&ctx);
-	print_stacks(ctx.stack_a, ctx.stack_b);
+	//print_stacks(ctx.stack_a, ctx.stack_b);
 	ft_lstclear(&ctx.stack_a);
 	ft_lstclear(&ctx.stack_b);
 	return (0);

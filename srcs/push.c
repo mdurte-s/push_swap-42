@@ -6,7 +6,7 @@
 /*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/11 09:39:49 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/05/18 17:54:25 by mdurte-s         ###   ########.fr       */
+/*   Updated: 2026/05/18 19:06:08 by mdurte-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void	push_a(t_ctx *ctx)
 	ctx->total_b--;
 	ctx->total_a++;
 	(ctx->bench.pa)++;
+	ctx->bench.total++;
 	ft_printf_fd(1, "pa\n");
 }
 
@@ -45,5 +46,6 @@ void	push_b(t_ctx *ctx)
 	ctx->total_b++;
 	ctx->total_a--;
 	(ctx->bench.pb)++;
+	ctx->bench.total++;
 	ft_printf_fd(1, "pb\n");
 }

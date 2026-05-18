@@ -6,7 +6,7 @@
 /*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/11 09:37:48 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/05/18 17:52:19 by mdurte-s         ###   ########.fr       */
+/*   Updated: 2026/05/18 19:05:30 by mdurte-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ void	swap_a(t_ctx *ctx, int ss)
 	}
 	if (ss)
 		return ;
+	ctx->bench.total++;
 	ctx->bench.sa++;
 	ft_printf_fd(1, "sa\n");
 }
@@ -54,6 +55,7 @@ void	swap_b(t_ctx *ctx, int ss)
 	}
 	if (ss)
 		return ;
+	ctx->bench.total++;
 	ctx->bench.sb++;
 	ft_printf_fd(1, "sb\n");
 }
@@ -63,6 +65,7 @@ void	swap_s(t_ctx *ctx)
 {
 	swap_a(ctx, 1);
 	swap_b(ctx, 1);
+	ctx->bench.total++;
 	ctx->bench.ss++;
 	ft_printf_fd(1, "ss\n");
 }
