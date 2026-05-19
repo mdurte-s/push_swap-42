@@ -16,8 +16,9 @@ OBJDIR		= objs
 
 # --- Sources ---------------------------------------------------------------- #
 
-SRCS		= ${SRCDIR}/put_char_str_nbr_ptr.c	${SRCDIR}/strlen_printf.c\
-			${SRCDIR}/conversion.c				${SRCDIR}/ft_printf.c
+SRCS		= ${SRCDIR}/put_char_str_nbr_ptr_flt.c	${SRCDIR}/put_utils.c \
+			${SRCDIR}/strlen_printf.c				${SRCDIR}/conversion.c \
+			${SRCDIR}/ft_printf.c
 
 OBJS		= $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 

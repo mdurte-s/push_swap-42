@@ -6,7 +6,7 @@
 /*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/08 11:37:26 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/05/18 17:40:58 by mdurte-s         ###   ########.fr       */
+/*   Updated: 2026/05/19 16:27:40 by mdurte-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 typedef struct s_bench
 {
 	int		is_bench;
-	int		disorder;
+	double	disorder;
 	int		total;
 	int		sa;
 	int		sb;
@@ -52,18 +52,18 @@ typedef struct s_ctx
 
 void		swap_a(t_ctx *ctx, int ss);
 void		swap_b(t_ctx *ctx, int ss);
-void		swap_s( t_ctx *ctx);
+void		swap_s(t_ctx *ctx);
 
-void		push_a( t_ctx *ctx);
-void		push_b( t_ctx *ctx);
+void		push_a(t_ctx *ctx);
+void		push_b(t_ctx *ctx);
 
 void		rotate_a(t_ctx *ctx, int rr);
 void		rotate_b(t_ctx *ctx, int rr);
-void		rotate_r( t_ctx *ctx);
+void		rotate_r(t_ctx *ctx);
 
 void		rev_rotate_a(t_ctx *ctx, int rrr);
 void		rev_rotate_b(t_ctx *ctx, int rrr);
-void		rev_rotate_r( t_ctx *ctx);
+void		rev_rotate_r(t_ctx *ctx);
 
 int			check_argv(int argc, char **argv, t_ctx *ctx);
 int			check_flags(char **av, int *i, t_ctx *ctx);
@@ -73,6 +73,9 @@ int			check_repeated(t_list *stack_a);
 int			create_stack(char **argv, int index, t_ctx *ctx);
 int			argv_to_int(char *argv, int *nb);
 size_t		count_strings(char const *s, char c);
+
+void		mesure_disorder(t_ctx *ctx);
+void		update_bench_strategy(t_ctx *ctx);
 
 void		print_stacks(t_list *stack_a, t_list *stack_b);
 void		print_bench(t_ctx *ctx);

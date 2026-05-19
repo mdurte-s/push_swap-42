@@ -6,7 +6,7 @@
 /*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/28 11:36:07 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/05/18 12:01:26 by mdurte-s         ###   ########.fr       */
+/*   Updated: 2026/05/19 14:14:18 by mdurte-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,12 @@ int		validate(char c);
 void	put_char(int c, int *counter, int fd);
 void	put_str(char *str, int *counter, int fd);
 void	put_ptr(void *ptr, int *counter, int fd);
-void	put_nbr(long int nb, char *base, int *ccounter, int fd);
+void	put_nbr(long int nb, char *base, int *counter, int fd);
+void	put_flt(double nb, char *base, int *counter, int fd);
+void	put_frc_part(int frc_part, int precision, int *counter, int fd);
 void	conversion(char c, va_list arg, int *counter, int fd);
+
+int		validate_dup_sign(char *str);
+double	power_nb(int base, int exp);
 
 #endif

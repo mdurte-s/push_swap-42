@@ -1,18 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   put_char_str_nbr_ptr.c                             :+:      :+:    :+:   */
+/*   put_char_str_nbr_ptr_flt.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/28 11:36:17 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/05/18 12:01:37 by mdurte-s         ###   ########.fr       */
+/*   Updated: 2026/05/19 14:13:22 by mdurte-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_printf.h"
-
-static int	validate_dup_sign(char *str);
 
 void	put_char(int c, int *counter, int fd)
 {
@@ -64,22 +62,26 @@ void	put_ptr(void *ptr, int *c, int fd)
 	}
 }
 
-static int	validate_dup_sign(char *str)
+void	put_flt(double nb, char *base, int *counter, int fd)
 {
-	int	i;
-	int	j;
+	int			precision;
+	long int	int_part;
+	long int	frc_part;
 
-	i = 0;
-	while (str[i] != '\0')
+	precision = 2;
+	if (nb < 0)
 	{
-		if (str[i] == '-' || str[i] == '+')
-			return (0);
-		j = i + 1;
-		while (str[j] != str[i] && str[j] != '\0')
-			j++;
-		if (str[j] == str[i])
-			return (0);
-		i++;
+		put_char('-', counter, fd);
+		nb = nb * -1;
 	}
-	return (1);
+	int_part = (long int)nb;
+	frc_part = (long int)((nb - int_part) * power_nb(10, precision) + 0.5);
+	if (frc_part >= power_nb(10, precision))
+	{
+		int_part++;
+		frc_part = 0;
+	}
+	put_nbr(int_part, base, counter, fd);
+	put_char('.', counter, fd);
+	put_frc_part(frc_part, precision, counter, fd);
 }

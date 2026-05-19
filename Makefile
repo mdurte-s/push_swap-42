@@ -20,12 +20,10 @@ PRINTF_A	= $(PRIDIR)/libftprintf.a
 
 # --- Sources ---------------------------------------------------------------- #
 
-SRCS		= $(SRCDIR)/swap.c \
-			$(SRCDIR)/push.c \
-			$(SRCDIR)/rotate.c \
-			$(SRCDIR)/rev_rotate.c \
-			$(SRCDIR)/check_args_flags_repeated.c \
-			$(SRCDIR)/check_utils.c \
+SRCS		= $(SRCDIR)/swap.c						$(SRCDIR)/push.c \
+			$(SRCDIR)/rotate.c						$(SRCDIR)/rev_rotate.c \
+			$(SRCDIR)/check_args_flags_repeated.c	$(SRCDIR)/check_utils.c \
+			$(SRCDIR)/mesure_disorder.c \
 			$(SRCDIR)/main.c \
 
 OBJS		= $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
