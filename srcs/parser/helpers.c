@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_utils.c                                      :+:      :+:    :+:   */
+/*   helpers.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: igomes-d <igomes-d@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/14 13:54:14 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/05/18 16:43:37 by mdurte-s         ###   ########.fr       */
+/*   Updated: 2026/05/19 17:46:22 by igomes-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/push_swap.h"
+#include "../../includes/push_swap.h"
 
 int	create_stack(char **argv, int index, t_ctx *ctx)
 {
@@ -80,4 +80,16 @@ size_t	count_strings(char const *s, char c)
 		i = i + j;
 	}
 	return (count_str);
+}
+
+void	free_array(char **array)
+{
+	int	i;
+
+	if ((size_t)array[0] == (size_t)1)
+		return ;
+	i = -1;
+	while (array[++i])
+		free(array[i]);
+	free(array);
 }

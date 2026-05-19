@@ -1,24 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_args_flags_repeated.c                        :+:      :+:    :+:   */
+/*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: igomes-d <igomes-d@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/11 09:54:05 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/05/18 17:40:04 by mdurte-s         ###   ########.fr       */
+/*   Updated: 2026/05/19 17:43:28 by igomes-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/push_swap.h"
+#include "../../includes/push_swap.h"
 
-int	check_argv(int argc, char **argv, t_ctx *ctx)
+int	parser_argv(int argc, char **argv, t_ctx *ctx)
 {
 	int	index;
 
-	if (check_flags(argv, &index, ctx) == 0)
+	if (parser_flags(argv, &index, ctx) == 0)
 		return (0);
-	if (check_is_split(argc, &argv, &index) == 0)
+	if (parser_split(argc, &argv, &index) == 0)
 		return (0);
 	if (create_stack(argv, index, ctx) == 0)
 		return (free_array(argv), 0);
@@ -47,7 +47,7 @@ int	check_repeated(t_list *stack_a)
 	return (1);
 }
 
-int	check_is_split(int argc, char ***argv, int *index)
+int	parser_split(int argc, char ***argv, int *index)
 {
 	if (ft_strchr((*argv)[*index], ' '))
 	{
@@ -64,7 +64,7 @@ int	check_is_split(int argc, char ***argv, int *index)
 	return (1);
 }
 
-int	check_flags(char **av, int *i, t_ctx *ctx)
+int	parser_flags(char **av, int *i, t_ctx *ctx)
 {
 	int	x;
 

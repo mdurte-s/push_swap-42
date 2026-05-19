@@ -20,12 +20,7 @@ PRINTF_A	= $(PRIDIR)/libftprintf.a
 
 # --- Sources ---------------------------------------------------------------- #
 
-SRCS		= $(SRCDIR)/swap.c						$(SRCDIR)/push.c \
-			$(SRCDIR)/rotate.c						$(SRCDIR)/rev_rotate.c \
-			$(SRCDIR)/check_args_flags_repeated.c	$(SRCDIR)/check_utils.c \
-			$(SRCDIR)/mesure_disorder.c \
-			$(SRCDIR)/main.c \
-
+SRCS 		= $(shell find $(SRCDIR) -name '*.c')
 OBJS		= $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 
 # --- Rules ------------------------------------------------------------------ #
@@ -44,6 +39,10 @@ $(PRINTF_A):
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
 			@mkdir -p $(@D)
 			$(CC) $(CFLAGS) -I $(INCDIR) -I $(LIBDIR) -I $(PRIDIR) -c $< -o $@
+
+headers:
+	$(CC) -x c makeheaders_src.txt -o makeheaders.out
+	./autoheaders.sh $(INCDIR)/$(NAME).h $(SRCDIR)
 
 clean:
 			$(RM) -r $(OBJDIR)
