@@ -59,12 +59,13 @@ int			parser_argv(int argc, char **argv, t_ctx *ctx);
 int			check_repeated(t_list *stack_a);
 int			parser_split(int argc, char ***argv, int *index);
 int			parser_flags(char **av, int *i, t_ctx *ctx);
-int			get_distance_min_top(t_list *current);
-int			get_distance_max_top(t_list *current);
+int			get_max(t_list *current);
+int			get_min(t_list *current);
+int			get_distance(t_list *current, int val);
 void		move_to_top(int distance, int total, void (*r)(t_ctx *, int),
 				void (*rr)(t_ctx *, int));
-int			get_distance_inter_top(t_list *current, int val);
-void		simple(t_ctx *ctx);
+int			get_distance_inter_top_a(t_list *current, int val);
+void		simple(t_ctx *ctx, int min, int max);
 void		init(t_ctx *ctx);
 void		print_bench(t_ctx *ctx);
 void		mesure_disorder(t_ctx *ctx);
@@ -81,6 +82,8 @@ void		push_b(t_ctx *init);
 void		swap_a(t_ctx *init, int ss);
 void		swap_b(t_ctx *init, int ss);
 void		swap_s(t_ctx *init);
+int			get_x_bigger(t_list *start, int x, int size, int min);
+int			get_distance_inter_top(t_list *current, int val);
 void		print_stacks(t_list *stack_a, t_list *stack_b);
 
 // end-headers
