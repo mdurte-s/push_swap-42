@@ -6,25 +6,17 @@
 /*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/20 11:27:10 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/05/11 19:54:31 by mdurte-s         ###   ########.fr       */
+/*   Updated: 2026/05/20 13:58:46 by mdurte-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/libft.h"
 
-/*int	main(int argc, char **argv)
-{
-	(void)argc;
-	ft_strchr(argv[1], argv[2][0]);
-	printf("return: %s\n", ft_strchr(argv[1], argv[2][0]));
-	return (0);
-}*/
-
 char	*ft_strchr(const char *s, int c)
 {
 	int	i;
 
-	if (!s)
+	if (!s || *s == '\0')
 		return (NULL);
 	i = 0;
 	while (s[i])

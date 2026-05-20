@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   push_swap.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: igomes-d <igomes-d@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/08 11:37:26 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/05/19 19:05:30 by igomes-d         ###   ########.fr       */
+/*   Updated: 2026/05/20 15:39:04 by mdurte-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,14 +51,6 @@ typedef struct s_ctx
 
 /* --- functions ------------------------------------------------------------ */
 // start-headers
-int			create_stack(char **argv, int index, t_ctx *ctx);
-int			argv_to_int(char *argv, int *nb);
-size_t		count_strings(char const *s, char c);
-void		free_array(char **array);
-int			parser_argv(int argc, char **argv, t_ctx *ctx);
-int			check_repeated(t_list *stack_a);
-int			parser_split(int argc, char ***argv, int *index);
-int			parser_flags(char **av, int *i, t_ctx *ctx);
 int			get_max(t_list *current);
 int			get_min(t_list *current);
 int			get_distance(t_list *current, int val);
@@ -70,18 +62,30 @@ void		init(t_ctx *ctx);
 void		print_bench(t_ctx *ctx);
 void		mesure_disorder(t_ctx *ctx);
 void		update_bench_strategy(t_ctx *ctx);
+void		push_list(t_list **from, t_list **to, int to_size);
+void		push_a(t_ctx *init);
+void		push_b(t_ctx *init);
 void		rev_rotate_a(t_ctx *init, int rrr);
 void		rev_rotate_b(t_ctx *init, int rrr);
 void		rev_rotate_r(t_ctx *init);
 void		rotate_a(t_ctx *init, int rr);
 void		rotate_b(t_ctx *init, int rr);
 void		rotate_r(t_ctx *init);
-void		push_list(t_list **from, t_list **to, int to_size);
-void		push_a(t_ctx *init);
-void		push_b(t_ctx *init);
 void		swap_a(t_ctx *init, int ss);
 void		swap_b(t_ctx *init, int ss);
 void		swap_s(t_ctx *init);
+int			parser_argv(int argc, char **argv, t_ctx *ctx);
+int			parser_flags(char **av, int *i, t_ctx *ctx);
+int			parser_flags(char **av, int *i, t_ctx *ctx);
+int			create_stack(char **argv, int index, t_ctx *ctx);
+int			create_stack(char **argv, int index, t_ctx *ctx);
+int			check_repeated(t_list *stack_a);
+int			check_repeated(t_list *stack_a);
+int			argv_to_int(char *argv, int *nb);
+int			argv_to_int(char *argv, int *nb);
+int			parser_split(int argc, char ***argv, int *index);
+size_t		count_strings(char const *s, char c);
+void		free_array(char **array);
 int			get_x_bigger(t_list *start, int x, int size, int min);
 int			get_distance_inter_top(t_list *current, int val);
 void		print_stacks(t_list *stack_a, t_list *stack_b);

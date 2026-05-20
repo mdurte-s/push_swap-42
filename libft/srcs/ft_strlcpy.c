@@ -6,7 +6,7 @@
 /*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/20 11:29:43 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/05/11 19:54:50 by mdurte-s         ###   ########.fr       */
+/*   Updated: 2026/05/20 14:00:12 by mdurte-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 	return (0);
 }*/
 
-size_t	ft_strlcpy(char *restrict dst, const char *restrict src, size_t n)
+size_t	ft_strlcpy(char *dst, const char *src, size_t n)
 {
 	size_t	i;
 

@@ -1,0 +1,33 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line_bonus.h                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/05/04 10:26:45 by mdurte-s          #+#    #+#             */
+/*   Updated: 2026/05/20 14:01:13 by mdurte-s         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#ifndef GET_NEXT_LINE_BONUS_H
+# define GET_NEXT_LINE_BONUS_H
+
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 1
+# endif
+
+# ifndef OPEN_MAX
+#  define OPEN_MAX 1024
+# endif
+
+# include "../libft/includes/libft.h"
+# include <fcntl.h>
+
+char	*get_next_line(int fd);
+char	*read_and_stash(int fd, char *stash);
+char	*extract_line(char *stash);
+char	*new_stash(char *stash);
+char	*clean_data(char *data);
+
+#endif
