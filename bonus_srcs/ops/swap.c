@@ -6,7 +6,7 @@
 /*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/11 09:37:48 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/05/20 18:20:18 by mdurte-s         ###   ########.fr       */
+/*   Updated: 2026/05/21 13:36:42 by mdurte-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ void	swap_a(t_ctx *init, int ss)
 		return ;
 	ctx->bench.total++;
 	ctx->bench.sa++;
-	//ft_printf_fd(1, "sa\n");
 }
 
 /* Swap the first two elements at the top of stack b.
@@ -65,7 +64,6 @@ void	swap_b(t_ctx *init, int ss)
 		return ;
 	ctx->bench.total++;
 	ctx->bench.sb++;
-	//ft_printf_fd(1, "sb\n");
 }
 
 /* sa and sb at the same time. */
@@ -82,5 +80,4 @@ void	swap_s(t_ctx *init)
 	swap_b(0, 1);
 	ctx->bench.total++;
 	ctx->bench.ss++;
-	//ft_printf_fd(1, "ss\n");
 }

@@ -6,7 +6,7 @@
 /*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/11 09:43:10 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/05/20 18:20:01 by mdurte-s         ###   ########.fr       */
+/*   Updated: 2026/05/21 13:37:04 by mdurte-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ void	rev_rotate_a(t_ctx *init, int rrr)
 		return ;
 	ctx->bench.total++;
 	ctx->bench.rra++;
-	//ft_printf_fd(1, "rra\n");
 }
 
 /* Shift down all elements of stack b by one.
@@ -57,7 +56,6 @@ void	rev_rotate_b(t_ctx *init, int rrr)
 		return ;
 	ctx->bench.total++;
 	ctx->bench.rrb++;
-	//ft_printf_fd(1, "rrb\n");
 }
 
 /* rra and rrb at the same time. */
@@ -74,5 +72,4 @@ void	rev_rotate_r(t_ctx *init)
 	rev_rotate_b(0, 1);
 	ctx->bench.total++;
 	ctx->bench.rrr++;
-	//ft_printf_fd(1, "rrr\n");
 }

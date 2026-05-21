@@ -6,7 +6,7 @@
 /*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/11 09:39:49 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/05/20 18:19:51 by mdurte-s         ###   ########.fr       */
+/*   Updated: 2026/05/21 13:42:23 by mdurte-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ void	push_list(t_list **from, t_list **to, int to_size)
 	tmp->next = *to;
 	*to = tmp;
 }
+
 /* Take the first element at the top of b and put it at the top of a.
 Do nothing if b is empty. */
 void	push_a(t_ctx *init)
@@ -49,7 +50,6 @@ void	push_a(t_ctx *init)
 	ctx->total_a++;
 	ctx->bench.pa++;
 	ctx->bench.total++;
-	//ft_printf_fd(1, "pa\n");
 }
 
 /* Take the first element at the top of a and put it at the top of b.
@@ -70,5 +70,4 @@ void	push_b(t_ctx *init)
 	ctx->total_a--;
 	ctx->bench.pb++;
 	ctx->bench.total++;
-	//ft_printf_fd(1, "pb\n");
 }

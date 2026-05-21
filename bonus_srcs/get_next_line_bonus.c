@@ -6,11 +6,11 @@
 /*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 10:25:42 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/05/20 14:14:04 by mdurte-s         ###   ########.fr       */
+/*   Updated: 2026/05/21 10:49:03 by mdurte-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../bonus_includes/get_next_line_bonus.h"
+#include "../bonus_includes/checker.h"
 
 char	*get_next_line(int fd)
 {
