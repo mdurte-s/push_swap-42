@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: igomes-d <igomes-d@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/08 11:38:35 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/05/19 21:53:36 by igomes-d         ###   ########.fr       */
+/*   Updated: 2026/05/22 09:47:49 by mdurte-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,11 +73,11 @@ int	main(int argc, char **argv)
 	if (parser_argv(argc, argv, &ctx) == 0)
 		return (ft_printf_fd(2, "Error\n"), ft_lstclear(&(ctx.stack_a)), 1);
 	mesure_disorder(&ctx);
-	if (ctx.bench.disorder > 0)
-	{
-		min = get_min(ctx.stack_a);
-		max = get_max(ctx.stack_a);
-		simple(&ctx, min, max);
+	// if (ctx.bench.disorder > 0)
+	// {
+	// 	min = get_min(ctx.stack_a);
+	// 	max = get_max(ctx.stack_a);
+	// 	simple(&ctx, min, max);
 		// bottoms[3] = get_x_bigger(ctx.stack_a, 100, 500, min);
 		// bottoms[2] = get_x_bigger(ctx.stack_a, 100, 400, min);
 		// bottoms[1] = get_x_bigger(ctx.stack_a, 100, 300, min);
@@ -143,7 +143,7 @@ int	main(int argc, char **argv)
 	}
 	if (ctx.bench.is_bench == 1)
 		print_bench(&ctx);
-	// print_stacks(ctx.stack_a, ctx.stack_b);
+	print_stacks(ctx.stack_a, ctx.stack_b);
 	ft_lstclear(&ctx.stack_a);
 	ft_lstclear(&ctx.stack_b);
 	return (0);

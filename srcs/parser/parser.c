@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: igomes-d <igomes-d@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/11 09:54:05 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/05/19 17:43:28 by igomes-d         ###   ########.fr       */
+/*   Updated: 2026/05/22 09:46:59 by mdurte-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,24 @@
 
 int	parser_argv(int argc, char **argv, t_ctx *ctx)
 {
-	int	index;
-
+	int		index;
+	char	**temp_argv;
+	
+	(void)argc;
 	if (parser_flags(argv, &index, ctx) == 0)
 		return (0);
-	if (parser_split(argc, &argv, &index) == 0)
-		return (0);
-	if (create_stack(argv, index, ctx) == 0)
-		return (free_array(argv), 0);
+	// if (parser_split(argc, &argv, &index) == 0)
+	// 	return (0);
+	// if (create_stack(argv, index, ctx) == 0)
+	// 	return (free_array(argv), 0);
+	while (++argv)
+	{
+		if (count_strings(*argv, ' ') == 0)
+			break ;
+		temp_argv = ft_split(*argv, ' ');
+		create_stack(temp_argv, index, ctx);
+	}
+	free(temp_argv);
 	if (check_repeated(ctx->stack_a) == 0)
 		return (free_array(argv), 0);
 	return (free_array(argv), 1);
@@ -90,5 +100,5 @@ int	parser_flags(char **av, int *i, t_ctx *ctx)
 		else if (ft_strncmp(av[x], "--adaptive", 11) == 0 && ctx->strategy == 0)
 			ctx->strategy = 4;
 	}
-	return (*i = 1 + (ctx->bench.is_bench == 1) + (ctx->strategy != 0), 1);
+	return (*i = (ctx->bench.is_bench == 1) + (ctx->strategy != 0), 1);
 }
