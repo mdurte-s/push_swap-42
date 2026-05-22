@@ -58,13 +58,6 @@ $(BONOBJ)/%.o: $(BONSRC)/%.c
 			@mkdir -p $(@D)
 			$(CC) $(CFLAGS) -I $(BONSRC) -I $(LIBDIR) -I $(PRIDIR) -c $< -o $@
 
-headers:
-			$(CC) -x c makeheaders_src.txt -o makeheaders.out
-			./autoheaders.sh $(INCDIR)/$(NAME).h $(SRCDIR)
-
-headers_bonus:
-			$(CC) -x c makeheaders_src.txt -o makeheaders.out
-			./autoheaders.sh $(BONINC)/bo$(BONUS)nus.h $(BONSRC)
 clean:
 			$(RM) -r $(OBJDIR)
 			$(RM) -r $(BONOBJ)
