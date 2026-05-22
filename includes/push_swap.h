@@ -6,7 +6,7 @@
 /*   By: igomes-d <igomes-d@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/08 11:37:26 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/05/22 10:00:33 by igomes-d         ###   ########.fr       */
+/*   Updated: 2026/05/22 10:20:54 by igomes-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 
 /* --- includes ------------------------------------------------------------- */
 
-# include "../ft_printf/includes/ft_printf.h"
-# include "../libft/includes/libft.h"
+# include "../libs/ft_printf/includes/ft_printf.h"
+# include "../libs/libft/includes/libft.h"
 
 /* --- struct --------------------------------------------------------------- */
 

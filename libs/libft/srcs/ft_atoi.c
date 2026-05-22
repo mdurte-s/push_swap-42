@@ -3,24 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: igomes-d <igomes-d@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/20 11:21:18 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/05/11 19:52:51 by mdurte-s         ###   ########.fr       */
+/*   Updated: 2026/05/22 11:50:12 by igomes-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/libft.h"
-
-/*int	main(int argc, char **argv)
-{
-	int	i;
-
-	i = 0;
-	while (++i < argc)
-		printf("atoi('%s') = %d\n", argv[i], ft_atoi(argv[i]));
-	return (0);
-}*/
 
 int	ft_atoi(const char *str)
 {
@@ -35,7 +25,7 @@ int	ft_atoi(const char *str)
 		i++;
 	if (str[i] == '+' || str[i] == '-')
 	{
-		s = s * (44 - str[i]);
+		s = s * (44 - str[i++]);
 		i++;
 	}
 	while (ft_isdigit(str[i]) == 1)

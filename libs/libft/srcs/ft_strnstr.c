@@ -3,25 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strnstr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: igomes-d <igomes-d@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/20 11:31:22 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/05/11 19:55:02 by mdurte-s         ###   ########.fr       */
+/*   Updated: 2026/05/22 11:59:44 by igomes-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/libft.h"
-
-/*int	main(int argc, char **argv)
-{
-	size_t	len;
-
-	len = 10;
-	(void)argc;
-	ft_strnstr(argv[1], argv[2], len);
-	printf("%s\n", ft_strnstr(argv[1], argv[2], len));
-	return (0);
-}*/
 
 char	*ft_strnstr(const char *str, const char *to_find, size_t len)
 {

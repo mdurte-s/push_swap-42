@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   conversion.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: igomes-d <igomes-d@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/28 11:35:52 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/05/19 14:03:53 by mdurte-s         ###   ########.fr       */
+/*   Updated: 2026/05/22 12:26:03 by igomes-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ void	conversion(char flag, va_list arg, int *c, int fd)
 
 int	validate(char c)
 {
-	if (c == 'c' || c == 's' || c == 'p' || c == 'd' || c == 'i'
-		|| c == 'u' || c == 'x' || c == 'X' || c == 'f' || c == '%')
+	if (c == 'c' || c == 's' || c == 'p' || c == 'd' || c == 'i' || c == 'u'
+		|| c == 'x' || c == 'X' || c == 'f' || c == '%')
 		return (1);
 	return (0);
 }

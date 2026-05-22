@@ -3,27 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_bzero.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: igomes-d <igomes-d@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/20 11:21:33 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/05/11 19:52:59 by mdurte-s         ###   ########.fr       */
+/*   Updated: 2026/05/22 12:42:07 by igomes-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/libft.h"
-
-/*int	main(int argc, char **argv)
-{
-	size_t			n;
-	unsigned char	*return_value;
-
-	(void)argc;
-	n = 3;
-	printf("starting adress: %s\n", &argv[1][2]);
-	return_value = (unsigned char *)ft_bzero(&argv[1][2], n);
-	printf("return: %s\n", return_value);
-	return (0);
-}*/
 
 void	ft_bzero(void *s, size_t n)
 {

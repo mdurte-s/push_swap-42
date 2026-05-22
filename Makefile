@@ -10,20 +10,19 @@ RM			= rm -f
 
 # ---- Paths ----------------------------------------------------------------- #
 
-INCDIR		= includes
-SRCDIR		= srcs
-OBJDIR		= objs
+INCDIR			= includes
+LIBS_HELPER		= libs/helper.sh
+SRCDIR			= srcs
+OBJDIR			= objs
 
-BONINC		= bonus_includes
-BONSRC		= bonus_srcs
-BONOBJ		= bonus_objs
-
-LIBDIR		= libft
-LIBFT_A		= $(LIBDIR)/libft.a
-PRIDIR		= ft_printf
-PRINTF_A	= $(PRIDIR)/libftprintf.a
+BONINC		= bonus/includes
+BONSRC		= bonus/srcs
+BONOBJ		= bonus/objs
 
 # --- Sources ---------------------------------------------------------------- #
+
+LIBS 			= $(shell $(LIBS_HELPER))
+LIBS_OBJS		= $(shell $(LIBS_HELPER) objs)
 
 SRCS 		= $(shell find $(SRCDIR) -name '*.c')
 OBJS		= $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
@@ -33,42 +32,40 @@ BONUS_OBJS	= $(BONUS_SRCS:$(BONOBJ)/%.c=$(BONOBJ)/%.o)
 
 # --- Rules ------------------------------------------------------------------ #
 
+define MAKE_LIB_OBJ
+$(1): $(subst /objs/,/srcs/,$(1:.o=.c))
+	$(LIBS_HELPER) make $(1)
+endef
+
 all:		$(NAME)
 
-$(NAME): 	$(LIBFT_A) $(PRINTF_A) $(OBJS)
-			$(CC) $(CFLAGS) $(OBJS) $(LIBFT_A) $(PRINTF_A) -o $(NAME)
+$(NAME): 	$(LIBS_OBJS) $(OBJS)
+			$(CC) $(CFLAGS) $(OBJS) $(LIBS) -o $(NAME)
 
 bonus:		$(BONUS)
 
-$(BONUS):	$(LIBFT_A) $(PRINTF_A) $(OBJS) $(BONUS_OBJS)
-			$(CC) $(CFLAGS) $(OBJS) $(LIBFT_A) $(PRINTF_A) -o $(NAME)
-			$(CC) $(CFLAGS) $(BONUS_OBJS) $(LIBFT_A) $(PRINTF_A) -o $(BONUS)
-
-$(LIBFT_A):
-			$(MAKE) -C $(LIBDIR)
-
-$(PRINTF_A):
-			$(MAKE) -C $(PRIDIR)
+$(BONUS):   $(LIBS_OBJS) $(BONUS_OBJS)
+			$(CC) $(CFLAGS) $(BONUS_OBJS) $(LIBS) -o $(BONUS)
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
 			@mkdir -p $(@D)
-			$(CC) $(CFLAGS) -I $(INCDIR) -I $(LIBDIR) -I $(PRIDIR) -c $< -o $@
+			$(CC) $(CFLAGS) -I $(INCDIR) -c $< -o $@
 
 $(BONOBJ)/%.o: $(BONSRC)/%.c
 			@mkdir -p $(@D)
-			$(CC) $(CFLAGS) -I $(BONSRC) -I $(LIBDIR) -I $(PRIDIR) -c $< -o $@
+			$(CC) $(CFLAGS) -I $(BONSRC) -c $< -o $@
+
+$(foreach obj,$(LIBS_OBJS),$(eval $(call MAKE_LIB_OBJ,$(obj))))
 
 clean:
 			$(RM) -r $(OBJDIR)
 			$(RM) -r $(BONOBJ)
-			$(MAKE) -C $(LIBDIR) clean
-			$(MAKE) -C $(PRIDIR) clean
+			$(shell $(RM) $(LIBS_OBJS) > /dev/null 2>&1)
 
 fclean: 	clean
 			$(RM) $(NAME)
 			$(RM) $(BONUS)
-			$(RM) $(LIBFT_A)
-			$(RM) $(PRINTF_A)
+			$(shell $(RM) $(LIBS) > /dev/null 2>&1)
 
 re: 		fclean all
 

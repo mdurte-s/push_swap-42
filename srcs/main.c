@@ -6,143 +6,183 @@
 /*   By: igomes-d <igomes-d@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/08 11:38:35 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/05/22 10:01:44 by igomes-d         ###   ########.fr       */
+/*   Updated: 2026/05/22 19:08:13 by igomes-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/push_swap.h"
 
-int	get_x_bigger(t_list *start, int x, int size, int min)
+int	ft_sqrt(int nb)
 {
-	int		count;
-	int		rmd;
-	int		rmd2;
-	t_list	*find;
+	long long	count;
+	long long	check;
+
+	if (nb <= 0)
+		return (0);
+	check = 1;
+	count = 1;
+	while (check < nb)
+	{
+		count++;
+		check = count * count;
+	}
+	if (check == nb)
+		return (count);
+	return (count - 1);
+}
+
+int	get_bucket_distance(t_list *start, int bucket, int divisor)
+{
+	int		i;
 	t_list	*current;
 
-	rmd = size;
+	i = 0;
 	current = start;
-	while (rmd--)
+	while (current)
 	{
-		if (current->content >= min)
+		if (current->content / divisor == bucket)
+			return (i);
+		i++;
+		current = current->next;
+	}
+	return (-1);
+}
+
+void	get_less_bucket_distance(t_ctx *ctx, int *di_a, int *di_b, int divisor)
+{
+	int		d_a;
+	int		d_b;
+	t_list	*current;
+
+	*di_a = 0;
+	*di_b = get_bucket_distance(ctx->stack_b, ctx->stack_a->content / divisor,
+			divisor);
+	d_a = 0;
+	d_b = *di_b;
+	current = ctx->stack_a->next;
+	while (current)
+	{
+		d_a = get_distance(ctx->stack_a, current->content);
+		d_b = get_bucket_distance(ctx->stack_b, current->content / divisor,
+				divisor);
+		if (fix_distance(d_a, ctx->total_a) + fix_distance(d_b,
+				ctx->total_b) < fix_distance(*di_a, ctx->total_a)
+			+ fix_distance(*di_b, ctx->total_b))
 		{
-			rmd2 = rmd + 1;
-			find = current->next;
-			count = 0;
-			while (find && --rmd2)
-			{
-				if (find->content > current->content)
-					count++;
-				find = find->next;
-			}
-			if (count == x)
-				return (current->content);
-			if (count > x)
-				min = current->content;
+			*di_a = d_a;
+			*di_b = d_b;
 		}
 		current = current->next;
 	}
-	return (get_x_bigger(start, x - 1, size, min));
 }
 
-int	get_distance_inter_top(t_list *current, int val)
+int	get_fit_distance_rev(t_list *current, int val)
 {
 	int	i;
 
 	i = 0;
 	while (current)
 	{
-		if ((!current->prev || (current->prev && current->prev->content < val))
-			&& val < current->content)
+		if ((!current->prev || (current->prev && val > current->prev->content))
+			&& current->content > val)
 			return (i);
 		i++;
 		current = current->next;
 	}
 	return (0);
 }
+
+void	get_less_distance_rev(t_ctx *ctx, int *di_a, int *di_b)
+{
+	int		d_a;
+	int		d_b;
+	t_list	*current;
+
+	*di_a = get_fit_distance_rev(ctx->stack_a, ctx->stack_b->content);
+	*di_b = 0;
+	d_a = *di_a;
+	d_b = 0;
+	current = ctx->stack_b->next;
+	while (current)
+	{
+		d_a = get_fit_distance_rev(ctx->stack_a, current->content);
+		d_b = get_distance(ctx->stack_b, current->content);
+		if (fix_distance(d_a, ctx->total_a) + fix_distance(d_b,
+				ctx->total_b) < fix_distance(*di_a, ctx->total_a)
+			+ fix_distance(*di_b, ctx->total_b))
+		{
+			*di_a = d_a;
+			*di_b = d_b;
+		}
+		current = current->next;
+	}
+}
+
+void	medium(t_ctx *ctx, int min, int max, int divisor)
+{
+	int	di_a;
+	int	di_b;
+	int	i;
+
+	// buckets = max / divisor;
+	i = 0;
+	while (ctx->total_a > 0)
+	{
+		di_a = get_bucket_distance(ctx->stack_a, i, divisor);
+		if (di_a == -1)
+		{
+			i++;
+			continue ;
+		}
+		move_to_top(di_a, ctx->total_a, rotate_a, rev_rotate_a);
+		push_b(0);
+	}
+	// while (ctx->total_a > 0)
+	// {
+	// 	get_less_bucket_distance(ctx, &di_a, &di_b, divisor);
+	// 	move_to_top_dual(di_a, di_b, ctx);
+	// 	push_b(0);
+	// }
+	move_to_top(get_distance(ctx->stack_b, max), ctx->total_b, rotate_b,
+		rev_rotate_b);
+	push_a(0);
+	move_to_top(get_distance(ctx->stack_b, min), ctx->total_b, rotate_b,
+		rev_rotate_b);
+	push_a(0);
+	while (ctx->total_b > 0)
+	{
+		get_less_distance_rev(ctx, &di_a, &di_b);
+		move_to_top_dual(di_a, di_b, ctx);
+		push_a(0);
+	}
+	move_to_top(get_distance(ctx->stack_a, min), ctx->total_a, rotate_a,
+		rev_rotate_a);
+}
+
 int	main(int argc, char **argv)
 {
 	t_ctx	ctx;
+	int		min;
+	int		max;
+	int		divisor;
 
-	// int		min;
-	// int		max;
-	// int		bottoms[5];
 	init(&ctx);
 	if (argc == 1)
 		return (1);
 	if (parser_argv(argc, argv, &ctx) == 0)
 		return (ft_printf_fd(2, "Error\n"), ft_lstclear(&(ctx.stack_a)), 1);
 	mesure_disorder(&ctx);
-	// if (ctx.bench.disorder > 0)
-	// {
-	// 	min = get_min(ctx.stack_a);
-	// 	max = get_max(ctx.stack_a);
-	// 	simple(&ctx, min, max);
-	// bottoms[3] = get_x_bigger(ctx.stack_a, 100, 500, min);
-	// bottoms[2] = get_x_bigger(ctx.stack_a, 100, 400, min);
-	// bottoms[1] = get_x_bigger(ctx.stack_a, 100, 300, min);
-	// bottoms[0] = get_x_bigger(ctx.stack_a, 100, 200, min);
-	// move_to_top(get_distance(ctx.stack_a, max), ctx.total_a, rotate_a,
-	// 	rev_rotate_a);
-	// push_b(0);
-	// move_to_top(get_distance(ctx.stack_a, bottoms[3]), ctx.total_a,
-	// 	rotate_a, rev_rotate_a);
-	// push_b(0);
-	// move_to_top(get_distance(ctx.stack_a, bottoms[2]), ctx.total_a,
-	// 	rotate_a, rev_rotate_a);
-	// push_b(0);
-	// move_to_top(get_distance(ctx.stack_a, bottoms[1]), ctx.total_a,
-	// 	rotate_a, rev_rotate_a);
-	// push_b(0);
-	// move_to_top(get_distance(ctx.stack_a, bottoms[0]), ctx.total_a,
-	// 	rotate_a, rev_rotate_a);
-	// push_b(0);
-	// while (ctx.total_a > 0)
-	// {
-	// 	if (ctx.stack_a->content < bottoms[0])
-	// 	{
-	// 		move_to_top(get_distance(ctx.stack_b, bottoms[0]), ctx.total_b,
-	// 			rotate_b, rev_rotate_b);
-	// 	}
-	// 	else if (ctx.stack_a->content < bottoms[1])
-	// 	{
-	// 		move_to_top(get_distance(ctx.stack_b, bottoms[1]), ctx.total_b,
-	// 			rotate_b, rev_rotate_b);
-	// 	}
-	// 	else if (ctx.stack_a->content < bottoms[2])
-	// 	{
-	// 		move_to_top(get_distance(ctx.stack_b, bottoms[2]), ctx.total_b,
-	// 			rotate_b, rev_rotate_b);
-	// 	}
-	// 	else if (ctx.stack_a->content < bottoms[3])
-	// 	{
-	// 		move_to_top(get_distance(ctx.stack_b, bottoms[3]), ctx.total_b,
-	// 			rotate_b, rev_rotate_b);
-	// 	}
-	// 	else
-	// 	{
-	// 		move_to_top(get_distance(ctx.stack_b, max), ctx.total_b,
-	// 			rotate_b, rev_rotate_b);
-	// 	}
-	// 	push_b(0);
-	// }
-	// move_to_top(get_distance(ctx.stack_b, max), ctx.total_b, rotate_b,
-	// 	rev_rotate_b);
-	// push_a(0);
-	// move_to_top(get_distance(ctx.stack_b, min), ctx.total_b, rotate_b,
-	// 	rev_rotate_b);
-	// push_a(0);
-	// while (ctx.total_b > 0)
-	// {
-	// 	move_to_top(get_distance_inter_top(ctx.stack_a,
-	// 			ctx.stack_b->content), ctx.total_a, rotate_a, rev_rotate_a);
-	// 	push_a(0);
-	// }
-	// move_to_top(get_distance(ctx.stack_a, min), ctx.total_a, rotate_a,
-	// 	rev_rotate_a);
+	if (ctx.bench.disorder > 0)
+	{
+		min = get_min(ctx.stack_a);
+		max = get_max(ctx.stack_a);
+		divisor = (max - min) / ft_sqrt(ctx.total_a);
+		medium(&ctx, min, max, divisor);
+		// simple(&ctx, min, max);
+	}
 	if (ctx.bench.is_bench == 1)
 		print_bench(&ctx);
-	print_stacks(ctx.stack_a, ctx.stack_b);
+	// print_stacks(ctx.stack_a, ctx.stack_b);
 	ft_lstclear(&ctx.stack_a);
 	ft_lstclear(&ctx.stack_b);
 	return (0);
