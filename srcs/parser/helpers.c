@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   helpers.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: igomes-d <igomes-d@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/14 13:54:14 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/05/22 09:28:10 by mdurte-s         ###   ########.fr       */
+/*   Updated: 2026/05/22 09:53:19 by igomes-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	create_stack(char **argv, int index, t_ctx *ctx)
 
 	while (argv[index])
 	{
-		if (argv_to_int(argv[index], &nb) == 0)
+		if (argv[index][0] == 0 || argv_to_int(argv[index], &nb) == 0)
 			return (0);
 		new = ft_lstnew(nb);
 		if (!new)

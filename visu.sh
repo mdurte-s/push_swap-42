@@ -23,20 +23,22 @@ tput smcup
 tput civis
 clear
 
-# Clean up and reset terminal state
+# ==========================================
+# STATE & SIGNAL HANDLING
+# ==========================================
+FORCE_REDRAW=1
+
 cleanup() {
-    printf "\033[0m" # Reset terminal colors
-    tput cnorm       # Show cursor
-    tput rmcup       # Restore terminal screen
+    printf "\033[0m\033[?25h"
+    tput rmcup
     exit 0
 }
 
-# Redraw screen immediately on terminal resize
 handle_resize() {
+    FORCE_REDRAW=1
     draw_screen
 }
 
-# Bind signals to handler functions
 trap cleanup INT TERM
 trap handle_resize WINCH
 
@@ -73,81 +75,130 @@ RANKS_SEQUENCE=$(awk '
 
 rm -f "$TMP_RAW" "$TMP_SORTED"
 
-STACK_A=($RANKS_SEQUENCE)
-STACK_B=()
+INITIAL_RANKS=($RANKS_SEQUENCE)
 
-if [ ${#STACK_A[@]} -eq 0 ]; then
-    printf "Error: Failed to initialize STACK_A.\n"
+if [ ${#INITIAL_RANKS[@]} -eq 0 ]; then
+    printf "Error: Failed to initialize initial sequence.\n"
     cleanup
 fi
+
+OFFSET=1000000
+A_HEAD=$OFFSET
+A_TAIL=$OFFSET
+B_HEAD=$OFFSET
+B_TAIL=$OFFSET
+
+for val in "${INITIAL_RANKS[@]}"; do
+    A[$A_TAIL]=$val
+    A_TAIL=$((A_TAIL + 1))
+done
 
 # ==========================================
 # SPEED & FPS CONFIGURATION
 # ==========================================
 FPS=30
-FRAME_DELAY="0.033" # Roughly 1/30th of a second
-SPEEDS=(1 5 10 30 60 150 300 600 1200 3000 6000 12000)
-SPEED_IDX=5 # Starts at 60 ops/s
+FRAME_DELAY="0.033"
+SPEEDS=(1 5 10 30 60 150 300 600 1200 3000 6000 12000 50000 100000)
+SPEED_IDX=5
 ACCUMULATOR=0
 
 # ==========================================
-# TUI DRAWING ENGINE (DOWN-SAMPLING + DEFAULT THEME)
+# TUI DRAWING ENGINE 
 # ==========================================
 draw_screen() {
-    local cols
-    local lines
-    cols=$(tput cols)
-    lines=$(tput lines)
+    local cols=$(tput cols)
+    local lines=$(tput lines)
+    
+    local clear_cmd="\033[H"
+    if [ "$FORCE_REDRAW" -eq 1 ]; then
+        clear_cmd="\033[2J\033[H"
+        FORCE_REDRAW=0
+    fi
     
     awk -v cols="$cols" -v lines="$lines" \
+        -v clear_cmd="$clear_cmd" \
         -v max_n="$N_ELEMS" \
         -v op_idx="$OP_IDX" -v total_ops="$TOTAL_OPS" \
         -v auto_play="$AUTO_PLAY" -v speed_val="${SPEEDS[$SPEED_IDX]}" \
-        -v stack_a="${STACK_A[*]}" -v stack_b="${STACK_B[*]}" '
+        -v play_dir="$PLAY_DIR" \
+        -v stack_a="${A[*]}" -v stack_b="${B[*]}" '
     BEGIN {
         sa_len = split(stack_a, sa, " ");
         sb_len = split(stack_b, sb, " ");
         
-        # Clear screen and apply default terminal colors
-        printf "\033[0m\033[2J\033[H"
+        # Apply clear command (H for redraw, 2J H for full wipe on resize)
+        printf "%s\033[0m", clear_cmd;
         
         half_cols = int((cols - 5) / 2);
         max_lines = lines - 8;
         if (max_lines < 1) max_lines = 1;
         max_slots = max_lines * 2;
         
-        # Downsample Stack A logic to fit in screen
         display_sa_len = (sa_len > max_slots) ? max_slots : sa_len;
         for (k = 0; k < display_sa_len; k++) {
             idx = (sa_len > max_slots && max_slots > 1) ? int(k * (sa_len - 1) / (max_slots - 1)) + 1 : k + 1;
             disp_sa[k] = sa[idx];
         }
         
-        # Downsample Stack B logic to fit in screen
         display_sb_len = (sb_len > max_slots) ? max_slots : sb_len;
         for (k = 0; k < display_sb_len; k++) {
             idx = (sb_len > max_slots && max_slots > 1) ? int(k * (sb_len - 1) / (max_slots - 1)) + 1 : k + 1;
             disp_sb[k] = sb[idx];
         }
         
-        # Draw btop-like Header Box
-        printf "╭"; for(i=0;i<cols-2;i++) printf "─"; printf "╮\n";
+        # ---------------------------------------------------------
+        # COLOR DEFINITIONS
+        # ---------------------------------------------------------
+        c_rst = "\033[0m"; c_dim = "\033[2m"; c_bold = "\033[1m";
+        c_cyan = "\033[1;36m"; c_yellow = "\033[1;33m"; c_green = "\033[1;32m";
+        c_red = "\033[1;31m"; c_magenta = "\033[1;35m"; c_frame = "\033[38;5;60m";
+
+        # ---------------------------------------------------------
+        # HEADER DRAWING
+        # ---------------------------------------------------------
+        printf "%s╭%s╮%s\033[K\n", c_frame, repeat_str("─", cols-2), c_rst;
         
-        title = sprintf(" Push_swap TUI Visualizer | Op: %d / %d | Auto: %s | Speed: %d ops/s ", op_idx, total_ops, auto_play, speed_val);
-        pad = cols - 2 - length(title);
+        # --- TITLE LINE ---
+        plain_title = sprintf(" push_swap visualizer | Op: %d / %d | Auto: %s (%s) | Speed: %d ops/s ", op_idx, total_ops, auto_play, play_dir, speed_val);
+        pad = cols - 2 - length(plain_title);
         pad_l = int(pad / 2); pad_r = pad - pad_l;
-        printf "│"; for(i=0;i<pad_l;i++) printf " "; printf "%s", title; for(i=0;i<pad_r;i++) printf " "; printf "│\n";
         
-        ctrl = " Controls: [P] Play/Pause | [F] Fast | [S] Slow | [N] Next Step | [B] Back Step | [Q] Quit ";
-        pad2 = cols - 2 - length(ctrl);
+        auto_col = (auto_play == "ON") ? c_green : c_red;
+        dir_col = (play_dir == "FWD") ? c_cyan : c_magenta;
+        
+        colored_title = sprintf(" %spush_swap visualizer%s %s|%s %sOp: %d / %d%s %s|%s Auto: %s%s%s (%s%s%s) %s|%s %sSpeed: %d ops/s%s ",
+            c_cyan, c_rst,  c_dim, c_rst,
+            c_yellow, op_idx, total_ops, c_rst,  c_dim, c_rst,
+            auto_col, auto_play, c_rst,
+            dir_col, play_dir, c_rst,  c_dim, c_rst,
+            c_bold, speed_val, c_rst);
+            
+        printf "%s│%s%s%s%s%s│%s\033[K\n", c_frame, c_rst, repeat_str(" ", pad_l), colored_title, repeat_str(" ", pad_r), c_frame, c_rst;
+        
+        # --- CONTROLS LINE ---
+        plain_ctrl = " [P] Play/Pause | [O] Fwd/Rev |  [N] Next | [B] Back | [Z] Speed - | [X] Speed + | [Q] Quit ";
+        pad2 = cols - 2 - length(plain_ctrl);
         pad2_l = int(pad2 / 2); pad2_r = pad2 - pad2_l;
-        printf "│"; for(i=0;i<pad2_l;i++) printf " "; printf "%s", ctrl; for(i=0;i<pad2_r;i++) printf " "; printf "│\n";
         
-        printf "╰"; for(i=0;i<cols-2;i++) printf "─"; printf "╯\n";
+        colored_ctrl = " [" c_dim "P" c_rst "] Play/Pause " c_dim "|" c_rst " [" c_dim "O" c_rst "] Fwd/Rev " c_dim "|" c_rst " [" c_dim "N" c_rst "] Next " c_dim "|" c_rst " [" c_dim "B" c_rst "] Back " c_dim "|" c_rst " [" c_dim "Z" c_rst "] Speed - " c_dim "|" c_rst " [" c_dim "X" c_rst "] Speed + " c_dim "|" c_rst " [" c_red "Q" c_rst "] Quit ";
         
-        fmt_header = sprintf(" %%-%ds │ %%s\n", half_cols);
-        printf fmt_header, "STACK A", "STACK B";
+        printf "%s│%s%s%s%s%s│%s\033[K\n", c_frame, c_rst, repeat_str(" ", pad2_l), colored_ctrl, repeat_str(" ", pad2_r), c_frame, c_rst;
         
+        printf "%s╰%s╯%s\033[K\n", c_frame, repeat_str("─", cols-2), c_rst;
+        
+        # --- COLUMNS HEADER ---
+        hdr_a = sprintf("%sSTACK A%s", c_rst, c_rst);
+        hdr_b = sprintf("%sSTACK B%s", c_rst, c_rst);
+        
+        # Calculate padding without ANSI escape characters (7 is the length of "STACK X")
+        pad_a_len = half_cols - 7;
+        if (pad_a_len < 0) pad_a_len = 0;
+        
+        printf " %s%s %s│%s %s\033[K\n", hdr_a, repeat_str(" ", pad_a_len), c_dim, c_rst, hdr_b;
+        
+        # ---------------------------------------------------------
+        # STACKS DRAWING
+        # ---------------------------------------------------------
         for (i = 0; i < max_lines; i++) {
             idx1 = i * 2;
             idx2 = i * 2 + 1;
@@ -157,17 +208,18 @@ draw_screen() {
             b1 = (idx1 < display_sb_len) ? disp_sb[idx1] : -1;
             b2 = (idx2 < display_sb_len) ? disp_sb[idx2] : -1;
             
-            if (a1 == -1 && a2 == -1 && b1 == -1 && b2 == -1) break;
-            
             str_a = build_bar(a1, a2, half_cols, max_n);
             str_b = build_bar(b1, b2, half_cols, max_n);
             
-            printf " %s \033[0m│ %s \033[0m\n", str_a, str_b;
+            printf " %s \033[0m%s│\033[0m %s \033[0m\033[K\n", str_a, c_dim, str_b;
         }
-        
         printf "\033[0m";
     }
     
+    function repeat_str(char, count,    res, i) {
+        res = ""; for(i=0;i<count;i++) res = res char; return res;
+    }
+
     function get_rgb(val, max_val,    ratio, r, g, b) {
         if (val <= 0) return "0;0;0";
         ratio = val / max_val;
@@ -178,8 +230,9 @@ draw_screen() {
         return sprintf("%d;%d;%d", r, g, b);
     }
 
-    function build_bar(val1, val2, max_w, max_n,    l1, l2, min_l, max_l, out, spaces, j, rgb1, rgb2, bg_reset) {
-        bg_reset = "\033[0m";
+    function build_bar(val1, val2, max_w, max_n,    l1, l2, min_l, max_l, out, spaces, rgb1, rgb2) {
+        if (val1 == -1 && val2 == -1) return repeat_str(" ", max_w);
+
         l1 = (val1 != -1 && val1 != "") ? int((val1 * max_w) / max_n) : 0;
         l2 = (val2 != -1 && val2 != "") ? int((val2 * max_w) / max_n) : 0;
         
@@ -193,25 +246,18 @@ draw_screen() {
         max_l = (l1 > l2) ? l1 : l2;
         
         out = "";
-        
         if (min_l > 0) {
-            out = out sprintf("\033[38;2;%sm\033[48;2;%sm", rgb1, rgb2);
-            for(j=0; j<min_l; j++) out = out "▀";
-            out = out bg_reset;
+            out = out sprintf("\033[38;2;%sm\033[48;2;%sm%s\033[0m", rgb1, rgb2, repeat_str("▀", min_l));
         }
         
         if (l1 > l2) {
-            out = out sprintf("\033[38;2;%sm\033[49m", rgb1);
-            for(j=0; j<(l1 - min_l); j++) out = out "▀";
-            out = out bg_reset;
+            out = out sprintf("\033[38;2;%sm\033[49m%s\033[0m", rgb1, repeat_str("▀", l1 - min_l));
         } else if (l2 > l1) {
-            out = out sprintf("\033[38;2;%sm\033[49m", rgb2);
-            for(j=0; j<(l2 - min_l); j++) out = out "▄";
-            out = out bg_reset;
+            out = out sprintf("\033[38;2;%sm\033[49m%s\033[0m", rgb2, repeat_str("▄", l2 - min_l));
         }
         
         spaces = max_w - max_l;
-        for(j=0; j<spaces; j++) out = out " ";
+        if (spaces > 0) out = out sprintf("%*s", spaces, "");
         
         return out;
     }
@@ -224,44 +270,60 @@ draw_screen() {
 execute_op() {
     case "$1" in
         sa)
-            if [ ${#STACK_A[@]} -ge 2 ]; then
-                local t=${STACK_A[0]}; STACK_A[0]=${STACK_A[1]}; STACK_A[1]=$t
+            if (( A_TAIL - A_HEAD >= 2 )); then
+                local t=${A[$A_HEAD]}
+                A[$A_HEAD]=${A[$((A_HEAD + 1))]}
+                A[$((A_HEAD + 1))]=$t
             fi ;;
         sb)
-            if [ ${#STACK_B[@]} -ge 2 ]; then
-                local t=${STACK_B[0]}; STACK_B[0]=${STACK_B[1]}; STACK_B[1]=$t
+            if (( B_TAIL - B_HEAD >= 2 )); then
+                local t=${B[$B_HEAD]}
+                B[$B_HEAD]=${B[$((B_HEAD + 1))]}
+                B[$((B_HEAD + 1))]=$t
             fi ;;
         ss) execute_op sa; execute_op sb ;;
         pa)
-            if [ ${#STACK_B[@]} -ge 1 ]; then
-                STACK_A=("${STACK_B[0]}" "${STACK_A[@]}")
-                STACK_B=("${STACK_B[@]:1}")
+            if (( B_TAIL - B_HEAD >= 1 )); then
+                A_HEAD=$((A_HEAD - 1))
+                A[$A_HEAD]=${B[$B_HEAD]}
+                unset 'B[$B_HEAD]'
+                B_HEAD=$((B_HEAD + 1))
             fi ;;
         pb)
-            if [ ${#STACK_A[@]} -ge 1 ]; then
-                STACK_B=("${STACK_A[0]}" "${STACK_B[@]}")
-                STACK_A=("${STACK_A[@]:1}")
+            if (( A_TAIL - A_HEAD >= 1 )); then
+                B_HEAD=$((B_HEAD - 1))
+                B[$B_HEAD]=${A[$A_HEAD]}
+                unset 'A[$A_HEAD]'
+                A_HEAD=$((A_HEAD + 1))
             fi ;;
         ra)
-            if [ ${#STACK_A[@]} -ge 2 ]; then
-                local t=${STACK_A[0]}; STACK_A=("${STACK_A[@]:1}" "$t")
+            if (( A_TAIL - A_HEAD >= 2 )); then
+                A[$A_TAIL]=${A[$A_HEAD]}
+                unset 'A[$A_HEAD]'
+                A_HEAD=$((A_HEAD + 1))
+                A_TAIL=$((A_TAIL + 1))
             fi ;;
         rb)
-            if [ ${#STACK_B[@]} -ge 2 ]; then
-                local t=${STACK_B[0]}; STACK_B=("${STACK_B[@]:1}" "$t")
+            if (( B_TAIL - B_HEAD >= 2 )); then
+                B[$B_TAIL]=${B[$B_HEAD]}
+                unset 'B[$B_HEAD]'
+                B_HEAD=$((B_HEAD + 1))
+                B_TAIL=$((B_TAIL + 1))
             fi ;;
         rr) execute_op ra; execute_op rb ;;
         rra)
-            if [ ${#STACK_A[@]} -ge 2 ]; then
-                local last=$(( ${#STACK_A[@]} - 1 ))
-                local t=${STACK_A[$last]}; unset 'STACK_A[$last]'
-                STACK_A=("$t" "${STACK_A[@]}")
+            if (( A_TAIL - A_HEAD >= 2 )); then
+                A_HEAD=$((A_HEAD - 1))
+                A_TAIL=$((A_TAIL - 1))
+                A[$A_HEAD]=${A[$A_TAIL]}
+                unset 'A[$A_TAIL]'
             fi ;;
         rrb)
-            if [ ${#STACK_B[@]} -ge 2 ]; then
-                local last=$(( ${#STACK_B[@]} - 1 ))
-                local t=${STACK_B[$last]}; unset 'STACK_B[$last]'
-                STACK_B=("$t" "${STACK_B[@]}")
+            if (( B_TAIL - B_HEAD >= 2 )); then
+                B_HEAD=$((B_HEAD - 1))
+                B_TAIL=$((B_TAIL - 1))
+                B[$B_HEAD]=${B[$B_TAIL]}
+                unset 'B[$B_TAIL]'
             fi ;;
         rrr) execute_op rra; execute_op rrb ;;
     esac
@@ -288,9 +350,9 @@ execute_inverse_op() {
 # ==========================================
 OP_IDX=0
 AUTO_PLAY="OFF"
+PLAY_DIR="FWD"
 
 while true; do
-    
     if [ "$AUTO_PLAY" == "ON" ]; then
         TARGET_OPS_SEC=${SPEEDS[$SPEED_IDX]}
         ACCUMULATOR=$((ACCUMULATOR + TARGET_OPS_SEC))
@@ -298,25 +360,32 @@ while true; do
         ACCUMULATOR=$((ACCUMULATOR % FPS))
 
         for ((i=0; i<OPS_THIS_FRAME; i++)); do
-            if [ "$OP_IDX" -lt "$TOTAL_OPS" ]; then
-                execute_op "${OPS[$OP_IDX]}"
-                OP_IDX=$((OP_IDX + 1))
+            if [ "$PLAY_DIR" == "FWD" ]; then
+                if [ "$OP_IDX" -lt "$TOTAL_OPS" ]; then
+                    execute_op "${OPS[$OP_IDX]}"
+                    OP_IDX=$((OP_IDX + 1))
+                else
+                    AUTO_PLAY="OFF"
+                    ACCUMULATOR=0
+                    break
+                fi
             else
-                AUTO_PLAY="OFF"
-                ACCUMULATOR=0
-                break
+                if [ "$OP_IDX" -gt 0 ]; then
+                    OP_IDX=$((OP_IDX - 1))
+                    execute_inverse_op "${OPS[$OP_IDX]}"
+                else
+                    AUTO_PLAY="OFF"
+                    ACCUMULATOR=0
+                    break
+                fi
             fi
         done
     fi
 
     draw_screen
-
+    
     # Use '|| true' to gracefully handle read interrupts from SIGWINCH
-    if [ "$AUTO_PLAY" == "ON" ]; then
-        read -rsn1 -t "$FRAME_DELAY" key || true
-    else
-        read -rsn1 key || true
-    fi
+    read -rsn1 -t "$FRAME_DELAY" key || true
 
     # Ignore escape sequences completely (like arrows)
     if [[ "$key" == $'\x1b' ]]; then
@@ -325,7 +394,7 @@ while true; do
     fi
 
     case "$key" in
-        "p"|"P") 
+        "p"|"P")
             if [ "$AUTO_PLAY" == "ON" ]; then 
                 AUTO_PLAY="OFF"
                 ACCUMULATOR=0
@@ -333,12 +402,19 @@ while true; do
                 AUTO_PLAY="ON"
             fi
             ;;
-        "f"|"F") 
+        "o"|"O")
+            if [ "$PLAY_DIR" == "FWD" ]; then
+                PLAY_DIR="REV"
+            else
+                PLAY_DIR="FWD"
+            fi
+            ;;
+        "x"|"X")
             if [ "$SPEED_IDX" -lt $(( ${#SPEEDS[@]} - 1 )) ]; then
                 SPEED_IDX=$((SPEED_IDX + 1))
             fi
             ;;
-        "s"|"S") 
+        "z"|"Z")
             if [ "$SPEED_IDX" -gt 0 ]; then
                 SPEED_IDX=$((SPEED_IDX - 1))
             fi

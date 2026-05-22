@@ -1,2 +1,6 @@
-*.o
-*.a
+**/*.o
+**/*.a
+push_swap
+args.txt
+visu.txt
+**/*.bin

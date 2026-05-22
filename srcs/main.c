@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: igomes-d <igomes-d@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/08 11:38:35 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/05/22 09:47:49 by mdurte-s         ###   ########.fr       */
+/*   Updated: 2026/05/22 10:01:44 by igomes-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,9 @@ int	get_distance_inter_top(t_list *current, int val)
 int	main(int argc, char **argv)
 {
 	t_ctx	ctx;
-	int		min;
-	int		max;
 
+	// int		min;
+	// int		max;
 	// int		bottoms[5];
 	init(&ctx);
 	if (argc == 1)
@@ -78,69 +78,68 @@ int	main(int argc, char **argv)
 	// 	min = get_min(ctx.stack_a);
 	// 	max = get_max(ctx.stack_a);
 	// 	simple(&ctx, min, max);
-		// bottoms[3] = get_x_bigger(ctx.stack_a, 100, 500, min);
-		// bottoms[2] = get_x_bigger(ctx.stack_a, 100, 400, min);
-		// bottoms[1] = get_x_bigger(ctx.stack_a, 100, 300, min);
-		// bottoms[0] = get_x_bigger(ctx.stack_a, 100, 200, min);
-		// move_to_top(get_distance(ctx.stack_a, max), ctx.total_a, rotate_a,
-		// 	rev_rotate_a);
-		// push_b(0);
-		// move_to_top(get_distance(ctx.stack_a, bottoms[3]), ctx.total_a,
-		// 	rotate_a, rev_rotate_a);
-		// push_b(0);
-		// move_to_top(get_distance(ctx.stack_a, bottoms[2]), ctx.total_a,
-		// 	rotate_a, rev_rotate_a);
-		// push_b(0);
-		// move_to_top(get_distance(ctx.stack_a, bottoms[1]), ctx.total_a,
-		// 	rotate_a, rev_rotate_a);
-		// push_b(0);
-		// move_to_top(get_distance(ctx.stack_a, bottoms[0]), ctx.total_a,
-		// 	rotate_a, rev_rotate_a);
-		// push_b(0);
-		// while (ctx.total_a > 0)
-		// {
-		// 	if (ctx.stack_a->content < bottoms[0])
-		// 	{
-		// 		move_to_top(get_distance(ctx.stack_b, bottoms[0]), ctx.total_b,
-		// 			rotate_b, rev_rotate_b);
-		// 	}
-		// 	else if (ctx.stack_a->content < bottoms[1])
-		// 	{
-		// 		move_to_top(get_distance(ctx.stack_b, bottoms[1]), ctx.total_b,
-		// 			rotate_b, rev_rotate_b);
-		// 	}
-		// 	else if (ctx.stack_a->content < bottoms[2])
-		// 	{
-		// 		move_to_top(get_distance(ctx.stack_b, bottoms[2]), ctx.total_b,
-		// 			rotate_b, rev_rotate_b);
-		// 	}
-		// 	else if (ctx.stack_a->content < bottoms[3])
-		// 	{
-		// 		move_to_top(get_distance(ctx.stack_b, bottoms[3]), ctx.total_b,
-		// 			rotate_b, rev_rotate_b);
-		// 	}
-		// 	else
-		// 	{
-		// 		move_to_top(get_distance(ctx.stack_b, max), ctx.total_b,
-		// 			rotate_b, rev_rotate_b);
-		// 	}
-		// 	push_b(0);
-		// }
-		// move_to_top(get_distance(ctx.stack_b, max), ctx.total_b, rotate_b,
-		// 	rev_rotate_b);
-		// push_a(0);
-		// move_to_top(get_distance(ctx.stack_b, min), ctx.total_b, rotate_b,
-		// 	rev_rotate_b);
-		// push_a(0);
-		// while (ctx.total_b > 0)
-		// {
-		// 	move_to_top(get_distance_inter_top(ctx.stack_a,
-		// 			ctx.stack_b->content), ctx.total_a, rotate_a, rev_rotate_a);
-		// 	push_a(0);
-		// }
-		// move_to_top(get_distance(ctx.stack_a, min), ctx.total_a, rotate_a,
-		// 	rev_rotate_a);
-	}
+	// bottoms[3] = get_x_bigger(ctx.stack_a, 100, 500, min);
+	// bottoms[2] = get_x_bigger(ctx.stack_a, 100, 400, min);
+	// bottoms[1] = get_x_bigger(ctx.stack_a, 100, 300, min);
+	// bottoms[0] = get_x_bigger(ctx.stack_a, 100, 200, min);
+	// move_to_top(get_distance(ctx.stack_a, max), ctx.total_a, rotate_a,
+	// 	rev_rotate_a);
+	// push_b(0);
+	// move_to_top(get_distance(ctx.stack_a, bottoms[3]), ctx.total_a,
+	// 	rotate_a, rev_rotate_a);
+	// push_b(0);
+	// move_to_top(get_distance(ctx.stack_a, bottoms[2]), ctx.total_a,
+	// 	rotate_a, rev_rotate_a);
+	// push_b(0);
+	// move_to_top(get_distance(ctx.stack_a, bottoms[1]), ctx.total_a,
+	// 	rotate_a, rev_rotate_a);
+	// push_b(0);
+	// move_to_top(get_distance(ctx.stack_a, bottoms[0]), ctx.total_a,
+	// 	rotate_a, rev_rotate_a);
+	// push_b(0);
+	// while (ctx.total_a > 0)
+	// {
+	// 	if (ctx.stack_a->content < bottoms[0])
+	// 	{
+	// 		move_to_top(get_distance(ctx.stack_b, bottoms[0]), ctx.total_b,
+	// 			rotate_b, rev_rotate_b);
+	// 	}
+	// 	else if (ctx.stack_a->content < bottoms[1])
+	// 	{
+	// 		move_to_top(get_distance(ctx.stack_b, bottoms[1]), ctx.total_b,
+	// 			rotate_b, rev_rotate_b);
+	// 	}
+	// 	else if (ctx.stack_a->content < bottoms[2])
+	// 	{
+	// 		move_to_top(get_distance(ctx.stack_b, bottoms[2]), ctx.total_b,
+	// 			rotate_b, rev_rotate_b);
+	// 	}
+	// 	else if (ctx.stack_a->content < bottoms[3])
+	// 	{
+	// 		move_to_top(get_distance(ctx.stack_b, bottoms[3]), ctx.total_b,
+	// 			rotate_b, rev_rotate_b);
+	// 	}
+	// 	else
+	// 	{
+	// 		move_to_top(get_distance(ctx.stack_b, max), ctx.total_b,
+	// 			rotate_b, rev_rotate_b);
+	// 	}
+	// 	push_b(0);
+	// }
+	// move_to_top(get_distance(ctx.stack_b, max), ctx.total_b, rotate_b,
+	// 	rev_rotate_b);
+	// push_a(0);
+	// move_to_top(get_distance(ctx.stack_b, min), ctx.total_b, rotate_b,
+	// 	rev_rotate_b);
+	// push_a(0);
+	// while (ctx.total_b > 0)
+	// {
+	// 	move_to_top(get_distance_inter_top(ctx.stack_a,
+	// 			ctx.stack_b->content), ctx.total_a, rotate_a, rev_rotate_a);
+	// 	push_a(0);
+	// }
+	// move_to_top(get_distance(ctx.stack_a, min), ctx.total_a, rotate_a,
+	// 	rev_rotate_a);
 	if (ctx.bench.is_bench == 1)
 		print_bench(&ctx);
 	print_stacks(ctx.stack_a, ctx.stack_b);
