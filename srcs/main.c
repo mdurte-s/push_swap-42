@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: igomes-d <igomes-d@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/08 11:38:35 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/05/22 10:01:44 by igomes-d         ###   ########.fr       */
+/*   Updated: 2026/05/22 19:36:51 by mdurte-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int	main(int argc, char **argv)
 	init(&ctx);
 	if (argc == 1)
 		return (1);
-	if (parser_argv(argc, argv, &ctx) == 0)
+	if (parser_argv(++argv, &ctx) == 0)
 		return (ft_printf_fd(2, "Error\n"), ft_lstclear(&(ctx.stack_a)), 1);
 	mesure_disorder(&ctx);
 	// if (ctx.bench.disorder > 0)

@@ -6,35 +6,35 @@
 /*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/11 09:54:05 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/05/22 09:46:59 by mdurte-s         ###   ########.fr       */
+/*   Updated: 2026/05/22 20:42:40 by mdurte-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/push_swap.h"
 
-int	parser_argv(int argc, char **argv, t_ctx *ctx)
+int	parser_argv(char **argv, t_ctx *ctx)
 {
-	int		index;
-	char	**temp_argv;
-	
-	(void)argc;
-	if (parser_flags(argv, &index, ctx) == 0)
+	int	flags;
+
+	if (parser_flags(argv, &flags, ctx) == 0)
 		return (0);
-	// if (parser_split(argc, &argv, &index) == 0)
-	// 	return (0);
-	// if (create_stack(argv, index, ctx) == 0)
-	// 	return (free_array(argv), 0);
-	while (++argv)
+	while (flags && check_flag(*argv) == 1)
 	{
-		if (count_strings(*argv, ' ') == 0)
-			break ;
-		temp_argv = ft_split(*argv, ' ');
-		create_stack(temp_argv, index, ctx);
+		argv++;
+		flags--;
 	}
-	free(temp_argv);
+	if (!create_stack(&argv, ctx))
+		return (0);
+	while (flags)
+	{
+		argv++;
+		flags--;
+		if (*argv && !flags)
+			return (0);
+	}
 	if (check_repeated(ctx->stack_a) == 0)
-		return (free_array(argv), 0);
-	return (free_array(argv), 1);
+		return (0);
+	return (1);
 }
 
 int	check_repeated(t_list *stack_a)
@@ -57,48 +57,48 @@ int	check_repeated(t_list *stack_a)
 	return (1);
 }
 
-int	parser_split(int argc, char ***argv, int *index)
+int	create_stack(char ***argv, t_ctx *ctx)
 {
-	if (ft_strchr((*argv)[*index], ' '))
+	char	**temp_argv;
+
+	while (*argv && **argv)
 	{
-		if (*index + 1 != argc)
+		if (count_strings(**argv, ' ') == 0)
 			return (0);
-		else
-		{
-			*argv = ft_split((*argv)[*index], ' ');
-			*index = 0;
-		}
+		if (check_flag(**argv) == 1)
+			break ;
+		temp_argv = ft_split(**argv, ' ');
+		if (add_to_stack(temp_argv, ctx) == 0)
+			return (free_array(temp_argv), 0);
+		free_array(temp_argv);
+		(*argv)++;
 	}
-	else
-		(*argv)[0] = (char *)1;
 	return (1);
 }
 
-int	parser_flags(char **av, int *i, t_ctx *ctx)
+int	parser_flags(char **av, int *f, t_ctx *ctx)
 {
-	int	x;
+	int	i;
 
-	x = -1;
-	while (av[++x])
+	i = -1;
+	while (av[++i])
 	{
-		if (ft_strncmp(av[x], "--bench", 15) == 0 && ctx->bench.is_bench != 0)
+		if (ft_strncmp(av[i], "--", 2))
+			continue ;
+		else if (ctx->bench.is_bench && !ft_strncmp(&av[i][2], "bench", 6))
 			return (0);
-		else if ((ft_strncmp(av[x], "--simple", 9) == 0 || ft_strncmp(av[x],
-					"--medium", 9) == 0 || ft_strncmp(av[x], "--complex",
-					10) == 0 || ft_strncmp(av[x], "--adaptive", 11) == 0)
-			&& ctx->strategy != 0)
-			return (0);
-		else if (ft_strncmp(av[x], "--bench", 8) == 0
-			&& ctx->bench.is_bench == 0)
+		else if (!ft_strncmp(&av[i][2], "bench", 6))
 			ctx->bench.is_bench = 1;
-		else if (ft_strncmp(av[x], "--simple", 9) == 0 && ctx->strategy == 0)
+		else if (ctx->strategy)
+			return (0);
+		else if (!ft_strncmp(&av[i][2], "simple", 7))
 			ctx->strategy = 1;
-		else if (ft_strncmp(av[x], "--medium", 9) == 0 && ctx->strategy == 0)
+		else if (!ft_strncmp(&av[i][2], "medium", 7))
 			ctx->strategy = 2;
-		else if (ft_strncmp(av[x], "--complex", 10) == 0 && ctx->strategy == 0)
+		else if (!ft_strncmp(&av[i][2], "complex", 8))
 			ctx->strategy = 3;
-		else if (ft_strncmp(av[x], "--adaptive", 11) == 0 && ctx->strategy == 0)
+		else if (!ft_strncmp(&av[i][2], "adaptive", 9))
 			ctx->strategy = 4;
 	}
-	return (*i = (ctx->bench.is_bench == 1) + (ctx->strategy != 0), 1);
+	return (*f = (ctx->bench.is_bench == 1) + (ctx->strategy != 0), 1);
 }
