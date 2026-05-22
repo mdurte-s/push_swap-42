@@ -6,7 +6,7 @@
 /*   By: igomes-d <igomes-d@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/08 11:37:26 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/05/22 10:20:54 by igomes-d         ###   ########.fr       */
+/*   Updated: 2026/05/22 20:58:32 by igomes-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,14 +50,15 @@ typedef struct s_ctx
 
 /* --- functions ------------------------------------------------------------ */
 /* autoheaders */
-int			create_stack(char **argv, int index, t_ctx *ctx);
+int			check_flag(char *str);
+int			create_stack(char ***argv, t_ctx *ctx);
+int			add_to_stack(char **argv, t_ctx *ctx);
 int			argv_to_int(char *argv, int *nb);
 size_t		count_strings(char const *s, char c);
 void		free_array(char **array);
-int			parser_argv(int argc, char **argv, t_ctx *ctx);
+int			parser_argv(char **argv, t_ctx *ctx);
 int			check_repeated(t_list *stack_a);
-int			parser_split(int argc, char ***argv, int *index);
-int			parser_flags(char **av, int *i, t_ctx *ctx);
+int			parser_flags(char **av, int *index, t_ctx *ctx);
 int			get_max(t_list *current);
 int			get_min(t_list *current);
 int			get_distance(t_list *current, int val);

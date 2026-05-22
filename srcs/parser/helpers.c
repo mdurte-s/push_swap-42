@@ -6,27 +6,39 @@
 /*   By: igomes-d <igomes-d@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/14 13:54:14 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/05/22 17:20:12 by igomes-d         ###   ########.fr       */
+/*   Updated: 2026/05/22 20:58:50 by igomes-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/push_swap.h"
 
-int	create_stack(char **argv, int index, t_ctx *ctx)
+int	check_flag(char *str)
 {
+	if (ft_strncmp(str, "--bench", 8) != 0
+		&& ft_strncmp(str, "--simple", 9) != 0
+		&& ft_strncmp(str, "--medium", 9) != 0
+		&& ft_strncmp(str, "--complex", 10) != 0
+		&& ft_strncmp(str, "--adaptive", 11) != 0)
+		return (0);
+	return (1);
+}
+
+int	add_to_stack(char **argv, t_ctx *ctx)
+{
+	int		index;
 	int		nb;
 	t_list	*new;
 
-	while (argv[index])
+	index = -1;
+	while (argv[++index])
 	{
-		if (argv[index][0] == 0 || argv_to_int(argv[index], &nb) == 0)
+		if (argv_to_int(argv[index], &nb) == 0)
 			return (0);
 		new = ft_lstnew(nb);
 		if (!new)
 			return (0);
 		ft_lstadd_back(&(ctx->stack_a), new);
 		(ctx->total_a)++;
-		index++;
 	}
 	return (1);
 }
@@ -86,8 +98,6 @@ void	free_array(char **array)
 {
 	int	i;
 
-	if ((size_t)array[0] == (size_t)1)
-		return ;
 	i = -1;
 	while (array[++i])
 		free(array[i]);
