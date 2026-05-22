@@ -64,14 +64,9 @@ int			get_distance(t_list *current, int val);
 int			fix_distance(int distance, int total);
 int			get_fit_distance(t_list *current, int val);
 void		move_rest_dual(int di_a, int di_b, int is_rr);
-void		move_rest_dual(int di_a, int di_b, int is_rr);
-void		move_to_top(int distance, int total, void (*r)(t_ctx *, int),
-				void (*rr)(t_ctx *, int));
 void		move_to_top(int distance, int total, void (*r)(t_ctx *, int),
 				void (*rr)(t_ctx *, int));
 int			move_to_top_dual(int di_a, int di_b, t_ctx *ctx);
-int			move_to_top_dual(int di_a, int di_b, t_ctx *ctx);
-void		get_less_distance(t_ctx *ctx, int *di_a, int *di_b);
 void		get_less_distance(t_ctx *ctx, int *di_a, int *di_b);
 void		simple(t_ctx *ctx, int min, int max);
 void		init(t_ctx *ctx);
