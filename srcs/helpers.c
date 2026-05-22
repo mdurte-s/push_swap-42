@@ -6,7 +6,7 @@
 /*   By: igomes-d <igomes-d@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/19 17:48:12 by igomes-d          #+#    #+#             */
-/*   Updated: 2026/05/21 10:42:10 by igomes-d         ###   ########.fr       */
+/*   Updated: 2026/05/22 09:54:53 by igomes-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	mesure_disorder(t_ctx *ctx)
 	mistakes = 0;
 	total_pairs = 0;
 	stack_i = ctx->stack_a;
-	while (stack_i->next)
+	while (stack_i && stack_i->next)
 	{
 		stack_j = stack_i->next;
 		while (stack_j)

@@ -5,7 +5,7 @@ NAME		= libft.a
 # --- Flags ------------------------------------------------------------------ #
 
 CC			= cc
-CFLAGS		= -Wall -Wextra -Werror
+CFLAGS		= -Wall -Wextra -Werror -g
 RM			= rm -f
 
 # --- Paths ------------------------------------------------------------------ #

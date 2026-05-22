@@ -6,26 +6,13 @@
 /*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/20 11:28:58 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/05/11 19:54:47 by mdurte-s         ###   ########.fr       */
+/*   Updated: 2026/05/20 13:59:56 by mdurte-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/libft.h"
 
-/*int	main(int argc, char **argv)
-{
-	size_t	size;
-
-	(void)argc;
-	size = 20;
-	printf("dest inicial: %s\nsrc: %s\n", 
-		&argv[1][0], &argv[2][0]);
-	printf("dest final: %s\nreturn: %zu\n", 
-		&argv[1][0], ft_strlcat(argv[1], argv[2], size));
-	return (0);
-}*/
-
-size_t	ft_strlcat(char *restrict dst, const char *restrict src, size_t n)
+size_t	ft_strlcat(char *dst, const char *src, size_t n)
 {
 	size_t	i;
 	size_t	len_d;
