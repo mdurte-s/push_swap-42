@@ -6,7 +6,7 @@
 /*   By: igomes-d <igomes-d@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/08 11:37:26 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/05/19 19:05:30 by igomes-d         ###   ########.fr       */
+/*   Updated: 2026/05/21 18:35:27 by igomes-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,10 @@ typedef struct s_ctx
 	int		total_a;
 	int		total_b;
 	int		strategy;
-	int		*bottoms;
 }			t_ctx;
 
 /* --- functions ------------------------------------------------------------ */
-// start-headers
+/* autoheaders */
 int			create_stack(char **argv, int index, t_ctx *ctx);
 int			argv_to_int(char *argv, int *nb);
 size_t		count_strings(char const *s, char c);
@@ -62,9 +61,13 @@ int			parser_flags(char **av, int *i, t_ctx *ctx);
 int			get_max(t_list *current);
 int			get_min(t_list *current);
 int			get_distance(t_list *current, int val);
+int			fix_distance(int distance, int total);
+int			get_fit_distance(t_list *current, int val);
+void		move_rest_dual(int di_a, int di_b, int is_rr);
 void		move_to_top(int distance, int total, void (*r)(t_ctx *, int),
 				void (*rr)(t_ctx *, int));
-int			get_distance_inter_top_a(t_list *current, int val);
+int			move_to_top_dual(int di_a, int di_b, t_ctx *ctx);
+void		get_less_distance(t_ctx *ctx, int *di_a, int *di_b);
 void		simple(t_ctx *ctx, int min, int max);
 void		init(t_ctx *ctx);
 void		print_bench(t_ctx *ctx);
@@ -85,7 +88,5 @@ void		swap_s(t_ctx *init);
 int			get_x_bigger(t_list *start, int x, int size, int min);
 int			get_distance_inter_top(t_list *current, int val);
 void		print_stacks(t_list *stack_a, t_list *stack_b);
-
-// end-headers
 
 #endif

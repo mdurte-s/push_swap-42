@@ -40,10 +40,6 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c
 			@mkdir -p $(@D)
 			$(CC) $(CFLAGS) -I $(INCDIR) -I $(LIBDIR) -I $(PRIDIR) -c $< -o $@
 
-headers:
-	$(CC) -x c makeheaders_src.txt -o makeheaders.out
-	./autoheaders.sh $(INCDIR)/$(NAME).h $(SRCDIR)
-
 clean:
 			$(RM) -r $(OBJDIR)
 			$(MAKE) -C $(LIBDIR) clean

@@ -6,7 +6,7 @@
 /*   By: igomes-d <igomes-d@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/19 17:49:21 by igomes-d          #+#    #+#             */
-/*   Updated: 2026/05/19 20:21:53 by igomes-d         ###   ########.fr       */
+/*   Updated: 2026/05/21 12:34:26 by igomes-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,17 +54,9 @@ int	get_distance(t_list *current, int val)
 	}
 	return (0);
 }
-
-void	move_to_top(int distance, int total, void (*r)(t_ctx *, int),
-		void (*rr)(t_ctx *, int))
+int	fix_distance(int distance, int total)
 {
 	if (distance > total - distance)
-	{
 		distance = total - distance;
-		while (distance--)
-			rr(0, 0);
-	}
-	else
-		while (distance--)
-			r(0, 0);
+	return (distance);
 }
