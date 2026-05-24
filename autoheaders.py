@@ -1,41 +1,14 @@
-#!/bin/bash
+#!/usr/bin/env python3
 
-SRCS_PATH=$1
-H_PATH=$2
+import sys
+import os
+import re
+import subprocess
+import shutil
+import platform
+from pathlib import Path
 
-trim() {
-    if [ ! -z "$1" ]; then
-        TRIM_STR="$1"
-        TRIM_STR="${TRIM_STR#"${TRIM_STR%%[![:space:]]*}"}"
-        TRIM_STR="${TRIM_STR%"${TRIM_STR##*[![:space:]]}"}"
-        printf "%s" "$TRIM_STR"
-    fi
-}
-
-SRCS_PATH="$(trim "$SRCS_PATH")"
-H_PATH="$(trim "$H_PATH")"
-
-if [ -z "$H_PATH" ]; then
-    H_PATH="$(trim "$(find . -maxdepth 1 -name "*.h" | head -n 1)")"
-fi
-
-if [ -z "$H_PATH" ]; then
-    H_PATH="$(trim "$(find ./includes -maxdepth 1 -name "*.h" | head -n 1)")"
-fi
-
-if [ -z "$H_PATH" ] || [ ! -f "$H_PATH" ]; then
-    echo "[autoheaders] Error: header file not found."
-    exit 1
-fi
-
-if [ ! -d "$SRCS_PATH" ]; then
-    echo "[autoheaders] Error: srcs dir not found."
-    exit 1
-fi
-
-if [ ! -f "autoheaders.bin" ]; then
-    cat << 'EOF_SRC' > autoheaders.src
-/*
+C_SRC = r"""/*
 ** This program is free software; you can redistribute it and/or
 ** modify it under the terms of the Simplified BSD License (also
 ** known as the "2-Clause License" or "FreeBSD License".)
@@ -147,7 +120,7 @@ struct InStream {
 ** doesn't tell about the objects structure.  A typical forward declaration
 ** is:
 **
-**          struct Xyzzy;
+**         struct Xyzzy;
 **
 ** Not every object has a forward declaration.  If it does, thought, the
 ** forward declaration will be contained in the zFwd field for C and
@@ -898,7 +871,7 @@ static int GetToken(InStream *pIn, Token *pToken){
           c = 0;
         }else if( c==0 ){
           fprintf(stderr, "%s:%d: Unterminated string or character literal.\n",
-             zFilename, startLine);
+              zFilename, startLine);
           nErr++;
         }
       }while( c );
@@ -1075,7 +1048,7 @@ static int GetNonspaceToken(InStream *pIn, Token *pToken){
       case TT_EOF:
         if( nIf ){
           fprintf(stderr,"%s:%d: Unterminated \"#if\"\n",
-             zFilename, startLine);
+              zFilename, startLine);
           nErr++;
         }
         return nErr;
@@ -1190,7 +1163,7 @@ static int GetBigToken(InStream *pIn, Token *pToken, IdentTable *pTable){
     switch( pToken->eType ){
       case TT_EOF:
         fprintf(stderr,"%s:%d: Unterminated \"{\"\n",
-           zFilename, nLine);
+            zFilename, nLine);
         nErr++;
         pToken->eType = TT_Error;
         return nErr;
@@ -1311,7 +1284,7 @@ void main(int argc, char **argv){
         printf("%4d: Space\n",p->nLine);
         break;
       case TT_Id:
-        printf("%4d: Id           %.*s\n",p->nLine,p->nText,p->zText);
+        printf("%4d: Id            %.*s\n",p->nLine,p->nText,p->zText);
         break;
       case TT_Preprocessor:
         printf("%4d: Preprocessor %.*s\n",p->nLine,p->nText,p->zText);
@@ -1323,17 +1296,17 @@ void main(int argc, char **argv){
         printf("%4d: Block Comment\n",p->nLine);
         break;
       case TT_Number:
-        printf("%4d: Number       %.*s\n",p->nLine,p->nText,p->zText);
+        printf("%4d: Number        %.*s\n",p->nLine,p->nText,p->zText);
         break;
       case TT_String:
-        printf("%4d: String       %.*s\n",p->nLine,p->nText,p->zText);
+        printf("%4d: String        %.*s\n",p->nLine,p->nText,p->zText);
         break;
       case TT_Other:
-        printf("%4d: Other        %.*s\n",p->nLine,p->nText,p->zText);
+        printf("%4d: Other         %.*s\n",p->nLine,p->nText,p->zText);
         break;
       case TT_Braces:
         for(j=0; j<p->nText && j<30 && p->zText[j]!='\n'; j++){}
-        printf("%4d: Braces       %.*s...}\n",p->nLine,j,p->zText);
+        printf("%4d: Braces        %.*s...}\n",p->nLine,j,p->zText);
         break;
       case TT_EOF:
         printf("%4d: End of file\n",p->nLine);
@@ -3476,41 +3449,128 @@ int main(int argc, char **argv){
   return nErr;
 }
 #endif
-EOF_SRC
-    if ! cc -x c autoheaders.src -o autoheaders.bin 1>/dev/null; then
-        echo "[autoheaders] Error: Compilation failed!"
-        exit 1
-    fi
-fi
+"""
 
-rm "autoheaders.src" > /dev/null 2>&1
+def get_compiler_cmd(src_path, bin_path):
+    compilers = ["gcc", "clang", "cc", "cl"]
+    compiler = next((c for c in compilers if shutil.which(c)), None)
+    
+    if not compiler:
+        return None
+        
+    if compiler == "cl":
+        # MSVC command line syntax requires specific flags
+        return [compiler, src_path, f"/Fe:{bin_path}"]
+    
+    # GCC/Clang command line syntax
+    return [compiler, "-x", "c", src_path, "-o", bin_path]
 
-FORMATTER=1
-if ! pip3 install c_formatter_42 1>/dev/null; then
-    echo "[autoheaders] Warning: Automatic formatting will not be possible; please format manually."
-    FORMATTER=0
-fi
+def main():
+    srcs_path = sys.argv[1].strip() if len(sys.argv) > 1 else "."
+    h_path = sys.argv[2].strip() if len(sys.argv) > 2 else ""
 
+    if not h_path:
+        h_path = next((str(f) for f in Path('.').glob('*.h')), "")
+            
+    if not h_path:
+        h_path = next((str(f) for f in Path('./includes').glob('*.h')), "")
 
-NEW_HEADERS=$(./autoheaders.bin -local -h $(find "$SRCS_PATH" -name '*.c') | grep -v '#define')
+    if not h_path or not os.path.isfile(h_path):
+        print("[autoheaders] Error: header file not found.")
+        sys.exit(1)
 
-if grep -q -E '/\* *autoheaders *\*/' "$H_PATH"; then
-    echo "$(cat "$H_PATH" | sed -z 's#/\*[ \t]*autoheaders[ \t]*\*/.*#/* autoheaders */\n#')
-$NEW_HEADERS
-$(cat "$H_PATH" | sed -z 's@.*#[ \t]*endif@\n#endif@')" > "$H_PATH"
-else
-    echo "$(cat "$H_PATH" | sed -z 's@#[ \t]*endif[ \t\n]*$@@')
+    if not os.path.isdir(srcs_path):
+        print("[autoheaders] Error: srcs dir not found.")
+        sys.exit(1)
 
-/* autoheaders */
-$NEW_HEADERS
+    is_windows = platform.system().lower() == "windows"
+    bin_ext = ".exe" if is_windows else ".bin"
+    
+    src_file = os.path.abspath("autoheaders.c")
+    bin_file = os.path.abspath(f"autoheaders{bin_ext}")
 
-#endif" > "$H_PATH"
-fi
+    if not os.path.isfile(bin_file):
+        with open(src_file, "w") as f:
+            f.write(C_SRC)
+            
+        compile_cmd = get_compiler_cmd(src_file, bin_file)
+        if not compile_cmd:
+            print("[autoheaders] Error: No C compiler found (checked gcc, clang, cc, cl).")
+            sys.exit(1)
+            
+        result = subprocess.run(compile_cmd, capture_output=True)
+        
+        if result.returncode != 0:
+            print("[autoheaders] Error: Compilation failed!")
+            print(result.stderr.decode(errors='ignore'))
+            sys.exit(1)
 
-if [ "$FORMATTER" -ne 0 ]; then
-    echo "$(python3 -m c_formatter_42 < "$H_PATH")" > "$H_PATH"
-fi
+    if os.path.exists(src_file):
+        os.remove(src_file)
+    if is_windows and os.path.exists("autoheaders.obj"):
+        os.remove("autoheaders.obj") 
 
-echo "[autoheaders] Success!"
+    formatter_ok = shutil.which("c_formatter_42") is not None
+    if not formatter_ok:
+        try:
+            subprocess.run(
+                [sys.executable, "-m", "pip", "install", "c_formatter_42"],
+                check=True,
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL
+            )
+            formatter_ok = True
+        except subprocess.CalledProcessError:
+            print("[autoheaders] Warning: Formatter installation failed. Skipping formatting.")
 
+    c_files = [str(p.resolve()) for p in Path(srcs_path).rglob('*.c')]
+    
+    if not c_files:
+        print("[autoheaders] Warning: No .c files found.")
+        sys.exit(0)
 
+    cmd = [bin_file, "-local", "-h"] + c_files
+    res = subprocess.run(cmd, capture_output=True, text=True, check=True)
+    
+    new_headers = "\n".join(
+        line for line in res.stdout.splitlines() 
+        if not line.lstrip().startswith("#define")
+    )
+
+    with open(h_path, "r") as f:
+        h_content = f.read()
+
+    if re.search(r'/\*\s*autoheaders\s*\*/', h_content):
+        top_part = re.sub(r'(/\*\s*autoheaders\s*\*/).*', r'\1', h_content, flags=re.DOTALL)
+        
+        last_endif_match = re.search(r'(.*)(#[ \t]*endif.*)', h_content, flags=re.DOTALL)
+        if last_endif_match:
+            bottom_part = f"\n{last_endif_match.group(2)}"
+        else:
+            bottom_part = "\n#endif"
+            
+        h_content = f"{top_part}\n{new_headers}{bottom_part}"
+    else:
+        h_content = re.sub(r'(.*)#[ \t]*endif[ \t\n]*$', r'\1', h_content, flags=re.DOTALL)
+        h_content = f"{h_content}\n/* autoheaders */\n{new_headers}\n\n#endif\n"
+
+    with open(h_path, "w") as f:
+        f.write(h_content)
+
+    if formatter_ok:
+        fmt_res = subprocess.run(
+            [sys.executable, "-m", "c_formatter_42"],
+            input=h_content,
+            text=True,
+            capture_output=True
+        )
+        if fmt_res.returncode == 0:
+            with open(h_path, "w") as f:
+                f.write(fmt_res.stdout)
+        else:
+            print("[autoheaders] Warning: Formatter encountered an error.")
+
+    print("[autoheaders] Success!")
+
+if __name__ == "__main__":
+    main()

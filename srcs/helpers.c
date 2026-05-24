@@ -6,26 +6,25 @@
 /*   By: igomes-d <igomes-d@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/19 17:48:12 by igomes-d          #+#    #+#             */
-/*   Updated: 2026/05/22 12:10:03 by igomes-d         ###   ########.fr       */
+/*   Updated: 2026/05/24 13:48:40 by igomes-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/push_swap.h"
 
+t_ctx	*get_ctx(t_ctx *init)
+{
+	static t_ctx	*ctx;
+
+	if (init)
+		return (ctx = init, init);
+	return (ctx);
+}
+
 void	init(t_ctx *ctx)
 {
 	ft_bzero(ctx, sizeof(t_ctx));
-	push_a(ctx);
-	push_b(ctx);
-	swap_a(ctx, 0);
-	swap_b(ctx, 0);
-	swap_s(ctx);
-	rotate_a(ctx, 0);
-	rotate_b(ctx, 0);
-	rotate_r(ctx);
-	rev_rotate_a(ctx, 0);
-	rev_rotate_b(ctx, 0);
-	rev_rotate_r(ctx);
+	get_ctx(ctx);
 }
 
 void	print_bench(t_ctx *ctx)
@@ -71,7 +70,7 @@ void	mesure_disorder(t_ctx *ctx)
 		stack_j = stack_i->next;
 		while (stack_j)
 		{
-			if (stack_i->content >= stack_j->content)
+			if (stack_i->content > stack_j->content)
 				mistakes++;
 			stack_j = (total_pairs++, stack_j->next);
 		}
