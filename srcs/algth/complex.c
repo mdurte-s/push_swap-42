@@ -6,7 +6,7 @@
 /*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/24 21:30:52 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/05/25 14:54:48 by mdurte-s         ###   ########.fr       */
+/*   Updated: 2026/05/25 16:30:18 by mdurte-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ int	get_median(t_list *stack, int total, int *median)
 }
 
 /* Sorts stack_b when total = 3 */
-void	small_sort_b(t_ctx *ctx)
+/* void	small_sort_b(t_ctx *ctx)
 {
 	int	start;
 	int	middle;
@@ -113,10 +113,10 @@ void	small_sort_b(t_ctx *ctx)
 		rotate_b(0, 0);
 	else if (start < middle && middle > end && start > end) // 3 2 4
 		rev_rotate_b(0, 0);
-}
+} */
 
 /* Sorts stack_a when total = 3 */
-void	small_sort_a(t_ctx *ctx)
+/* void	small_sort_a(t_ctx *ctx)
 {
 	int	start;
 	int	middle;
@@ -143,9 +143,9 @@ void	small_sort_a(t_ctx *ctx)
 	}
 	else if (start < middle && middle > end && start > end) // 4 5 3
 		rev_rotate_a(0, 0);
-}
+} */
 
-int		quick_sort_a(t_ctx *ctx, int size);
+/* int		quick_sort_a(t_ctx *ctx, int size);
 
 int	quick_sort_b(t_ctx *ctx, int size)
 {
@@ -264,4 +264,4 @@ int	complex(t_ctx *ctx)
 		return (ft_printf_fd(1, "quick_sort_a == 0\n"), 0);
 	print_stacks(ctx->stack_a, ctx->stack_b);
 	return (1);
-}
+} */
