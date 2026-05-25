@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   helpers.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: igomes-d <igomes-d@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/19 17:49:21 by igomes-d          #+#    #+#             */
-/*   Updated: 2026/05/22 09:54:19 by igomes-d         ###   ########.fr       */
+/*   Updated: 2026/05/25 11:02:27 by mdurte-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ int	get_distance(t_list *current, int val)
 	}
 	return (0);
 }
+
 int	fix_distance(int distance, int total)
 {
 	if (distance > total - distance)

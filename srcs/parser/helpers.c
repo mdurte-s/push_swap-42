@@ -3,42 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   helpers.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: igomes-d <igomes-d@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/14 13:54:14 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/05/22 20:58:50 by igomes-d         ###   ########.fr       */
+/*   Updated: 2026/05/24 10:51:19 by mdurte-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/push_swap.h"
 
-int	check_flag(char *str)
+int	check_repeated(t_ctx *ctx, int nb)
 {
-	if (ft_strncmp(str, "--bench", 8) != 0
-		&& ft_strncmp(str, "--simple", 9) != 0
-		&& ft_strncmp(str, "--medium", 9) != 0
-		&& ft_strncmp(str, "--complex", 10) != 0
-		&& ft_strncmp(str, "--adaptive", 11) != 0)
-		return (0);
-	return (1);
-}
+	t_list	*i;
 
-int	add_to_stack(char **argv, t_ctx *ctx)
-{
-	int		index;
-	int		nb;
-	t_list	*new;
-
-	index = -1;
-	while (argv[++index])
+	i = ctx->stack_a;
+	while (i)
 	{
-		if (argv_to_int(argv[index], &nb) == 0)
+		if (i->content == nb)
 			return (0);
-		new = ft_lstnew(nb);
-		if (!new)
-			return (0);
-		ft_lstadd_back(&(ctx->stack_a), new);
-		(ctx->total_a)++;
+		i = i->next;
 	}
 	return (1);
 }
@@ -66,7 +49,7 @@ int	argv_to_int(char *argv, int *nb)
 			return (0);
 		i++;
 	}
-	if (argv[i] != '\0')
+	if (argv[i])
 		return (0);
 	*nb = (int)(res * signal);
 	return (1);

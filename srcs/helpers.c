@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   helpers.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: igomes-d <igomes-d@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/19 17:48:12 by igomes-d          #+#    #+#             */
-/*   Updated: 2026/05/22 12:10:03 by igomes-d         ###   ########.fr       */
+/*   Updated: 2026/05/24 22:41:49 by mdurte-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	mesure_disorder(t_ctx *ctx)
 		stack_j = stack_i->next;
 		while (stack_j)
 		{
-			if (stack_i->content >= stack_j->content)
+			if (stack_i->content > stack_j->content)
 				mistakes++;
 			stack_j = (total_pairs++, stack_j->next);
 		}

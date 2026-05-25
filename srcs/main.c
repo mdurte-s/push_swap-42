@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: igomes-d <igomes-d@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/08 11:38:35 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/05/22 20:58:19 by igomes-d         ###   ########.fr       */
+/*   Updated: 2026/05/25 15:00:42 by mdurte-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,9 +162,9 @@ void	medium(t_ctx *ctx, int min, int max, int divisor)
 int	main(int argc, char **argv)
 {
 	t_ctx	ctx;
-	int		min;
-	int		max;
-	int		divisor;
+	//int		min;
+	//int		max;
+	//int		divisor;
 
 	init(&ctx);
 	if (argc == 1)
@@ -174,10 +174,12 @@ int	main(int argc, char **argv)
 	mesure_disorder(&ctx);
 	if (ctx.bench.disorder > 0)
 	{
-		min = get_min(ctx.stack_a);
-		max = get_max(ctx.stack_a);
-		divisor = (max - min) / ft_sqrt(ctx.total_a);
-		medium(&ctx, min, max, divisor);
+		//min = get_min(ctx.stack_a);
+		//max = get_max(ctx.stack_a);
+		//divisor = (max - min) / ft_sqrt(ctx.total_a);
+		// if (!complex(&ctx))
+		// 	return (0);
+		// medium(&ctx, min, max, divisor);
 		// simple(&ctx, min, max);
 	}
 	if (ctx.bench.is_bench == 1)

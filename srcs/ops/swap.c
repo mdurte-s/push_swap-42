@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   swap.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: igomes-d <igomes-d@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/11 09:37:48 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/05/19 16:53:04 by igomes-d         ###   ########.fr       */
+/*   Updated: 2026/05/25 14:58:10 by mdurte-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ void	swap_a(t_ctx *init, int ss)
 		ctx->stack_a = ctx->stack_a->next;
 		ctx->stack_a->prev->next = ctx->stack_a->next;
 		ctx->stack_a->next = ctx->stack_a->prev;
-		ctx->stack_a->prev = ctx->stack_a->next->prev;
+		if (ctx->total_a > 2)
+			ctx->stack_a->prev = ctx->stack_a->next->prev;
 		ctx->stack_a->next->prev = ctx->stack_a;
 		if (ctx->stack_a->next->next)
 			ctx->stack_a->next->next->prev = ctx->stack_a->next;
@@ -56,7 +57,8 @@ void	swap_b(t_ctx *init, int ss)
 		ctx->stack_b = ctx->stack_b->next;
 		ctx->stack_b->prev->next = ctx->stack_b->next;
 		ctx->stack_b->next = ctx->stack_b->prev;
-		ctx->stack_b->prev = ctx->stack_b->next->prev;
+		if (ctx->total_b > 2)
+			ctx->stack_b->prev = ctx->stack_b->next->prev;
 		ctx->stack_b->next->prev = ctx->stack_b;
 		if (ctx->stack_b->next->next)
 			ctx->stack_b->next->next->prev = ctx->stack_b->next;
