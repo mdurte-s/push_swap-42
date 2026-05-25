@@ -6,7 +6,7 @@
 /*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/08 11:37:26 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/05/25 11:19:46 by mdurte-s         ###   ########.fr       */
+/*   Updated: 2026/05/25 15:08:20 by mdurte-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,10 @@ typedef struct s_ctx
 	int		total_a;
 	int		total_b;
 	int		strategy;
+	int		max;
+	int		min;
+	int		sqrt;
+	int		div;
 }			t_ctx;
 
 /* --- functions ------------------------------------------------------------ */
@@ -56,7 +60,6 @@ void		init(t_ctx *ctx);
 int			parser_argv(char **argv, t_ctx *ctx);
 int			parser_flags(char **av, int *index, t_ctx *ctx);
 int			check_flag(char *str);
-int			create_stack(char ***argv, t_ctx *ctx);
 int			add_to_stack(char **argv, t_ctx *ctx);
 int			check_repeated(t_ctx *ctx, int nb);
 int			argv_to_int(char *argv, int *nb);

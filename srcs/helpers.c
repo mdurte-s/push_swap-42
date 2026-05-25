@@ -6,26 +6,25 @@
 /*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/19 17:48:12 by igomes-d          #+#    #+#             */
-/*   Updated: 2026/05/24 22:41:49 by mdurte-s         ###   ########.fr       */
+/*   Updated: 2026/05/25 15:06:00 by mdurte-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/push_swap.h"
 
+t_ctx	*get_ctx(t_ctx *init)
+{
+	static t_ctx	*ctx;
+
+	if (init)
+		return (ctx = init, init);
+	return (ctx);
+}
+
 void	init(t_ctx *ctx)
 {
 	ft_bzero(ctx, sizeof(t_ctx));
-	push_a(ctx);
-	push_b(ctx);
-	swap_a(ctx, 0);
-	swap_b(ctx, 0);
-	swap_s(ctx);
-	rotate_a(ctx, 0);
-	rotate_b(ctx, 0);
-	rotate_r(ctx);
-	rev_rotate_a(ctx, 0);
-	rev_rotate_b(ctx, 0);
-	rev_rotate_r(ctx);
+	get_ctx(ctx);
 }
 
 void	print_bench(t_ctx *ctx)

@@ -6,7 +6,7 @@
 /*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/11 09:37:48 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/05/25 14:58:10 by mdurte-s         ###   ########.fr       */
+/*   Updated: 2026/05/25 15:07:31 by mdurte-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,11 @@
 
 /* Swap the first two elements at the top of stack a.
 Do nothing if there is only one or no elements. */
-void	swap_a(t_ctx *init, int ss)
+void	swap_a(int ss)
 {
-	static t_ctx	*ctx;
+	t_ctx	*ctx;
 
-	if (init)
-	{
-		ctx = init;
-		return ;
-	}
+	ctx = get_ctx(0);
 	if (ctx->total_a > 1)
 	{
 		ctx->stack_a = ctx->stack_a->next;
@@ -43,15 +39,11 @@ void	swap_a(t_ctx *init, int ss)
 
 /* Swap the first two elements at the top of stack b.
 Do nothing if there is only one or no elements */
-void	swap_b(t_ctx *init, int ss)
+void	swap_b(int ss)
 {
-	static t_ctx	*ctx;
+	t_ctx	*ctx;
 
-	if (init)
-	{
-		ctx = init;
-		return ;
-	}
+	ctx = get_ctx(0);
 	if (ctx->total_b > 1)
 	{
 		ctx->stack_b = ctx->stack_b->next;
@@ -71,17 +63,13 @@ void	swap_b(t_ctx *init, int ss)
 }
 
 /* sa and sb at the same time. */
-void	swap_s(t_ctx *init)
+void	swap_s(void)
 {
-	static t_ctx	*ctx;
+	t_ctx	*ctx;
 
-	if (init)
-	{
-		ctx = init;
-		return ;
-	}
-	swap_a(0, 1);
-	swap_b(0, 1);
+	ctx = get_ctx(0);
+	swap_a(1);
+	swap_b(1);
 	ctx->bench.total++;
 	ctx->bench.ss++;
 	ft_printf_fd(1, "ss\n");

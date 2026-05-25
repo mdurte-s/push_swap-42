@@ -25,6 +25,7 @@ make fclean > /dev/null 2>&1
 find "$DEST_PATH" -mindepth 1 -not -path '*/.git*' -delete
 find . -mindepth 1 -maxdepth 1 -not -name "$(basename "$DEST_PATH")" -not -name ".git" -exec cp -r {} "$DEST_PATH/" \;
 
+rm "$DEST_PATH/"*.py > /dev/null 2>&1
 rm "$DEST_PATH/"*.sh > /dev/null 2>&1
 rm "$DEST_PATH/"*.bin > /dev/null 2>&1
 rm "$DEST_PATH/"autoheaders* > /dev/null 2>&1
