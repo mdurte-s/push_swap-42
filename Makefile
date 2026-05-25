@@ -21,7 +21,7 @@ BONOBJ		= bonus/objs
 
 # --- Sources ---------------------------------------------------------------- #
 
-LIBS 			= $(shell $(LIBS_HELPER))
+LIBS 			= -Llibs/libft -lft -Llibs/ft_printf -lftprintf
 LIBS_OBJS		= $(shell $(LIBS_HELPER) objs)
 
 SRCS 		= $(shell find $(SRCDIR) -name '*.c')
