@@ -3,22 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: igomes-d <igomes-d@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/24 12:36:29 by igomes-d          #+#    #+#             */
-/*   Updated: 2026/05/24 12:43:41 by igomes-d         ###   ########.fr       */
+/*   Updated: 2026/05/26 18:28:05 by mdurte-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/push_swap.h"
 
 /* Returns the max value of the stack. */
-int	get_max(t_list *current)
+int	get_max(t_list *current, int size)
 {
 	int	max;
 
 	max = current->content;
-	while (current)
+	while (current && size--)
 	{
 		if (current->content > max)
 			max = current->content;
@@ -28,12 +28,12 @@ int	get_max(t_list *current)
 }
 
 /* Returns the min value of the stack. */
-int	get_min(t_list *current)
+int	get_min(t_list *current, int size)
 {
 	int	min;
 
 	min = current->content;
-	while (current)
+	while (current && size--)
 	{
 		if (current->content < min)
 			min = current->content;

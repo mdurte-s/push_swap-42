@@ -6,7 +6,7 @@
 /*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/08 11:38:35 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/05/25 19:58:50 by mdurte-s         ###   ########.fr       */
+/*   Updated: 2026/05/26 19:16:23 by mdurte-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	sort(t_ctx *ctx)
 {
-	ctx->min = get_min(ctx->stack_a);
-	ctx->max = get_max(ctx->stack_a);
+	ctx->min = get_min(ctx->stack_a, ctx->total_a);
+	ctx->max = get_max(ctx->stack_a, ctx->total_a);
 	ctx->sqrt = ft_sqrt(ctx->total_a);
 	if ((ctx->sqrt / 4) > 0)
 		ctx->div = (ctx->max - ctx->min) / (ctx->sqrt / 4);
@@ -30,12 +30,14 @@ void	sort(t_ctx *ctx)
 	// 	medium(ctx);
 }
 
-int	get_media(t_list *stack, int total, int size)
+int	get_media(t_list *stack, int size)
 {
 	int	sum;
 	int	media;
+	int	total;
 
 	sum = stack->content;
+	total = size;
 	while (stack->next && size--)
 	{
 		sum += stack->next->content;
@@ -43,6 +45,24 @@ int	get_media(t_list *stack, int total, int size)
 	}
 	media = sum / total;
 	return (media);
+}
+
+int	get_nearby_media(int max, t_list *stack, int media, int size)
+{
+	t_list	*start;
+	int		size_og;
+
+	if (max == media)
+		return (max);
+	start = stack;
+	size_og = size;
+	while (stack && size--)
+	{
+		if (stack->content == media)
+			return (media);
+		stack = stack->next;
+	}
+	return (get_nearby_media(max, start, media + 1, size_og));
 }
 
 int	get_less_media_distance(t_list *current, int media, int rev)
@@ -70,7 +90,7 @@ void	small_sort_b(t_ctx *ctx)
 
 	start = ctx->stack_b->content;
 	middle = ctx->stack_b->next->content;
-	end = ctx->stack_b->prev->content;
+	end = ctx->stack_b->next->next->content;
 	if (start > middle && middle > end)
 		return ;
 	else if (start < middle && middle > end && start > end)
@@ -100,7 +120,7 @@ void	small_sort_a(t_ctx *ctx)
 
 	start = ctx->stack_a->content;
 	middle = ctx->stack_a->next->content;
-	end = ctx->stack_a->prev->content;
+	end = ctx->stack_a->next->next->content;
 	if (start < middle && middle < end)
 		return ;
 	else if (start > middle && middle < end && start < end)
@@ -173,57 +193,95 @@ void	small_sort_a(t_ctx *ctx)
 
 void	complex_a(t_ctx *ctx, int size, int is_a)
 {
-	int	pushes;
-	int	media;
+	int		pushes;
+	int		i;
+	t_list	*head;
+	int		pivot;
 
+	// int	rotates;
 	if (size <= 1)
+	{
 		return ;
-	if (is_a)
-		media = ctx->stack_a->content;
-	else
-		media = ctx->stack_b->content;
+	}
+	if (is_a && size == 2)
+	{
+		if (ctx->stack_a->content > ctx->stack_a->next->content)
+			swap_a(0);
+		return ;
+	}
+	else if (!is_a && size == 2)
+	{
+		if (ctx->stack_b->content < ctx->stack_b->next->content)
+			swap_b(0);
+		return ;
+	}
+	if (is_a && size == 3)
+	{
+		small_sort_a(ctx);
+		return ;
+	}
+	else if (!is_a && size == 3)
+	{
+		small_sort_b(ctx);
+		return ;
+	}
+	i = -1;
 	pushes = 0;
 	if (is_a)
 	{
-		while (size--)
+		pivot = get_nearby_media(get_max(ctx->stack_a, size), ctx->stack_a,
+				get_media(ctx->stack_a, size), size);
+		head = ctx->stack_a;
+		while (++i < size)
 		{
-			if (ctx->stack_a->content >= media)
-			{
+			if (ctx->stack_a->content >= pivot)
 				rotate_a(0);
-			}
 			else
 			{
+				if (ctx->stack_a == head)
+				{
+					if (head->next && size > 1)
+						head = head->next;
+					else
+						head = 0;
+				}
 				push_b();
 				pushes++;
 			}
 		}
+		complex_a(ctx, pushes, 0);
+		if (head)
+			move_to_top(get_distance(ctx->stack_a, head->content), ctx->total_a,
+				1);
+		complex_a(ctx, size - pushes, 1);
 	}
 	else
 	{
-		while (size--)
+		head = ctx->stack_b;
+		pivot = get_nearby_media(get_max(ctx->stack_b, size), ctx->stack_b,
+				get_media(ctx->stack_b, size), size);
+		while (++i < size)
 		{
-			if (ctx->stack_b->content < media)
-			{
+			if (ctx->stack_b->content <= pivot)
 				rotate_b(0);
-			}
 			else
 			{
+				if (ctx->stack_b == head)
+				{
+					if (head->next && size > 1)
+						head = head->next;
+					else
+						head = 0;
+				}
 				push_a();
 				pushes++;
 			}
 		}
-	}
-	if (is_a)
-	{
-		complex_a(ctx, pushes -1, 0);
-		complex_a(ctx, size - pushes -1, 1);
-		//complex_a(ctx, pushes, 0);
-	}
-	else
-	{
-		//complex_a(ctx, pushes, 1);
-		complex_a(ctx, size - pushes -1, 0);
-		complex_a(ctx, pushes -1, 1);
+		if (head)
+			move_to_top(get_distance(ctx->stack_b, head->content), ctx->total_b,
+				0);
+		complex_a(ctx, size - pushes, 0);
+		complex_a(ctx, pushes, 1);
 	}
 }
 

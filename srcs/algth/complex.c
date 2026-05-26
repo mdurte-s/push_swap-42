@@ -6,7 +6,7 @@
 /*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/24 21:30:52 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/05/25 16:30:18 by mdurte-s         ###   ########.fr       */
+/*   Updated: 2026/05/26 15:13:14 by mdurte-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,21 +98,21 @@ int	get_median(t_list *stack, int total, int *median)
 	if (start > middle && middle > end) // 4 3 2
 		return ;
 	else if (start < middle && middle > end && start > end) // 3 4 2
-		swap_b(0, 0);
+		swap_b(0);
 	else if (start < middle && middle < end) // 2 3 4
 	{
-		swap_b(0, 0);
-		rev_rotate_b(0, 0);
+		swap_b(0);
+		rev_rotate_b(0);
 	}
 	else if (start > middle && middle < end && start > end) // 4 2 3
 	{
-		swap_b(0, 0);
-		rotate_b(0, 0);
+		swap_b(0);
+		rotate_b(0);
 	}
 	else if (start < middle && middle > end && start < end) // 2 4 3
-		rotate_b(0, 0);
+		rotate_b(0);
 	else if (start < middle && middle > end && start > end) // 3 2 4
-		rev_rotate_b(0, 0);
+		rev_rotate_b(0);
 } */
 
 /* Sorts stack_a when total = 3 */
@@ -128,21 +128,21 @@ int	get_median(t_list *stack, int total, int *median)
 	if (start < middle && middle < end) // 3 4 5
 		return ;
 	else if (start > middle && middle < end && start < end) // 4 3 5
-		swap_a(0, 0);
+		swap_a(0);
 	else if (start > middle && middle > end) // 5 4 3
 	{
-		swap_a(0, 0);
-		rev_rotate_a(0, 0);
+		swap_a(0);
+		rev_rotate_a(0);
 	}
 	else if (start > middle && middle < end && start > end) // 5 3 4
-		rotate_a(0, 0);
+		rotate_a(0);
 	else if (start < middle && middle > end && start < end) // 3 5 4
 	{
-		swap_a(0, 0);
-		rotate_a(0, 0);
+		swap_a(0);
+		rotate_a(0);
 	}
 	else if (start < middle && middle > end && start > end) // 4 5 3
-		rev_rotate_a(0, 0);
+		rev_rotate_a(0);
 } */
 
 /* int		quick_sort_a(t_ctx *ctx, int size);
