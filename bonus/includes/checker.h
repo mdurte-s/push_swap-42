@@ -6,7 +6,7 @@
 /*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/20 10:41:01 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/05/21 11:02:08 by mdurte-s         ###   ########.fr       */
+/*   Updated: 2026/05/27 11:41:57 by mdurte-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 
 /* --- includes ------------------------------------------------------------- */
 
-# include "../ft_printf/includes/ft_printf.h"
-# include "../libft/includes/libft.h"
+# include "../../libs/ft_printf/includes/ft_printf.h"
+# include "../../libs/libft/includes/libft.h"
 
 /* --- get_next_line --------------------  ---------------------------------- */
 
@@ -28,14 +28,13 @@
 #  define OPEN_MAX 1024
 # endif
 
-# include "../libft/includes/libft.h"
 # include <fcntl.h>
 
-char	*get_next_line(int fd);
-char	*read_and_stash(int fd, char *stash);
-char	*extract_line(char *stash);
-char	*new_stash(char *stash);
-char	*clean_data(char *data);
+char		*get_next_line(int fd);
+char		*read_and_stash(int fd, char *stash);
+char		*extract_line(char *stash);
+char		*new_stash(char *stash);
+char		*clean_data(char *data);
 
 /* --- struct --------------------------------------------------------------- */
 
@@ -70,29 +69,35 @@ typedef struct s_ctx
 
 /* --- functions ------------------------------------------------------------ */
 
-int		get_ops(t_ctx *ctx);
-int		parser_ops(char *line);
+int			get_ops(t_ctx *ctx);
+int			parser_ops(char *line);
 
-void	init(t_ctx *ctx);
-void	mesure_disorder(t_ctx *ctx);
-int		create_stack(char **argv, int index, t_ctx *ctx);
-int		check_repeated(t_list *stack_a);
-int		argv_to_int(char *argv, int *nb);
+t_ctx		*get_ctx(t_ctx *init);
+void		init(t_ctx *ctx);
 
-void	push_a(t_ctx *init);
-void	push_b(t_ctx *init);
-void	push_list(t_list **from, t_list **to, int to_size);
+void		mesure_disorder(t_ctx *ctx);
+int			create_stack(char ***argv, t_ctx *ctx);
+int			add_to_stack(char **argv, t_ctx *ctx);
+int			check_repeated(t_ctx *ctx, int nb);
+int			argv_to_int(char *argv, int *nb);
 
-void	rev_rotate_a(t_ctx *init, int rrr);
-void	rev_rotate_b(t_ctx *init, int rrr);
-void	rev_rotate_r(t_ctx *init);
+size_t		count_strings(char const *s, char c);
+void		free_array(char **array);
 
-void	rotate_a(t_ctx *init, int rr);
-void	rotate_b(t_ctx *init, int rr);
-void	rotate_r(t_ctx *init);
+void		push_a(void);
+void		push_b(void);
+void		push_list(t_list **from, t_list **to, int to_size);
 
-void	swap_a(t_ctx *init, int ss);
-void	swap_b(t_ctx *init, int ss);
-void	swap_s(t_ctx *init);
+void		rev_rotate_a(int rrr);
+void		rev_rotate_b(int rrr);
+void		rev_rotate_r(void);
+
+void		rotate_a(int rr);
+void		rotate_b(int rr);
+void		rotate_r(void);
+
+void		swap_a(int ss);
+void		swap_b(int ss);
+void		swap_s(void);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/20 10:41:04 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/05/26 14:25:43 by mdurte-s         ###   ########.fr       */
+/*   Updated: 2026/05/27 11:57:46 by mdurte-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,8 @@ int	main(int argc, char **argv)
 	init(&ctx);
 	if (argc == 1)
 		return (0);
-	if (!create_stack(argv, 1, &ctx))
-		return (ft_printf_fd(2, "Error\n"), ft_lstclear(&(ctx.stack_a)), 1);
-	if (check_repeated(ctx.stack_a) == 0)
+	++argv;
+	if (!create_stack(&argv, &ctx))
 		return (ft_printf_fd(2, "Error\n"), ft_lstclear(&(ctx.stack_a)), 1);
 	if (!get_ops(&ctx))
 		return (ft_printf_fd(2, "Error\n"), ft_lstclear(&(ctx.stack_a)),
