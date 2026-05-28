@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: igomes-d <igomes-d@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/08 11:38:35 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/05/27 01:00:37 by mdurte-s         ###   ########.fr       */
+/*   Updated: 2026/05/28 12:20:03 by igomes-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,32 @@
 
 void	sort(t_ctx *ctx)
 {
-	ctx->min = get_min(ctx->stack_a, ctx->total_a);
-	ctx->max = get_max(ctx->stack_a, ctx->total_a);
-	ctx->sqrt = ft_sqrt(ctx->total_a);
-	if ((ctx->sqrt / 4) > 0)
-		ctx->div = (ctx->max - ctx->min) / (ctx->sqrt / 4);
-	else
-		ctx->div = ctx->max;
-	if (ctx->strategy == 1 || ctx->strategy == 4 + 1)
-		simple(ctx);
-	else if (ctx->strategy == 2 || ctx->strategy == 4 + 2)
-		medium(ctx);
-	else
-		complex_a(ctx, ctx->total_a);
+	if (ctx->a.len <= 2)
+		if (ctx->a.arr[0].nb > ctx->a.arr[1].nb)
+			return (swap_a());
+	if (ctx->a.len <= 3)
+	{
+		if (ctx->a.arr[0].nb > ctx->a.arr[1].nb)
+			swap_a();
+		if (ctx->a.arr[1].nb > ctx->a.arr[2].nb)
+			rev_rotate_a();
+		if (ctx->a.arr[0].nb > ctx->a.arr[1].nb)
+			swap_a();
+		return ;
+	}
+	// ctx->min = get_min(ctx->stack_a, ctx->total_a);
+	// ctx->max = get_max(ctx->stack_a, ctx->total_a);
+	// ctx->sqrt = ft_sqrt(ctx->total_a);
+	// if ((ctx->sqrt / 4) > 0)
+	// 	ctx->div = (ctx->max - ctx->min) / (ctx->sqrt / 4);
+	// else
+	// 	ctx->div = ctx->max;
+	// if (ctx->strategy == 1 || ctx->strategy == 4 + 1)
+	simple(ctx);
+	// else if (ctx->strategy == 2 || ctx->strategy == 4 + 2)
+	// 	medium(ctx);
+	// else
+	// 	complex_a(ctx, ctx->total_a);
 }
 
 int	main(int argc, char **argv)
@@ -37,16 +50,17 @@ int	main(int argc, char **argv)
 		return (1);
 	init(&ctx);
 	if (parser_argv(++argv, &ctx) == 0)
-		return (ft_printf_fd(2, "Error\n"), ft_lstclear(&(ctx.stack_a)), 1);
+		return (ft_printf_fd(2, "Error\n"), clear()), 1);
 	mesure_disorder(&ctx);
 	if (ctx.bench.disorder > 0)
 		sort(&ctx);
 	if (ctx.bench.is_bench == 1)
 		print_bench(&ctx);
 	// print_stacks(ctx.stack_a, ctx.stack_b);
-	ft_lstclear(&ctx.stack_a);
-	ft_lstclear(&ctx.stack_b);
-	return (0);
+	;
+	// ft_lstclear(&ctx.stack_a);
+	// ft_lstclear(&ctx.stack_b);
+	return (clear(), 0);
 }
 
 void	print_stacks(t_list *stack_a, t_list *stack_b)

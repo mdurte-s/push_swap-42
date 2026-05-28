@@ -1,0 +1,16 @@
+{
+  "files.autoSave": "afterDelay",
+  "files.autoSaveDelay": 2000,
+  "emeraldwalk.runonsave": {
+    "commands": [
+      {
+        "match": "\\.(c|h)$",
+        "cmd": "sleep 2 && cd ${workspaceFolder} && ./autoheaders.py srcs"
+      },
+      {
+        "match": "\\.(c|h)$",
+        "cmd": "sleep 2 && pkill norminette"
+      }
+    ]
+  }
+}

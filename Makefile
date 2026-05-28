@@ -49,7 +49,6 @@ $(BONUS):   $(LIBS_OBJS) $(BONUS_OBJS)
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
 			@mkdir -p $(@D)
-			./autoheaders.py $(SRCDIR)
 			$(CC) $(CFLAGS) -I $(INCDIR) -c $< -o $@
 
 $(BONOBJ)/%.o: $(BONSRC)/%.c

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   helpers.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: igomes-d <igomes-d@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/19 17:48:12 by igomes-d          #+#    #+#             */
-/*   Updated: 2026/05/25 15:06:00 by mdurte-s         ###   ########.fr       */
+/*   Updated: 2026/05/28 08:58:12 by igomes-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	print_bench(t_ctx *ctx)
 		ft_printf_fd(2, "[bench] strategy: %s\n", "Medium / O(n√n)");
 	if (ctx->strategy == 3)
 		ft_printf_fd(2, "[bench] strategy: %s\n", "Complex / O(n log n)");
-	ft_printf_fd(2, "[bench] total_ops: %i\n", ctx->bench.total);
+	ft_printf_fd(2, "[bench] total_ops: %i\n", ctx->bench.total_ops);
 	ft_printf_fd(2, "[bench] sa: %i sb: %i ss: %i pa: %i pb: %i\n",
 		ctx->bench.sa, ctx->bench.sb, ctx->bench.ss, ctx->bench.pa,
 		ctx->bench.pb);
