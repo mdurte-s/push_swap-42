@@ -6,7 +6,7 @@
 /*   By: igomes-d <igomes-d@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/08 11:38:35 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/05/28 12:20:03 by igomes-d         ###   ########.fr       */
+/*   Updated: 2026/05/29 00:35:29 by igomes-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,18 +22,18 @@ void	sort(t_ctx *ctx)
 		if (ctx->a.arr[0].nb > ctx->a.arr[1].nb)
 			swap_a();
 		if (ctx->a.arr[1].nb > ctx->a.arr[2].nb)
-			rev_rotate_a();
+			rev_rotate_a(1);
 		if (ctx->a.arr[0].nb > ctx->a.arr[1].nb)
 			swap_a();
 		return ;
 	}
-	// ctx->min = get_min(ctx->stack_a, ctx->total_a);
-	// ctx->max = get_max(ctx->stack_a, ctx->total_a);
-	// ctx->sqrt = ft_sqrt(ctx->total_a);
-	// if ((ctx->sqrt / 4) > 0)
-	// 	ctx->div = (ctx->max - ctx->min) / (ctx->sqrt / 4);
-	// else
-	// 	ctx->div = ctx->max;
+	ctx->min = get_min(&ctx->a, ctx->a.len);
+	ctx->max = get_max(&ctx->a, ctx->a.len);
+	ctx->sqrt = ft_sqrt(ctx->a.len);
+	if ((ctx->sqrt / 4) > 0)
+		ctx->div = (ctx->max - ctx->min) / (ctx->sqrt / 4);
+	else
+		ctx->div = ctx->max;
 	// if (ctx->strategy == 1 || ctx->strategy == 4 + 1)
 	simple(ctx);
 	// else if (ctx->strategy == 2 || ctx->strategy == 4 + 2)
@@ -50,12 +50,12 @@ int	main(int argc, char **argv)
 		return (1);
 	init(&ctx);
 	if (parser_argv(++argv, &ctx) == 0)
-		return (ft_printf_fd(2, "Error\n"), clear()), 1);
+		return (ft_printf_fd(2, "Error\n"), clear(), 1);
 	mesure_disorder(&ctx);
 	if (ctx.bench.disorder > 0)
 		sort(&ctx);
-	if (ctx.bench.is_bench == 1)
-		print_bench(&ctx);
+	// if (ctx.bench.is_bench == 1)
+	print_bench(&ctx);
 	// print_stacks(ctx.stack_a, ctx.stack_b);
 	;
 	// ft_lstclear(&ctx.stack_a);

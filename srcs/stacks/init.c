@@ -6,12 +6,11 @@
 /*   By: igomes-d <igomes-d@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/28 08:59:26 by igomes-d          #+#    #+#             */
-/*   Updated: 2026/05/28 13:25:41 by igomes-d         ###   ########.fr       */
+/*   Updated: 2026/05/29 01:13:54 by igomes-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/push_swap.h"
-#include <stddef.h>
 
 void	clear(void)
 {
@@ -24,12 +23,33 @@ void	clear(void)
 		ctx->b.arr = (free(ctx->b.arr), NULL);
 }
 
-int	init_stk(t_stk *stk)
+int	check_dup(t_stk *stk, int nb)
 {
-	ft_bzero(stk, sizeof(t_stk));
-	stk->arr = (t_node *)malloc(8 * sizeof(t_node));
-	if (stk->arr)
+	ssize_t	i;
+
+	i = -1;
+	while (++i < stk->len)
+		if (stk->arr[i].nb == nb)
+			return (1);
+	return (0);
+}
+
+int	add_stk(t_stk *stk, int nb)
+{
+	t_node	*tmp;
+
+	if (check_dup(stk, nb))
+		return (-1);
+	if (stk->len + 1 > stk->capacity)
 	{
-		stk->capacity = 8;
+		tmp = (t_node *)malloc(((stk->capacity + 8) * 1.5) * sizeof(t_node));
+		if (!tmp)
+			return (-1);
+		if (stk->arr)
+			ft_memcpy(tmp, stk->arr, stk->len * sizeof(t_node));
+		stk->capacity = ((stk->capacity + 8) * 1.5);
+		stk->arr = tmp;
 	}
+	stk->arr[stk->len++].nb = nb;
+	return (0);
 }

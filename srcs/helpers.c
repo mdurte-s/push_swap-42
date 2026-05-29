@@ -6,7 +6,7 @@
 /*   By: igomes-d <igomes-d@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/19 17:48:12 by igomes-d          #+#    #+#             */
-/*   Updated: 2026/05/28 08:58:12 by igomes-d         ###   ########.fr       */
+/*   Updated: 2026/05/28 23:01:04 by igomes-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,24 +57,23 @@ void	print_bench(t_ctx *ctx)
 
 void	mesure_disorder(t_ctx *ctx)
 {
-	int		mistakes;
-	int		total_pairs;
-	t_list	*stack_i;
-	t_list	*stack_j;
+	int	mistakes;
+	int	total_pairs;
+	int	i;
+	int	j;
 
 	mistakes = 0;
 	total_pairs = 0;
-	stack_i = ctx->stack_a;
-	while (stack_i && stack_i->next)
+	i = -1;
+	while (++i + 1 < ctx->a.len)
 	{
-		stack_j = stack_i->next;
-		while (stack_j)
+		j = i;
+		while (++j < ctx->a.len)
 		{
-			if (stack_i->content > stack_j->content)
+			total_pairs++;
+			if (ctx->a.arr[i].nb > ctx->a.arr[j].nb)
 				mistakes++;
-			stack_j = (total_pairs++, stack_j->next);
 		}
-		stack_i = stack_i->next;
 	}
 	if (total_pairs == 0)
 		ctx->bench.disorder = 0;

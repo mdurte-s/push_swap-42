@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: igomes-d <igomes-d@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/11 09:54:05 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/05/25 15:07:37 by mdurte-s         ###   ########.fr       */
+/*   Updated: 2026/05/29 00:35:00 by igomes-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,11 @@ int	parser_argv(char **argv, t_ctx *ctx)
 		if (*argv && !flags)
 			return (0);
 	}
+	ctx->a.capacity = ctx->a.len;
+	ctx->b.capacity = ctx->a.len;
+	ctx->b.arr = (t_node *)malloc(ctx->a.len * sizeof(t_node));
+	if (!ctx->b.arr)
+		return (0);
 	return (1);
 }
 
@@ -56,22 +61,16 @@ int	create_stack(char ***argv, t_ctx *ctx)
 
 int	add_to_stack(char **argv, t_ctx *ctx)
 {
-	int		index;
-	int		nb;
-	t_list	*new;
+	int	index;
+	int	nb;
 
 	index = -1;
 	while (argv[++index])
 	{
 		if (!argv_to_int(argv[index], &nb))
 			return (0);
-		new = ft_lstnew(nb);
-		if (!new)
+		if (add_stk(&ctx->a, nb))
 			return (0);
-		if (!check_repeated(ctx, nb))
-			return (0);
-		ft_lstadd_back(&(ctx->stack_a), new);
-		(ctx->total_a)++;
 	}
 	return (1);
 }
@@ -105,10 +104,8 @@ int	parser_flags(char **av, int *f, t_ctx *ctx)
 
 int	check_flag(char *str)
 {
-	if (ft_strncmp(str, "--bench", 8)
-		&& ft_strncmp(str, "--simple", 9)
-		&& ft_strncmp(str, "--medium", 9)
-		&& ft_strncmp(str, "--complex", 10)
+	if (ft_strncmp(str, "--bench", 8) && ft_strncmp(str, "--simple", 9)
+		&& ft_strncmp(str, "--medium", 9) && ft_strncmp(str, "--complex", 10)
 		&& ft_strncmp(str, "--adaptive", 11))
 		return (0);
 	return (1);

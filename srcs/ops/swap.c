@@ -6,7 +6,7 @@
 /*   By: igomes-d <igomes-d@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/11 09:37:48 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/05/28 16:04:59 by igomes-d         ###   ########.fr       */
+/*   Updated: 2026/05/28 22:35:49 by igomes-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,9 @@ void	core_swap_a(int ss)
 		return ;
 	ctx->bench.total_ops++;
 	ctx->bench.sa++;
-	ft_printf_fd(1, "sa\n");
+	write(1, "sa\n", 3);
 }
+
 void	swap_a(void)
 {
 	core_swap_a(0);
@@ -59,7 +60,7 @@ void	core_swap_b(int ss)
 		return ;
 	ctx->bench.total_ops++;
 	ctx->bench.sb++;
-	ft_printf_fd(1, "sb\n");
+	write(1, "sb\n", 3);
 }
 
 void	swap_b(void)
@@ -77,5 +78,5 @@ void	swap_s(void)
 	core_swap_b(1);
 	ctx->bench.total_ops++;
 	ctx->bench.ss++;
-	ft_printf_fd(1, "ss\n");
+	write(1, "ss\n", 3);
 }

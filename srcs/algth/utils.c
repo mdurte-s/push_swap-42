@@ -3,41 +3,47 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: igomes-d <igomes-d@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/24 12:36:29 by igomes-d          #+#    #+#             */
-/*   Updated: 2026/05/27 00:53:46 by mdurte-s         ###   ########.fr       */
+/*   Updated: 2026/05/28 23:12:16 by igomes-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/push_swap.h"
 
 /* Returns the max value of the stack. */
-int	get_max(t_list *current, int size)
+int	get_max(t_stk *stk, int size)
 {
 	int	max;
+	int	nb;
+	int	i;
 
-	max = current->content;
-	while (current && size--)
+	max = stk->arr[stk->start].nb;
+	i = 0;
+	while (++i < stk->len && --size > 0)
 	{
-		if (current->content > max)
-			max = current->content;
-		current = current->next;
+		nb = stk->arr[_i(stk, i)].nb;
+		if (nb > max)
+			max = nb;
 	}
 	return (max);
 }
 
 /* Returns the min value of the stack. */
-int	get_min(t_list *current, int size)
+int	get_min(t_stk *stk, int size)
 {
 	int	min;
+	int	nb;
+	int	i;
 
-	min = current->content;
-	while (current && size--)
+	min = stk->arr[stk->start].nb;
+	i = 0;
+	while (++i < stk->len && --size > 0)
 	{
-		if (current->content < min)
-			min = current->content;
-		current = current->next;
+		nb = stk->arr[_i(stk, i)].nb;
+		if (nb < min)
+			min = nb;
 	}
 	return (min);
 }
