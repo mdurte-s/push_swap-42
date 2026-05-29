@@ -6,7 +6,7 @@
 /*   By: igomes-d <igomes-d@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/08 11:38:35 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/05/29 00:35:29 by igomes-d         ###   ########.fr       */
+/*   Updated: 2026/05/29 01:26:48 by igomes-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,11 @@ void	sort(t_ctx *ctx)
 	else
 		ctx->div = ctx->max;
 	// if (ctx->strategy == 1 || ctx->strategy == 4 + 1)
-	simple(ctx);
+	// simple(ctx);
 	// else if (ctx->strategy == 2 || ctx->strategy == 4 + 2)
 	// 	medium(ctx);
 	// else
-	// 	complex_a(ctx, ctx->total_a);
+	complex_a(ctx, ctx->a.len);
 }
 
 int	main(int argc, char **argv)

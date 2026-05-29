@@ -101,7 +101,7 @@ int			get_fit_distance(t_stk *stk, int val);
 int			move_to_top_dual(int di_a, int di_b, t_ctx *ctx);
 void		get_less_distance(t_ctx *ctx, int *di_a, int *di_b);
 void		simple(t_ctx *ctx);
-int			get_media(t_list *stack, int size);
+int			get_avg(t_stk *stk, int total);
 void		sort_three_b(t_ctx *ctx);
 void		sort_three_a(t_ctx *ctx);
 void		small_sort_b(t_ctx *ctx, int size);
