@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   simple.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: igomes-d <igomes-d@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/19 17:50:42 by igomes-d          #+#    #+#             */
-/*   Updated: 2026/05/29 01:12:07 by igomes-d         ###   ########.fr       */
+/*   Updated: 2026/05/30 18:51:59 by mdurte-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,18 +105,25 @@ stack_a and pushes it to stack_b;
 stack_b and pushes all stack_b to stack_a; */
 void	simple(t_ctx *ctx)
 {
-	// int	di_a;
-	// int	di_b;
+	int	di_a;
+	int	di_b;
+
 	move_to_top(get_distance(&ctx->a, ctx->min), ctx->a.len, 1);
 	push_b();
+	print_stacks(ctx);
 	move_to_top(get_distance(&ctx->a, ctx->max), ctx->a.len, 1);
 	push_b();
-	while (ctx->a.len > 20)
+	print_stacks(ctx);
+	rotate_b(1);
+	print_stacks(ctx);
+	while (ctx->a.len > 0)
 	{
-		// get_less_distance(ctx, &di_a, &di_b);
-		move_to_top_dual(9, get_fit_distance(&ctx->b, ctx->a.arr[_i(&ctx->a,
-					9)].nb), ctx);
+		get_less_distance(ctx, &di_a, &di_b);
+		/* move_to_top_dual(9, get_fit_distance(&ctx->b, ctx->a.arr[_i(&ctx->a,
+					9)].nb), ctx); */
+		move_to_top_dual(di_a, di_b, ctx);
 		push_b();
+		print_stacks(ctx);
 	}
 	move_to_top(get_distance(&ctx->b, ctx->max), ctx->b.len, 0);
 	while (ctx->b.len > 0)

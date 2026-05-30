@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   medium.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: igomes-d <igomes-d@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/24 12:34:30 by igomes-d          #+#    #+#             */
-/*   Updated: 2026/05/24 14:47:07 by igomes-d         ###   ########.fr       */
+/*   Updated: 2026/05/30 14:14:48 by mdurte-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	get_bucket_distance(t_list *current, int bucket)
 	return (-1);
 }
 
-void	get_less_distance_rev(t_ctx *ctx, int *di_a, int *di_b)
+/* void	get_less_distance_rev(t_ctx *ctx, int *di_a, int *di_b)
 {
 	int		d_a;
 	int		d_b;
@@ -58,9 +58,9 @@ void	get_less_distance_rev(t_ctx *ctx, int *di_a, int *di_b)
 		}
 		current = current->next;
 	}
-}
+} */
 
-void	medium(t_ctx *ctx)
+/* void	medium(t_ctx *ctx)
 {
 	int	di_a;
 	int	di_b;
@@ -87,4 +87,4 @@ void	medium(t_ctx *ctx)
 		(move_to_top_dual(di_a, di_b, ctx), push_a());
 	}
 	move_to_top(get_distance(ctx->stack_a, ctx->min), ctx->total_a, 1);
-}
+} */

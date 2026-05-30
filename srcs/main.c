@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: igomes-d <igomes-d@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/08 11:38:35 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/05/29 01:26:48 by igomes-d         ###   ########.fr       */
+/*   Updated: 2026/05/30 14:56:54 by mdurte-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,14 @@ void	sort(t_ctx *ctx)
 		ctx->div = (ctx->max - ctx->min) / (ctx->sqrt / 4);
 	else
 		ctx->div = ctx->max;
-	// if (ctx->strategy == 1 || ctx->strategy == 4 + 1)
-	// simple(ctx);
-	// else if (ctx->strategy == 2 || ctx->strategy == 4 + 2)
-	// 	medium(ctx);
-	// else
-	complex_a(ctx, ctx->a.len);
+	/* if (ctx->strategy == 1 || ctx->strategy == 4 + 1)
+		simple(ctx);
+	else if (ctx->strategy == 2 || ctx->strategy == 4 + 2)
+		medium(ctx);
+		simple(ctx);
+	else
+		complex_a(ctx, ctx->a.len); */
+	simple(ctx);
 }
 
 int	main(int argc, char **argv)
@@ -54,37 +56,32 @@ int	main(int argc, char **argv)
 	mesure_disorder(&ctx);
 	if (ctx.bench.disorder > 0)
 		sort(&ctx);
-	// if (ctx.bench.is_bench == 1)
-	print_bench(&ctx);
-	// print_stacks(ctx.stack_a, ctx.stack_b);
-	;
-	// ft_lstclear(&ctx.stack_a);
-	// ft_lstclear(&ctx.stack_b);
+	if (ctx.bench.is_bench == 1)
+		print_bench(&ctx);
+	print_stacks(&ctx);
+	/* ft_lstclear(&ctx.stack_a);
+	ft_lstclear(&ctx.stack_b); */
 	return (clear(), 0);
 }
 
-void	print_stacks(t_list *stack_a, t_list *stack_b)
+void	print_stacks(t_ctx *ctx)
 {
-	t_list	*new_a;
-	t_list	*new_b;
+	int		i;
 
-	new_a = stack_a;
-	new_b = stack_b;
+	i = -1;
 	ft_printf_fd(2, "\n");
-	while (new_a || new_b)
+	while (++i < ctx->a.capacity)
 	{
-		if (new_a)
+		if (ctx->a.arr[i].nb)
 		{
-			ft_printf_fd(2, "%d", new_a->content);
-			new_a = new_a->next;
+			ft_printf_fd(2, "%d",  ctx->a.arr[i].nb);
 		}
 		else
 			ft_printf_fd(2, "  ");
 		ft_printf_fd(2, " | ");
-		if (new_b)
+		if (ctx->a.arr[i].nb)
 		{
-			ft_printf_fd(2, "%d", new_b->content);
-			new_b = new_b->next;
+			ft_printf_fd(2, "%d", ctx->b.arr[i].nb);
 		}
 		ft_printf_fd(2, "\n");
 	}
