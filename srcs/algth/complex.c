@@ -6,7 +6,7 @@
 /*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/24 21:30:52 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/05/31 16:10:27 by mdurte-s         ###   ########.fr       */
+/*   Updated: 2026/05/31 21:40:59 by mdurte-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,22 @@ int	get_avg(t_stk *stk, int total)
 	while (++i < stk->len && limit--)
 		sum += stk->arr[_i(stk, i)].nb;
 	return (sum / total);
+}
+
+void	come_back(t_ctx *ctx, int rotates, int is_a)
+{
+	if (!rotates
+		|| (is_a && rotates == ctx->a.len)
+		|| (!is_a && rotates == ctx->b.len))
+		return ;
+	else if (is_a && rotates >= ctx->a.len - rotates)
+		rotate_a(ctx->a.len - rotates);
+	else if (is_a && rotates < ctx->a.len - rotates)
+		rev_rotate_a(rotates);
+	else if (!is_a && rotates >= ctx->b.len - rotates)
+		rotate_b(ctx->b.len - rotates);
+	else if (!is_a && rotates < ctx->b.len - rotates)
+		rev_rotate_b(rotates);
 }
 
 void	sort_three_b(t_ctx *ctx)
@@ -120,9 +136,8 @@ void	complex_b(t_ctx *ctx, int size)
 			(push_a(), pushes++);
 	}
 	if (pushes)
-	complex_a(ctx, pushes);
-	if (rotates != ctx->b.len)
-		rev_rotate_b(rotates);
+		complex_a(ctx, pushes);
+	come_back(ctx, rotates, 0);
 	if (rotates)
 		complex_b(ctx, rotates);
 }
@@ -147,8 +162,7 @@ void	complex_a(t_ctx *ctx, int size)
 		else
 			(push_b(), pushes++);
 	}
-	if (rotates != ctx->a.len)
-		rev_rotate_a(rotates);
+	come_back(ctx, rotates, 1);
 	if (rotates)
 		complex_a(ctx, rotates);
 	if (pushes)
