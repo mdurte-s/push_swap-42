@@ -6,7 +6,7 @@
 /*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/08 11:38:35 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/05/30 14:56:54 by mdurte-s         ###   ########.fr       */
+/*   Updated: 2026/05/31 15:49:03 by mdurte-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,14 +34,12 @@ void	sort(t_ctx *ctx)
 		ctx->div = (ctx->max - ctx->min) / (ctx->sqrt / 4);
 	else
 		ctx->div = ctx->max;
-	/* if (ctx->strategy == 1 || ctx->strategy == 4 + 1)
+	if (ctx->strategy == 1 || ctx->strategy == 4 + 1)
 		simple(ctx);
 	else if (ctx->strategy == 2 || ctx->strategy == 4 + 2)
 		medium(ctx);
-		simple(ctx);
 	else
-		complex_a(ctx, ctx->a.len); */
-	simple(ctx);
+		complex_a(ctx, ctx->a.len);
 }
 
 int	main(int argc, char **argv)
@@ -58,7 +56,7 @@ int	main(int argc, char **argv)
 		sort(&ctx);
 	if (ctx.bench.is_bench == 1)
 		print_bench(&ctx);
-	print_stacks(&ctx);
+	// print_stacks(&ctx);
 	/* ft_lstclear(&ctx.stack_a);
 	ft_lstclear(&ctx.stack_b); */
 	return (clear(), 0);
@@ -66,22 +64,25 @@ int	main(int argc, char **argv)
 
 void	print_stacks(t_ctx *ctx)
 {
-	int		i;
+	ssize_t	i;
+	ssize_t	idx;
 
 	i = -1;
 	ft_printf_fd(2, "\n");
 	while (++i < ctx->a.capacity)
 	{
-		if (ctx->a.arr[i].nb)
+		if (i < ctx->a.len)
 		{
-			ft_printf_fd(2, "%d",  ctx->a.arr[i].nb);
+			idx = _i(&ctx->a, i);
+			ft_printf_fd(2, "%d", ctx->a.arr[idx].nb);
 		}
 		else
-			ft_printf_fd(2, "  ");
-		ft_printf_fd(2, " | ");
-		if (ctx->a.arr[i].nb)
+			ft_printf_fd(2, " ");
+		ft_printf_fd(2, "  |  ");
+		if (i < ctx->b.len)
 		{
-			ft_printf_fd(2, "%d", ctx->b.arr[i].nb);
+			idx = _i(&ctx->b, i);
+			ft_printf_fd(2, "%d", ctx->b.arr[idx].nb);
 		}
 		ft_printf_fd(2, "\n");
 	}

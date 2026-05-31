@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   complex.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: igomes-d <igomes-d@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/24 21:30:52 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/05/29 01:36:02 by igomes-d         ###   ########.fr       */
+/*   Updated: 2026/05/31 16:10:27 by mdurte-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,15 +37,15 @@ void	sort_three_b(t_ctx *ctx)
 	end = ctx->b.arr[_i(&ctx->b, 2)].nb;
 	if (start > middle && middle > end)
 		return ;
-	if (start < middle && middle > end && start > end)
+	else if (start < middle && middle > end && start > end)
 		swap_b();
-	if (start < middle && middle < end)
+	else if (start < middle && middle < end)
 		(swap_b(), rotate_b(1), swap_b(), rev_rotate_b(1), swap_b());
-	if (start > middle && middle < end && start > end)
+	else if (start > middle && middle < end && start > end)
 		(rotate_b(1), swap_b(), rev_rotate_b(1));
-	if (start < middle && middle > end && start < end)
+	else if (start < middle && middle > end && start < end)
 		(swap_b(), rotate_b(1), swap_b(), rev_rotate_b(1));
-	if (start > middle && middle < end && start < end)
+	else if (start > middle && middle < end && start < end)
 		(rotate_b(1), swap_b(), rev_rotate_b(1), swap_b());
 }
 
@@ -60,30 +60,29 @@ void	sort_three_a(t_ctx *ctx)
 	end = ctx->a.arr[_i(&ctx->a, 2)].nb;
 	if (start < middle && middle < end)
 		return ;
-	if (start > middle && middle < end && start < end)
+	else if (start > middle && middle < end && start < end)
 		swap_a();
-	if (start > middle && middle > end)
+	else if (start > middle && middle > end)
 		(swap_a(), rotate_a(1), swap_a(), rev_rotate_a(1), swap_a());
-	if (start > middle && middle < end && start > end)
+	else if (start > middle && middle < end && start > end)
 		(swap_a(), rotate_a(1), swap_a(), rev_rotate_a(1));
-	if (start < middle && middle > end && start < end)
+	else if (start < middle && middle > end && start < end)
 		(rotate_a(1), swap_a(), rev_rotate_a(1));
-	if (start < middle && middle > end && start > end)
+	else if (start < middle && middle > end && start > end)
 		(rotate_a(1), swap_a(), rev_rotate_a(1), swap_a());
 }
 
 void	small_sort_b(t_ctx *ctx, int size)
 {
-	if (size <= 1)
-		return ;
 	if (size == 2)
 	{
 		if (ctx->b.arr[ctx->b.start].nb < ctx->b.arr[_i(&ctx->b, 1)].nb)
 			swap_b();
-		return ;
 	}
-	if (size == 3)
-		return (sort_three_b(ctx));
+	else if (size == 3)
+		sort_three_b(ctx);
+	while (size--)
+		push_a();
 }
 
 void	small_sort_a(t_ctx *ctx, int size)
@@ -120,11 +119,12 @@ void	complex_b(t_ctx *ctx, int size)
 		else
 			(push_a(), pushes++);
 	}
-	rev_rotate_b(rotates);
-	complex_b(ctx, size - pushes);
+	if (pushes)
 	complex_a(ctx, pushes);
-	while (pushes--)
-		push_b();
+	if (rotates != ctx->b.len)
+		rev_rotate_b(rotates);
+	if (rotates)
+		complex_b(ctx, rotates);
 }
 
 void	complex_a(t_ctx *ctx, int size)
@@ -147,9 +147,10 @@ void	complex_a(t_ctx *ctx, int size)
 		else
 			(push_b(), pushes++);
 	}
-	rev_rotate_a(rotates);
-	complex_b(ctx, pushes);
-	complex_a(ctx, size - pushes);
-	while (pushes--)
-		push_a();
+	if (rotates != ctx->a.len)
+		rev_rotate_a(rotates);
+	if (rotates)
+		complex_a(ctx, rotates);
+	if (pushes)
+		complex_b(ctx, pushes);
 }
