@@ -6,7 +6,7 @@
 /*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/08 11:38:35 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/05/27 12:01:38 by mdurte-s         ###   ########.fr       */
+/*   Updated: 2026/05/31 16:26:41 by mdurte-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,22 @@
 
 void	sort(t_ctx *ctx)
 {
-	ctx->min = get_min(ctx->stack_a, ctx->total_a);
-	ctx->max = get_max(ctx->stack_a, ctx->total_a);
-	ctx->sqrt = ft_sqrt(ctx->total_a);
+	if (ctx->a.len <= 2)
+		if (ctx->a.arr[0].nb > ctx->a.arr[1].nb)
+			return (swap_a());
+	if (ctx->a.len <= 3)
+	{
+		if (ctx->a.arr[0].nb > ctx->a.arr[1].nb)
+			swap_a();
+		if (ctx->a.arr[1].nb > ctx->a.arr[2].nb)
+			rev_rotate_a(1);
+		if (ctx->a.arr[0].nb > ctx->a.arr[1].nb)
+			swap_a();
+		return ;
+	}
+	ctx->min = get_min(&ctx->a, ctx->a.len);
+	ctx->max = get_max(&ctx->a, ctx->a.len);
+	ctx->sqrt = ft_sqrt(ctx->a.len);
 	if ((ctx->sqrt / 4) > 0)
 		ctx->div = (ctx->max - ctx->min) / (ctx->sqrt / 4);
 	else
@@ -26,7 +39,7 @@ void	sort(t_ctx *ctx)
 	else if (ctx->strategy == 2 || ctx->strategy == 4 + 2)
 		medium(ctx);
 	else
-		complex_a(ctx, ctx->total_a);
+		complex_a(ctx, ctx->a.len);
 }
 
 int	main(int argc, char **argv)
@@ -37,40 +50,39 @@ int	main(int argc, char **argv)
 		return (1);
 	init(&ctx);
 	if (parser_argv(++argv, &ctx) == 0)
-		return (ft_printf_fd(2, "Error\n"), ft_lstclear(&(ctx.stack_a)), 1);
+		return (ft_printf_fd(2, "Error\n"), clear(), 1);
 	mesure_disorder(&ctx);
 	if (ctx.bench.disorder > 0)
 		sort(&ctx);
 	if (ctx.bench.is_bench == 1)
 		print_bench(&ctx);
-	// print_stacks(ctx.stack_a, ctx.stack_b);
-	ft_lstclear(&ctx.stack_a);
-	ft_lstclear(&ctx.stack_b);
-	return (0);
+	// print_stacks(&ctx);
+	/* ft_lstclear(&ctx.stack_a);
+	ft_lstclear(&ctx.stack_b); */
+	return (clear(), 0);
 }
 
-void	print_stacks(t_list *stack_a, t_list *stack_b)
+void	print_stacks(t_ctx *ctx)
 {
-	t_list	*new_a;
-	t_list	*new_b;
+	ssize_t	i;
+	ssize_t	idx;
 
-	new_a = stack_a;
-	new_b = stack_b;
+	i = -1;
 	ft_printf_fd(2, "\n");
-	while (new_a || new_b)
+	while (++i < ctx->a.capacity)
 	{
-		if (new_a)
+		if (i < ctx->a.len)
 		{
-			ft_printf_fd(2, "%d", new_a->content);
-			new_a = new_a->next;
+			idx = _i(&ctx->a, i);
+			ft_printf_fd(2, "%d", ctx->a.arr[idx].nb);
 		}
 		else
-			ft_printf_fd(2, "  ");
-		ft_printf_fd(2, " | ");
-		if (new_b)
+			ft_printf_fd(2, " ");
+		ft_printf_fd(2, "  |  ");
+		if (i < ctx->b.len)
 		{
-			ft_printf_fd(2, "%d", new_b->content);
-			new_b = new_b->next;
+			idx = _i(&ctx->b, i);
+			ft_printf_fd(2, "%d", ctx->b.arr[idx].nb);
 		}
 		ft_printf_fd(2, "\n");
 	}

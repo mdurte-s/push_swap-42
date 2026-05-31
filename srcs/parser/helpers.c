@@ -3,28 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   helpers.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: igomes-d <igomes-d@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/14 13:54:14 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/05/24 10:51:19 by mdurte-s         ###   ########.fr       */
+/*   Updated: 2026/05/28 22:54:33 by igomes-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/push_swap.h"
-
-int	check_repeated(t_ctx *ctx, int nb)
-{
-	t_list	*i;
-
-	i = ctx->stack_a;
-	while (i)
-	{
-		if (i->content == nb)
-			return (0);
-		i = i->next;
-	}
-	return (1);
-}
 
 int	argv_to_int(char *argv, int *nb)
 {

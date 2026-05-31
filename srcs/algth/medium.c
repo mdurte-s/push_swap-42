@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   medium.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: igomes-d <igomes-d@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/24 12:34:30 by igomes-d          #+#    #+#             */
-/*   Updated: 2026/05/24 14:47:07 by igomes-d         ###   ########.fr       */
+/*   Updated: 2026/05/31 15:51:13 by mdurte-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,43 +20,38 @@ int	get_index_bucket(int num)
 	return ((num - ctx->min) / ctx->div);
 }
 
-int	get_bucket_distance(t_list *current, int bucket)
+int	get_bucket_distance(t_stk *stk, int bucket)
 {
 	int	i;
 
 	i = 0;
-	while (current)
+	while (i < stk->len)
 	{
-		if (get_index_bucket(current->content) == bucket)
+		if (get_index_bucket(stk->arr[_i(stk, i)].nb) == bucket)
 			return (i);
 		i++;
-		current = current->next;
 	}
 	return (-1);
 }
 
 void	get_less_distance_rev(t_ctx *ctx, int *di_a, int *di_b)
 {
-	int		d_a;
-	int		d_b;
-	t_list	*current;
+	int	d_a;
+	int	d_b;
 
-	*di_a = get_fit_distance(ctx->stack_a, ctx->stack_b->content, 1);
+	*di_a = get_fit_distance(&ctx->a, ctx->b.arr[ctx->b.start].nb, 1);
 	*di_b = 0;
 	d_a = *di_a;
 	d_b = *di_b;
-	current = ctx->stack_b->next;
-	while (current)
+	while (++d_b < ctx->b.len)
 	{
-		d_a = get_fit_distance(ctx->stack_a, current->content, 1);
-		d_b = get_distance(ctx->stack_b, current->content);
+		d_a = get_fit_distance(&ctx->a, ctx->b.arr[_i(&ctx->b, d_b)].nb, 1);
 		if (comparable_distance(d_a, d_b, ctx) < comparable_distance(*di_a,
 				*di_b, ctx))
 		{
 			*di_a = d_a;
 			*di_b = d_b;
 		}
-		current = current->next;
 	}
 }
 
@@ -71,20 +66,21 @@ void	medium(t_ctx *ctx)
 	i = 0;
 	while (i <= buckets_size)
 	{
-		di_a = get_bucket_distance(ctx->stack_a, i);
+		di_a = get_bucket_distance(&ctx->a, i);
 		if (di_a == -1 && i++ >= 0)
 			continue ;
-		move_to_top(di_a, ctx->total_a, 1);
+		move_to_top(di_a, ctx->a.len, 1);
 		push_b();
 	}
-	move_to_top(get_distance(ctx->stack_b, ctx->max), ctx->total_b, 0);
+	move_to_top(get_distance(&ctx->b, ctx->min), ctx->b.len, 0);
 	push_a();
-	move_to_top(get_distance(ctx->stack_b, ctx->min), ctx->total_b, 0);
+	move_to_top(get_distance(&ctx->b, ctx->max), ctx->b.len, 0);
 	push_a();
-	while (ctx->total_b > 0)
+	while (ctx->b.len > 0)
 	{
 		get_less_distance_rev(ctx, &di_a, &di_b);
-		(move_to_top_dual(di_a, di_b, ctx), push_a());
+		move_to_top_dual(di_a, di_b, ctx);
+		push_a();
 	}
-	move_to_top(get_distance(ctx->stack_a, ctx->min), ctx->total_a, 1);
+	move_to_top(get_distance(&ctx->a, ctx->min), ctx->a.len, 1);
 }

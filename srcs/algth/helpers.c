@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   helpers.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: igomes-d <igomes-d@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/19 17:49:21 by igomes-d          #+#    #+#             */
-/*   Updated: 2026/05/25 15:07:02 by mdurte-s         ###   ########.fr       */
+/*   Updated: 2026/05/29 00:55:56 by igomes-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,14 @@
 
 /* Returns the distance (int) from the first current node to the node with the
 value specified. */
-int	get_distance(t_list *list, int val)
+int	get_distance(t_stk *stk, int val)
 {
 	int	i;
 
-	i = 0;
-	while (list)
-	{
-		if (list->content == val)
+	i = -1;
+	while (++i < stk->len)
+		if (stk->arr[_i(stk, i)].nb == val)
 			return (i);
-		i++;
-		list = list->next;
-	}
 	return (0);
 }
 
@@ -33,46 +29,41 @@ void	move_to_top(int distance, int total, int is_a)
 {
 	if (distance > total - distance)
 	{
-		distance = total - distance;
 		if (is_a)
-			while (distance--)
-				rev_rotate_a(0);
+			rev_rotate_a(total - distance);
 		else
-			while (distance--)
-				rev_rotate_b(0);
+			rev_rotate_b(total - distance);
 	}
 	else
 	{
 		if (is_a)
-			while (distance--)
-				rotate_a(0);
+			rotate_a(distance);
 		else
-			while (distance--)
-				rotate_b(0);
+			rotate_b(distance);
 	}
 }
 
 int	comparable_distance(int d_a, int d_b, t_ctx *ctx)
 {
-	if (d_a > ctx->total_a - d_a && d_b > ctx->total_b - d_b)
+	if (d_a > ctx->a.len - d_a && d_b > ctx->b.len - d_b)
 	{
-		d_a = ctx->total_a - d_a;
-		d_b = ctx->total_b - d_b;
+		d_a = ctx->a.len - d_a;
+		d_b = ctx->b.len - d_b;
 		if (d_b > d_a)
 			return (d_b);
 		else
 			return (d_a);
 	}
-	else if (d_a <= ctx->total_a - d_a && d_b <= ctx->total_b - d_b)
+	else if (d_a <= ctx->a.len - d_a && d_b <= ctx->b.len - d_b)
 	{
 		if (d_b > d_a)
 			return (d_b);
 		else
 			return (d_a);
 	}
-	else if (d_a > ctx->total_a - d_a)
-		return ((ctx->total_a - d_a) + d_b);
-	else if (d_b > ctx->total_b - d_b)
-		return ((ctx->total_b - d_b) + d_a);
+	else if (d_a > ctx->a.len - d_a)
+		return ((ctx->a.len - d_a) + d_b);
+	else if (d_b > ctx->b.len - d_b)
+		return ((ctx->b.len - d_b) + d_a);
 	return (d_a + d_b);
 }
