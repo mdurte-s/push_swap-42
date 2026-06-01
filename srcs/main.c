@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: igomes-d <igomes-d@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/08 11:38:35 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/05/31 16:26:41 by mdurte-s         ###   ########.fr       */
+/*   Updated: 2026/06/01 19:30:17 by igomes-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,6 @@ void	sort(t_ctx *ctx)
 			swap_a();
 		return ;
 	}
-	ctx->min = get_min(&ctx->a, ctx->a.len);
-	ctx->max = get_max(&ctx->a, ctx->a.len);
 	ctx->sqrt = ft_sqrt(ctx->a.len);
 	if ((ctx->sqrt / 4) > 0)
 		ctx->div = (ctx->max - ctx->min) / (ctx->sqrt / 4);
@@ -57,8 +55,6 @@ int	main(int argc, char **argv)
 	if (ctx.bench.is_bench == 1)
 		print_bench(&ctx);
 	// print_stacks(&ctx);
-	/* ft_lstclear(&ctx.stack_a);
-	ft_lstclear(&ctx.stack_b); */
 	return (clear(), 0);
 }
 

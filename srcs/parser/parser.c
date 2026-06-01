@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: igomes-d <igomes-d@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/11 09:54:05 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/05/31 16:27:01 by mdurte-s         ###   ########.fr       */
+/*   Updated: 2026/06/01 10:27:37 by igomes-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,12 @@ int	parser_argv(char **argv, t_ctx *ctx)
 
 int	create_stack(char ***argv, t_ctx *ctx)
 {
-	char	**temp_argv;
+	char		**temp_argv;
+	long long	max;
+	long long	min;
 
+	max = 2147483647LL;
+	min = max;
 	while (*argv && **argv)
 	{
 		if (!count_strings(**argv, ' '))
@@ -51,15 +55,17 @@ int	create_stack(char ***argv, t_ctx *ctx)
 		if (check_flag(**argv))
 			break ;
 		temp_argv = ft_split(**argv, ' ');
-		if (!add_to_stack(temp_argv, ctx))
+		if (!add_to_stack(temp_argv, ctx, &min, &max))
 			return (free_array(temp_argv), 0);
 		free_array(temp_argv);
 		(*argv)++;
 	}
+	ctx->min = min;
+	ctx->max = max;
 	return (1);
 }
 
-int	add_to_stack(char **argv, t_ctx *ctx)
+int	add_to_stack(char **argv, t_ctx *ctx, long long *min, long long *max)
 {
 	int	index;
 	int	nb;
@@ -71,6 +77,10 @@ int	add_to_stack(char **argv, t_ctx *ctx)
 			return (0);
 		if (add_stk(&ctx->a, nb))
 			return (0);
+		if (*min == 2147483647LL || nb < *min)
+			*min = nb;
+		if (*max == 2147483647LL || nb > *max)
+			*max = nb;
 	}
 	return (1);
 }

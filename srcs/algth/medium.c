@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   medium.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: igomes-d <igomes-d@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/24 12:34:30 by igomes-d          #+#    #+#             */
-/*   Updated: 2026/05/31 15:51:13 by mdurte-s         ###   ########.fr       */
+/*   Updated: 2026/06/01 19:03:43 by igomes-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,39 +20,20 @@ int	get_index_bucket(int num)
 	return ((num - ctx->min) / ctx->div);
 }
 
-int	get_bucket_distance(t_stk *stk, int bucket)
+int	get_bucket_distance(t_stk *stk, int bucket, int min, int max)
 {
 	int	i;
+	int	nb;
 
 	i = 0;
 	while (i < stk->len)
 	{
-		if (get_index_bucket(stk->arr[_i(stk, i)].nb) == bucket)
+		nb = stk->arr[_i(stk, i)].nb;
+		if (nb != min && nb != max && get_index_bucket(nb) == bucket)
 			return (i);
 		i++;
 	}
 	return (-1);
-}
-
-void	get_less_distance_rev(t_ctx *ctx, int *di_a, int *di_b)
-{
-	int	d_a;
-	int	d_b;
-
-	*di_a = get_fit_distance(&ctx->a, ctx->b.arr[ctx->b.start].nb, 1);
-	*di_b = 0;
-	d_a = *di_a;
-	d_b = *di_b;
-	while (++d_b < ctx->b.len)
-	{
-		d_a = get_fit_distance(&ctx->a, ctx->b.arr[_i(&ctx->b, d_b)].nb, 1);
-		if (comparable_distance(d_a, d_b, ctx) < comparable_distance(*di_a,
-				*di_b, ctx))
-		{
-			*di_a = d_a;
-			*di_b = d_b;
-		}
-	}
 }
 
 void	medium(t_ctx *ctx)
@@ -61,24 +42,30 @@ void	medium(t_ctx *ctx)
 	int	di_b;
 	int	buckets_size;
 	int	i;
+	int	nb;
 
 	buckets_size = get_index_bucket(ctx->max);
 	i = 0;
+	di_b = buckets_size;
 	while (i <= buckets_size)
 	{
-		di_a = get_bucket_distance(&ctx->a, i);
-		if (di_a == -1 && i++ >= 0)
+		di_a = get_bucket_distance(&ctx->a, i, ctx->min, ctx->max);
+		if (di_a == -1 && i++ >= 0 && --di_b >= -10)
 			continue ;
-		move_to_top(di_a, ctx->a.len, 1);
+		while (di_a--)
+		{
+			nb = ctx->a.arr[ctx->a.start].nb;
+			if (nb != ctx->max && nb != ctx->min
+				&& get_index_bucket(nb) == di_b)
+				(push_b(), rotate_b(1));
+			else
+				rotate_a(1);
+		}
 		push_b();
 	}
-	move_to_top(get_distance(&ctx->b, ctx->min), ctx->b.len, 0);
-	push_a();
-	move_to_top(get_distance(&ctx->b, ctx->max), ctx->b.len, 0);
-	push_a();
 	while (ctx->b.len > 0)
 	{
-		get_less_distance_rev(ctx, &di_a, &di_b);
+		get_less_distance(ctx, &di_a, &di_b, get_min_index(&ctx->a));
 		move_to_top_dual(di_a, di_b, ctx);
 		push_a();
 	}

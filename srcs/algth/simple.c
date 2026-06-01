@@ -3,78 +3,101 @@
 /*                                                        :::      ::::::::   */
 /*   simple.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: igomes-d <igomes-d@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/19 17:50:42 by igomes-d          #+#    #+#             */
-/*   Updated: 2026/05/31 15:53:34 by mdurte-s         ###   ########.fr       */
+/*   Updated: 2026/06/01 16:15:06 by igomes-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/push_swap.h"
+#include <fcntl.h>
 
-int	get_fit_distance(t_stk *stk, int val, int is_medium)
+int	get_min_index(t_stk *stk)
 {
-	int	prev_nb;
+	int	left_i;
+	int	right_i;
+	int	mid_i;
+
+	left_i = 0;
+	right_i = stk->len - 1;
+	while (left_i < right_i)
+	{
+		mid_i = left_i + (right_i - left_i) / 2;
+		if (stk->arr[_i(stk, mid_i)].nb > stk->arr[_i(stk, right_i)].nb)
+			left_i = mid_i + 1;
+		else
+			right_i = mid_i;
+	}
+	return (left_i);
+}
+
+int	get_fit_distance(t_stk *stk, int val, int min_offset)
+{
+	int	left;
+	int	right;
+	int	mid;
 	int	curr_nb;
-	int	i;
+	int	real_mid;
 
-	i = 0;
-	while (is_medium == 0 && i < stk->len)
+	left = 0;
+	right = stk->len - 1;
+	while (left <= right)
 	{
-		prev_nb = stk->arr[_i(stk, i - 1)].nb;
-		curr_nb = stk->arr[_i(stk, i)].nb;
-		if (curr_nb < val && val < prev_nb)
-			return (i);
-		i++;
+		mid = left + (right - left) / 2;
+		real_mid = (min_offset + mid) % stk->len;
+		curr_nb = stk->arr[_i(stk, real_mid)].nb;
+		if (stk->arr[_i(stk, real_mid - 1)].nb < val && val < curr_nb)
+			return (real_mid);
+		if (curr_nb > val)
+			right = mid - 1;
+		else
+			left = mid + 1;
 	}
-	while (is_medium == 1 && i < stk->len)
-	{
-		prev_nb = stk->arr[_i(stk, i - 1)].nb;
-		curr_nb = stk->arr[_i(stk, i)].nb;
-		if (prev_nb < val && val < curr_nb)
-			return (i);
-		i++;
-	}
-	return (0);
+	return (-1);
 }
 
-int	move_to_top_dual(int di_a, int di_b, t_ctx *ctx)
+int	move_to_top_dual(int d_a, int d_b, t_ctx *ctx)
 {
-	if (di_a > ctx->a.len - di_a && di_b > ctx->b.len - di_b)
+	int	drev_a;
+	int	drev_b;
+
+	drev_a = ctx->a.len - d_a;
+	drev_b = ctx->b.len - d_b;
+	if (d_a > drev_a && d_b > drev_b)
 	{
-		di_a = ctx->a.len - di_a;
-		di_b = ctx->b.len - di_b;
-		if (di_b > di_a)
-			(rev_rotate_r(di_a), di_b -= di_a, di_a = 0);
+		if (drev_b > drev_a)
+			(rev_rotate_r(drev_a), drev_b -= drev_a, drev_a = 0);
 		else
-			(rev_rotate_r(di_b), di_a -= di_b, di_b = 0);
-		return (rev_rotate_a(di_a), rev_rotate_b(di_b), 0);
+			(rev_rotate_r(drev_b), drev_a -= drev_b, drev_b = 0);
+		return (rev_rotate_a(drev_a), rev_rotate_b(drev_b), 0);
 	}
-	else if (di_a <= ctx->a.len - di_a && di_b <= ctx->b.len - di_b)
+	else if (d_a <= drev_a && d_b <= drev_b)
 	{
-		if (di_b > di_a)
-			(rotate_r(di_a), di_b = di_b - di_a, di_a = 0);
+		if (d_b > d_a)
+			(rotate_r(d_a), d_b -= d_a, d_a = 0);
 		else
-			(rotate_r(di_b), di_a -= di_b, di_b = 0);
-		return (rotate_a(di_a), rotate_b(di_b), 0);
+			(rotate_r(d_b), d_a -= d_b, d_b = 0);
+		return (rotate_a(d_a), rotate_b(d_b), 0);
 	}
-	move_to_top(di_a, ctx->a.len, 1);
-	move_to_top(di_b, ctx->b.len, 0);
+	move_to_top(d_a, ctx->a.len, 1);
+	move_to_top(d_b, ctx->b.len, 0);
 	return (0);
 }
 
-void	get_less_distance(t_ctx *ctx, int *di_a, int *di_b)
+void	get_less_distance(t_ctx *ctx, int *di_a, int *di_b, int min_offset)
 {
 	int	d_a;
 	int	d_b;
 
-	*di_a = 0;
-	*di_b = get_fit_distance(&ctx->b, ctx->a.arr[ctx->a.start].nb, 0);
+	*di_a = get_fit_distance(&ctx->a, ctx->b.arr[ctx->b.start].nb, min_offset);
+	*di_b = 0;
 	d_a = *di_a;
 	d_b = *di_b;
-	while (++d_a < ctx->a.len)
+	while (++d_b < ctx->b.len)
 	{
-		d_b = get_fit_distance(&ctx->b, ctx->a.arr[_i(&ctx->a, d_a)].nb, 0);
+		d_a = get_fit_distance(&ctx->a, ctx->b.arr[_i(&ctx->b, d_b)].nb,
+				min_offset);
 		if (comparable_distance(d_a, d_b, ctx) < comparable_distance(*di_a,
 				*di_b, ctx))
 		{
@@ -86,20 +109,26 @@ void	get_less_distance(t_ctx *ctx, int *di_a, int *di_b)
 
 void	simple(t_ctx *ctx)
 {
-	int	di_a;
+	int	nb;
 	int	di_b;
+	int	di_a;
 
 	move_to_top(get_distance(&ctx->a, ctx->min), ctx->a.len, 1);
-	push_b();
-	move_to_top(get_distance(&ctx->a, ctx->max), ctx->a.len, 1);
-	push_b();
-	while (ctx->a.len > 0)
+	rotate_a(1);
+	nb = ctx->a.arr[ctx->a.start].nb;
+	while (nb != ctx->min)
 	{
-		get_less_distance(ctx, &di_a, &di_b);
-		move_to_top_dual(di_a, di_b, ctx);
-		push_b();
+		if (ctx->a.arr[_i(&ctx->a, -1)].nb > nb)
+			push_b();
+		else
+			rotate_a(1);
+		nb = ctx->a.arr[ctx->a.start].nb;
 	}
-	move_to_top(get_distance(&ctx->b, ctx->max), ctx->b.len, 0);
 	while (ctx->b.len > 0)
+	{
+		get_less_distance(ctx, &di_a, &di_b, get_min_index(&ctx->a));
+		move_to_top_dual(di_a, di_b, ctx);
 		push_a();
+	}
+	move_to_top(get_distance(&ctx->a, ctx->min), ctx->a.len, 1);
 }

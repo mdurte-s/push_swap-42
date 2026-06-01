@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   complex.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: igomes-d <igomes-d@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/24 21:30:52 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/05/31 21:40:59 by mdurte-s         ###   ########.fr       */
+/*   Updated: 2026/06/01 19:29:38 by igomes-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/push_swap.h"
 
-int	get_avg(t_stk *stk, int total)
+int	get_avg(t_stk *stk, int total, int is_rev)
 {
 	int	sum;
 	int	i;
@@ -20,25 +20,32 @@ int	get_avg(t_stk *stk, int total)
 
 	sum = 0;
 	limit = total;
-	i = -1;
-	while (++i < stk->len && limit--)
-		sum += stk->arr[_i(stk, i)].nb;
+	if (is_rev)
+		i = -total;
+	else
+		i = 0;
+	while (limit--)
+		sum += stk->arr[_i(stk, i++)].nb;
 	return (sum / total);
 }
 
 void	come_back(t_ctx *ctx, int rotates, int is_a)
 {
-	if (!rotates
-		|| (is_a && rotates == ctx->a.len)
-		|| (!is_a && rotates == ctx->b.len))
+	if (is_a)
+	{
+		if (!rotates || rotates == ctx->a.len)
+			return ;
+		else if (rotates >= ctx->a.len - rotates)
+			rotate_a(ctx->a.len - rotates);
+		else if (rotates < ctx->a.len - rotates)
+			rev_rotate_a(rotates);
 		return ;
-	else if (is_a && rotates >= ctx->a.len - rotates)
-		rotate_a(ctx->a.len - rotates);
-	else if (is_a && rotates < ctx->a.len - rotates)
-		rev_rotate_a(rotates);
-	else if (!is_a && rotates >= ctx->b.len - rotates)
+	}
+	if (!rotates || rotates == ctx->b.len)
+		return ;
+	else if (rotates >= ctx->b.len - rotates)
 		rotate_b(ctx->b.len - rotates);
-	else if (!is_a && rotates < ctx->b.len - rotates)
+	else if (rotates < ctx->b.len - rotates)
 		rev_rotate_b(rotates);
 }
 
@@ -127,7 +134,7 @@ void	complex_b(t_ctx *ctx, int size)
 	i = -1;
 	rotates = 0;
 	pushes = 0;
-	pivot = get_avg(&ctx->b, size);
+	pivot = get_avg(&ctx->b, size, 0);
 	while (++i < size)
 	{
 		if (ctx->b.arr[ctx->b.start].nb <= pivot)
@@ -154,7 +161,7 @@ void	complex_a(t_ctx *ctx, int size)
 	i = -1;
 	rotates = 0;
 	pushes = 0;
-	pivot = get_avg(&ctx->a, size);
+	pivot = get_avg(&ctx->a, size, 0);
 	while (++i < size)
 	{
 		if (ctx->a.arr[ctx->a.start].nb > pivot)

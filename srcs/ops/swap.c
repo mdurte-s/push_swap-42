@@ -6,7 +6,7 @@
 /*   By: igomes-d <igomes-d@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/11 09:37:48 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/05/28 22:35:49 by igomes-d         ###   ########.fr       */
+/*   Updated: 2026/06/01 10:12:11 by igomes-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,12 @@ void	core_swap_a(int ss)
 	size_t	i;
 
 	ctx = get_ctx(0);
-	if (ctx->a.len > 1)
-	{
-		i = _i(&ctx->a, 1);
-		tmp = ctx->a.arr[ctx->a.start];
-		ctx->a.arr[ctx->a.start] = ctx->a.arr[i];
-		ctx->a.arr[i] = tmp;
-	}
+	if (ctx->a.len < 2)
+		return ;
+	i = (ctx->a.start + 1) % ctx->a.capacity;
+	tmp = ctx->a.arr[ctx->a.start];
+	ctx->a.arr[ctx->a.start] = ctx->a.arr[i];
+	ctx->a.arr[i] = tmp;
 	if (ss)
 		return ;
 	ctx->bench.total_ops++;
@@ -49,13 +48,12 @@ void	core_swap_b(int ss)
 	size_t	i;
 
 	ctx = get_ctx(0);
-	if (ctx->b.len > 1)
-	{
-		i = _i(&ctx->b, 1);
-		tmp = ctx->b.arr[ctx->b.start];
-		ctx->b.arr[ctx->b.start] = ctx->b.arr[i];
-		ctx->b.arr[i] = tmp;
-	}
+	if (ctx->b.len < 2)
+		return ;
+	i = (ctx->b.start + 1) % ctx->b.capacity;
+	tmp = ctx->b.arr[ctx->b.start];
+	ctx->b.arr[ctx->b.start] = ctx->b.arr[i];
+	ctx->b.arr[i] = tmp;
 	if (ss)
 		return ;
 	ctx->bench.total_ops++;
@@ -74,6 +72,8 @@ void	swap_s(void)
 	t_ctx	*ctx;
 
 	ctx = get_ctx(0);
+	if (ctx->a.len < 2 && ctx->b.len < 2)
+		return ;
 	core_swap_a(1);
 	core_swap_b(1);
 	ctx->bench.total_ops++;

@@ -6,7 +6,7 @@
 /*   By: igomes-d <igomes-d@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/19 17:49:21 by igomes-d          #+#    #+#             */
-/*   Updated: 2026/05/29 00:55:56 by igomes-d         ###   ########.fr       */
+/*   Updated: 2026/06/01 11:21:05 by igomes-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,25 +45,28 @@ void	move_to_top(int distance, int total, int is_a)
 
 int	comparable_distance(int d_a, int d_b, t_ctx *ctx)
 {
-	if (d_a > ctx->a.len - d_a && d_b > ctx->b.len - d_b)
+	int	drev_a;
+	int	drev_b;
+
+	drev_a = ctx->a.len - d_a;
+	drev_b = ctx->b.len - d_b;
+	if (d_a > drev_a && d_b > drev_b)
 	{
-		d_a = ctx->a.len - d_a;
-		d_b = ctx->b.len - d_b;
+		if (drev_b > drev_a)
+			return (drev_b);
+		else
+			return (drev_a);
+	}
+	else if (d_a <= drev_a && d_b <= drev_b)
+	{
 		if (d_b > d_a)
 			return (d_b);
 		else
 			return (d_a);
 	}
-	else if (d_a <= ctx->a.len - d_a && d_b <= ctx->b.len - d_b)
-	{
-		if (d_b > d_a)
-			return (d_b);
-		else
-			return (d_a);
-	}
-	else if (d_a > ctx->a.len - d_a)
-		return ((ctx->a.len - d_a) + d_b);
-	else if (d_b > ctx->b.len - d_b)
-		return ((ctx->b.len - d_b) + d_a);
+	else if (d_a > drev_a)
+		return (drev_a + d_b);
+	else if (d_b > drev_b)
+		return (drev_b + d_a);
 	return (d_a + d_b);
 }

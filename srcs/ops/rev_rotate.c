@@ -6,7 +6,7 @@
 /*   By: igomes-d <igomes-d@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/11 09:43:10 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/05/29 00:54:03 by igomes-d         ###   ########.fr       */
+/*   Updated: 2026/06/01 10:12:59 by igomes-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,13 @@ void	rev_rotate_a(int amount)
 	t_ctx	*ctx;
 	int		is_dual;
 
-	if (amount == 0)
+	ctx = get_ctx(0);
+	if (amount == 0 || ctx->a.len < 2)
 		return ;
 	is_dual = amount < 0;
 	if (is_dual)
 		amount *= -1;
-	ctx = get_ctx(0);
-	if (ctx->a.len > 1)
-		ctx->a.start = _i(&ctx->a, amount * -1);
+	rotate_stk(&ctx->a, amount * -1);
 	if (is_dual)
 		return ;
 	ctx->bench.total_ops += amount;
@@ -47,14 +46,13 @@ void	rev_rotate_b(int amount)
 	t_ctx	*ctx;
 	int		is_dual;
 
-	if (amount == 0)
+	ctx = get_ctx(0);
+	if (amount == 0 || ctx->b.len < 2)
 		return ;
 	is_dual = amount < 0;
 	if (is_dual)
 		amount *= -1;
-	ctx = get_ctx(0);
-	if (ctx->b.len > 1)
-		ctx->b.start = _i(&ctx->b, amount * -1);
+	rotate_stk(&ctx->b, amount * -1);
 	if (is_dual)
 		return ;
 	ctx->bench.total_ops += amount;
@@ -73,9 +71,9 @@ void	rev_rotate_r(int amount)
 {
 	t_ctx	*ctx;
 
-	if (amount == 0)
-		return ;
 	ctx = get_ctx(0);
+	if (amount == 0 || (ctx->a.len < 2 && ctx->b.len < 2))
+		return ;
 	rev_rotate_a(amount * -1);
 	rev_rotate_b(amount * -1);
 	ctx->bench.total_ops += amount;

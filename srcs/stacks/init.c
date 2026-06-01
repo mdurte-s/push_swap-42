@@ -6,7 +6,7 @@
 /*   By: igomes-d <igomes-d@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/28 08:59:26 by igomes-d          #+#    #+#             */
-/*   Updated: 2026/05/29 01:13:54 by igomes-d         ###   ########.fr       */
+/*   Updated: 2026/06/01 11:39:28 by igomes-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,17 +37,20 @@ int	check_dup(t_stk *stk, int nb)
 int	add_stk(t_stk *stk, int nb)
 {
 	t_node	*tmp;
+	ssize_t	new_capacity;
 
 	if (check_dup(stk, nb))
 		return (-1);
 	if (stk->len + 1 > stk->capacity)
 	{
-		tmp = (t_node *)malloc(((stk->capacity + 8) * 1.5) * sizeof(t_node));
+		new_capacity = (stk->capacity + 1000) * 1.5;
+		tmp = (t_node *)malloc(new_capacity * sizeof(t_node));
 		if (!tmp)
 			return (-1);
 		if (stk->arr)
-			ft_memcpy(tmp, stk->arr, stk->len * sizeof(t_node));
-		stk->capacity = ((stk->capacity + 8) * 1.5);
+			(ft_memcpy(tmp, stk->arr, stk->len * sizeof(t_node)),
+				free(stk->arr));
+		stk->capacity = new_capacity;
 		stk->arr = tmp;
 	}
 	stk->arr[stk->len++].nb = nb;

@@ -6,30 +6,11 @@
 /*   By: igomes-d <igomes-d@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/11 09:39:49 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/05/29 00:32:31 by igomes-d         ###   ########.fr       */
+/*   Updated: 2026/06/01 10:07:41 by igomes-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/push_swap.h"
-
-void	push_from_to(t_stk *from, t_stk *to)
-{
-	size_t	from_start;
-
-	from_start = from->start;
-	if (to->len == 0)
-	{
-		from->empty_s = from_start;
-		from->empty_e = from_start;
-		to->arr[0] = from->arr[from_start];
-		to->empty_s = 1;
-		to->empty_e = to->capacity - 1;
-		from->start = _i(from, 1);
-		return ;
-	}
-	to->arr[push_i(to)] = from->arr[from_start];
-	pop(from);
-}
 
 /* Take the first element at the top of b and put it at the top of a.
 Do nothing if b is empty. */
@@ -40,7 +21,9 @@ void	push_a(void)
 	ctx = get_ctx(0);
 	if (ctx->b.len < 1)
 		return ;
-	push_from_to(&ctx->b, &ctx->a);
+	ctx->a.start = (ctx->a.start - 1 + ctx->a.capacity) % ctx->a.capacity;
+	ctx->a.arr[ctx->a.start] = ctx->b.arr[ctx->b.start];
+	ctx->b.start = (ctx->b.start + 1) % ctx->b.capacity;
 	ctx->a.len++;
 	ctx->b.len--;
 	ctx->bench.pa++;
@@ -57,7 +40,9 @@ void	push_b(void)
 	ctx = get_ctx(0);
 	if (ctx->a.len < 1)
 		return ;
-	push_from_to(&ctx->a, &ctx->b);
+	ctx->b.start = (ctx->b.start - 1 + ctx->b.capacity) % ctx->b.capacity;
+	ctx->b.arr[ctx->b.start] = ctx->a.arr[ctx->a.start];
+	ctx->a.start = (ctx->a.start + 1) % ctx->a.capacity;
 	ctx->a.len--;
 	ctx->b.len++;
 	ctx->bench.pb++;
