@@ -6,7 +6,7 @@
 /*   By: igomes-d <igomes-d@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/28 08:59:26 by igomes-d          #+#    #+#             */
-/*   Updated: 2026/06/01 10:57:20 by igomes-d         ###   ########.fr       */
+/*   Updated: 2026/06/01 22:16:19 by igomes-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,6 @@ void	rotate_stk(t_stk *stk, int amount)
 	ssize_t	len;
 
 	len = stk->len;
-	amount = amount % len;
-	if (amount == 0)
-		return ;
 	capacity = stk->capacity;
 	if (amount > 0)
 	{

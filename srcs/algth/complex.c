@@ -6,7 +6,7 @@
 /*   By: igomes-d <igomes-d@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/24 21:30:52 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/06/01 19:29:38 by igomes-d         ###   ########.fr       */
+/*   Updated: 2026/06/01 22:31:22 by igomes-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,21 +31,21 @@ int	get_avg(t_stk *stk, int total, int is_rev)
 
 void	come_back(t_ctx *ctx, int rotates, int is_a)
 {
+	int	rev_amount;
+
 	if (is_a)
 	{
-		if (!rotates || rotates == ctx->a.len)
-			return ;
-		else if (rotates >= ctx->a.len - rotates)
-			rotate_a(ctx->a.len - rotates);
-		else if (rotates < ctx->a.len - rotates)
+		rev_amount = ctx->a.len - rotates;
+		if (rotates >= rev_amount)
+			rotate_a(rev_amount);
+		else if (rotates < rev_amount)
 			rev_rotate_a(rotates);
 		return ;
 	}
-	if (!rotates || rotates == ctx->b.len)
-		return ;
-	else if (rotates >= ctx->b.len - rotates)
-		rotate_b(ctx->b.len - rotates);
-	else if (rotates < ctx->b.len - rotates)
+	rev_amount = ctx->b.len - rotates;
+	if (rotates >= rev_amount)
+		rotate_b(rev_amount);
+	else if (rotates < rev_amount)
 		rev_rotate_b(rotates);
 }
 
@@ -60,16 +60,17 @@ void	sort_three_b(t_ctx *ctx)
 	end = ctx->b.arr[_i(&ctx->b, 2)].nb;
 	if (start > middle && middle > end)
 		return ;
-	else if (start < middle && middle > end && start > end)
+	if (start < middle)
+	{
 		swap_b();
-	else if (start < middle && middle < end)
-		(swap_b(), rotate_b(1), swap_b(), rev_rotate_b(1), swap_b());
-	else if (start > middle && middle < end && start > end)
-		(rotate_b(1), swap_b(), rev_rotate_b(1));
-	else if (start < middle && middle > end && start < end)
-		(swap_b(), rotate_b(1), swap_b(), rev_rotate_b(1));
-	else if (start > middle && middle < end && start < end)
-		(rotate_b(1), swap_b(), rev_rotate_b(1), swap_b());
+		if (start > end)
+			return ;
+	}
+	rotate_b(1);
+	swap_b();
+	rev_rotate_b(1);
+	if (middle < end && (start < middle || start < end))
+		swap_b();
 }
 
 void	sort_three_a(t_ctx *ctx)
@@ -83,16 +84,17 @@ void	sort_three_a(t_ctx *ctx)
 	end = ctx->a.arr[_i(&ctx->a, 2)].nb;
 	if (start < middle && middle < end)
 		return ;
-	else if (start > middle && middle < end && start < end)
+	if (start > middle)
+	{
 		swap_a();
-	else if (start > middle && middle > end)
-		(swap_a(), rotate_a(1), swap_a(), rev_rotate_a(1), swap_a());
-	else if (start > middle && middle < end && start > end)
-		(swap_a(), rotate_a(1), swap_a(), rev_rotate_a(1));
-	else if (start < middle && middle > end && start < end)
-		(rotate_a(1), swap_a(), rev_rotate_a(1));
-	else if (start < middle && middle > end && start > end)
-		(rotate_a(1), swap_a(), rev_rotate_a(1), swap_a());
+		if (start < end)
+			return ;
+	}
+	rotate_a(1);
+	swap_a();
+	rev_rotate_a(1);
+	if (middle > end && (start > middle || start > end))
+		swap_a();
 }
 
 void	small_sort_b(t_ctx *ctx, int size)

@@ -6,7 +6,7 @@
 /*   By: igomes-d <igomes-d@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/11 09:41:25 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/06/01 10:12:35 by igomes-d         ###   ########.fr       */
+/*   Updated: 2026/06/01 22:23:54 by igomes-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	rotate_a(int amount)
 	int		is_dual;
 
 	ctx = get_ctx(0);
+	amount = amount % ctx->a.len;
 	if (amount == 0 || ctx->a.len < 2)
 		return ;
 	is_dual = amount < 0;
@@ -47,6 +48,7 @@ void	rotate_b(int amount)
 	int		is_dual;
 
 	ctx = get_ctx(0);
+	amount = amount % ctx->b.len;
 	if (amount == 0 || ctx->b.len < 2)
 		return ;
 	is_dual = amount < 0;
