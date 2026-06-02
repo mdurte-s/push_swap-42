@@ -6,7 +6,7 @@
 /*   By: igomes-d <igomes-d@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/08 11:38:35 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/06/02 16:07:18 by igomes-d         ###   ########.fr       */
+/*   Updated: 2026/06/02 16:21:09 by igomes-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int	main(int argc, char **argv)
 		sort(&ctx);
 	if (ctx.bench.is_bench == 1)
 		print_bench(&ctx);
-	// print_stacks(&ctx);
+	print_stacks(&ctx);
 	return (clear(), 0);
 }
 
