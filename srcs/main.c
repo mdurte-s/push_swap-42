@@ -6,7 +6,7 @@
 /*   By: igomes-d <igomes-d@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/08 11:38:35 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/06/02 16:21:09 by igomes-d         ###   ########.fr       */
+/*   Updated: 2026/06/02 16:24:13 by igomes-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,14 +56,16 @@ void	sort(t_ctx *ctx)
 		ctx->div = (ctx->max - ctx->min) / (ctx->sqrt / 4);
 	else
 		ctx->div = ctx->max;
-	// if (ctx->strategy == 1 || ctx->strategy == 4 + 1)
-	// simple(ctx);
-	// else if (ctx->strategy == 2 || ctx->strategy == 4 + 2)
-	medium(ctx);
-	// else if (ctx->a.capacity >= 500)
-	//(complex_a(ctx, ctx->a.len), simple(ctx));
+	if (ctx->strategy == 1 || ctx->strategy == 4 + 1)
+		simple(ctx);
+	else if (ctx->strategy == 2 || ctx->strategy == 4 + 2)
+		medium(ctx);
 	// else
-	// 	medium(ctx);
+	// 	complex_a(ctx, ctx->a.len);
+	else if (ctx->a.capacity >= 500)
+		(complex_a(ctx, ctx->a.len), simple(ctx));
+	else
+		medium(ctx);
 }
 
 int	main(int argc, char **argv)
