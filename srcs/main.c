@@ -6,7 +6,7 @@
 /*   By: igomes-d <igomes-d@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/08 11:38:35 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/06/02 16:24:13 by igomes-d         ###   ########.fr       */
+/*   Updated: 2026/06/02 16:58:20 by igomes-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,19 +53,18 @@ void	sort(t_ctx *ctx)
 		return (sort_under_five(ctx, ctx->a.len));
 	ctx->sqrt = ft_sqrt(ctx->a.len);
 	if ((ctx->sqrt / 4) > 0)
-		ctx->div = (ctx->max - ctx->min) / (ctx->sqrt / 4);
+		ctx->div = ((ssize_t)ctx->max - (ssize_t)ctx->min) / ((ssize_t)ctx->sqrt
+				/ 4);
 	else
 		ctx->div = ctx->max;
-	if (ctx->strategy == 1 || ctx->strategy == 4 + 1)
+	if (ctx->strategy == 1)
 		simple(ctx);
-	else if (ctx->strategy == 2 || ctx->strategy == 4 + 2)
+	else if (ctx->strategy == 2)
 		medium(ctx);
-	// else
-	// 	complex_a(ctx, ctx->a.len);
-	else if (ctx->a.capacity >= 500)
-		(complex_a(ctx, ctx->a.len), simple(ctx));
+	else if (ctx->strategy == 3)
+		complex(ctx);
 	else
-		medium(ctx);
+		adaptive(ctx);
 }
 
 int	main(int argc, char **argv)
@@ -82,7 +81,7 @@ int	main(int argc, char **argv)
 		sort(&ctx);
 	if (ctx.bench.is_bench == 1)
 		print_bench(&ctx);
-	print_stacks(&ctx);
+	// print_stacks(&ctx);
 	return (clear(), 0);
 }
 
