@@ -3,47 +3,54 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: igomes-d <igomes-d@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/08 11:38:35 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/06/01 23:18:57 by igomes-d         ###   ########.fr       */
+/*   Updated: 2026/06/02 15:35:46 by mdurte-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/push_swap.h"
+
+void	sort_three(t_ctx *ctx)
+{
+	if (ctx->a.arr[_i(&ctx->a, 0)].nb > ctx->a.arr[_i(&ctx->a, 1)].nb)
+		swap_a();
+	if (ctx->a.arr[_i(&ctx->a, 1)].nb > ctx->a.arr[_i(&ctx->a, 2)].nb)
+		rev_rotate_a(1);
+	if (ctx->a.arr[_i(&ctx->a, 0)].nb > ctx->a.arr[_i(&ctx->a, 1)].nb)
+		swap_a();
+}
+
+void	sort_under_five(t_ctx *ctx, int size)
+{
+	if (size >= 4)
+	{
+		move_to_top(get_distance(&ctx->a, ctx->min), ctx->a.len, 1);
+		push_b();
+	}
+	if (size == 5)
+	{
+		move_to_top(get_distance(&ctx->a, ctx->max), ctx->a.len, 1);
+		push_b();
+	}
+	sort_three(ctx);
+	if (size >= 4)
+		push_a();
+	if (size == 5)
+	{
+		rotate_a(1);
+		push_a();
+	}
+}
 
 void	sort(t_ctx *ctx)
 {
 	if (ctx->a.len <= 2)
 		if (ctx->a.arr[0].nb > ctx->a.arr[1].nb)
 			return (swap_a());
-	if (ctx->a.len <= 3)
-	{
-		if (ctx->a.arr[0].nb > ctx->a.arr[1].nb)
-			swap_a();
-		if (ctx->a.arr[1].nb > ctx->a.arr[2].nb)
-			rev_rotate_a(1);
-		if (ctx->a.arr[0].nb > ctx->a.arr[1].nb)
-			swap_a();
-		return ;
-	}
-	else if (ctx->a.len <= 5)
-	{
-		move_to_top(get_distance(&ctx->a, ctx->min), ctx->a.len, 1);
-		push_b();
-		move_to_top(get_distance(&ctx->a, ctx->max), ctx->a.len, 1);
-		push_b();
-		if (ctx->a.arr[ctx->a.start].nb > ctx->a.arr[_i(&ctx->a, 1)].nb)
-			swap_a();
-		if (ctx->a.arr[_i(&ctx->a, 1)].nb > ctx->a.arr[_i(&ctx->a, 2)].nb)
-			rev_rotate_a(1);
-		if (ctx->a.arr[ctx->a.start].nb > ctx->a.arr[_i(&ctx->a, 1)].nb)
-			swap_a();
-		push_a();
-		rotate_a(1);
-		push_a();
-		return ;
-	}
+	if (ctx->a.len <= 5)
+		return (sort_under_five(ctx, ctx->a.len));
 	ctx->sqrt = ft_sqrt(ctx->a.len);
 	if ((ctx->sqrt / 4) > 0)
 		ctx->div = (ctx->max - ctx->min) / (ctx->sqrt / 4);
@@ -71,7 +78,7 @@ int	main(int argc, char **argv)
 		sort(&ctx);
 	if (ctx.bench.is_bench == 1)
 		print_bench(&ctx);
-	// print_stacks(&ctx);
+	print_stacks(&ctx);
 	return (clear(), 0);
 }
 
