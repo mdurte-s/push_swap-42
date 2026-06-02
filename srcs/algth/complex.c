@@ -6,13 +6,13 @@
 /*   By: igomes-d <igomes-d@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/24 21:30:52 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/06/01 22:31:22 by igomes-d         ###   ########.fr       */
+/*   Updated: 2026/06/02 16:18:55 by igomes-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/push_swap.h"
 
-int	get_avg(t_stk *stk, int total, int is_rev)
+int	get_avg(t_stk *stk, int total)
 {
 	int	sum;
 	int	i;
@@ -20,33 +20,10 @@ int	get_avg(t_stk *stk, int total, int is_rev)
 
 	sum = 0;
 	limit = total;
-	if (is_rev)
-		i = -total;
-	else
-		i = 0;
+	i = 0;
 	while (limit--)
 		sum += stk->arr[_i(stk, i++)].nb;
 	return (sum / total);
-}
-
-void	come_back(t_ctx *ctx, int rotates, int is_a)
-{
-	int	rev_amount;
-
-	if (is_a)
-	{
-		rev_amount = ctx->a.len - rotates;
-		if (rotates >= rev_amount)
-			rotate_a(rev_amount);
-		else if (rotates < rev_amount)
-			rev_rotate_a(rotates);
-		return ;
-	}
-	rev_amount = ctx->b.len - rotates;
-	if (rotates >= rev_amount)
-		rotate_b(rev_amount);
-	else if (rotates < rev_amount)
-		rev_rotate_b(rotates);
 }
 
 void	sort_three_b(t_ctx *ctx)
@@ -126,7 +103,7 @@ void	small_sort_a(t_ctx *ctx, int size)
 
 void	complex_b(t_ctx *ctx, int size)
 {
-	int	rotates;
+	int	remainder;
 	int	pushes;
 	int	i;
 	int	pivot;
@@ -134,26 +111,26 @@ void	complex_b(t_ctx *ctx, int size)
 	if (size <= 3)
 		return (small_sort_b(ctx, size));
 	i = -1;
-	rotates = 0;
+	remainder = 0;
 	pushes = 0;
-	pivot = get_avg(&ctx->b, size, 0);
+	pivot = get_avg(&ctx->b, size);
 	while (++i < size)
 	{
 		if (ctx->b.arr[ctx->b.start].nb <= pivot)
-			(rotate_b(1), rotates++);
+			(rotate_b(1), remainder++);
 		else
 			(push_a(), pushes++);
 	}
-	if (pushes)
-		complex_a(ctx, pushes);
-	come_back(ctx, rotates, 0);
-	if (rotates)
-		complex_b(ctx, rotates);
+	// if (pushes)
+	// 	complex_a(ctx, pushes);
+	rev_rotate_b(remainder);
+	if (remainder)
+		complex_b(ctx, remainder);
 }
 
 void	complex_a(t_ctx *ctx, int size)
 {
-	int	rotates;
+	int	remainder;
 	int	pushes;
 	int	i;
 	int	pivot;
@@ -161,19 +138,19 @@ void	complex_a(t_ctx *ctx, int size)
 	if (size <= 3)
 		return (small_sort_a(ctx, size));
 	i = -1;
-	rotates = 0;
+	remainder = 0;
 	pushes = 0;
-	pivot = get_avg(&ctx->a, size, 0);
+	pivot = get_avg(&ctx->a, size);
 	while (++i < size)
 	{
 		if (ctx->a.arr[ctx->a.start].nb > pivot)
-			(rotate_a(1), rotates++);
+			(rotate_a(1), remainder++);
 		else
 			(push_b(), pushes++);
 	}
-	come_back(ctx, rotates, 1);
-	if (rotates)
-		complex_a(ctx, rotates);
+	rev_rotate_a(remainder);
+	if (remainder)
+		complex_a(ctx, remainder);
 	if (pushes)
 		complex_b(ctx, pushes);
 }

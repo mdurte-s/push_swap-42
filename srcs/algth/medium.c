@@ -6,7 +6,7 @@
 /*   By: igomes-d <igomes-d@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/24 12:34:30 by igomes-d          #+#    #+#             */
-/*   Updated: 2026/06/01 19:03:43 by igomes-d         ###   ########.fr       */
+/*   Updated: 2026/06/02 16:13:43 by igomes-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,38 +36,42 @@ int	get_bucket_distance(t_stk *stk, int bucket, int min, int max)
 	return (-1);
 }
 
+void	move_to_top_medium(t_ctx *ctx, int distance, int bucket_rev)
+{
+	int	nb;
+
+	while (distance--)
+	{
+		nb = ctx->a.arr[ctx->a.start].nb;
+		if (nb != ctx->max && nb != ctx->min
+			&& get_index_bucket(nb) == bucket_rev)
+			(push_b(), rotate_b(1));
+		else
+			rotate_a(1);
+	}
+}
+
 void	medium(t_ctx *ctx)
 {
-	int	di_a;
-	int	di_b;
+	int	distance;
 	int	buckets_size;
 	int	i;
-	int	nb;
+	int	j;
 
 	buckets_size = get_index_bucket(ctx->max);
 	i = 0;
-	di_b = buckets_size;
+	j = buckets_size;
 	while (i <= buckets_size)
 	{
-		di_a = get_bucket_distance(&ctx->a, i, ctx->min, ctx->max);
-		if (di_a == -1 && i++ >= 0 && --di_b >= -10)
-			continue ;
-		while (di_a--)
+		distance = get_bucket_distance(&ctx->a, i, ctx->min, ctx->max);
+		if (distance == -1)
 		{
-			nb = ctx->a.arr[ctx->a.start].nb;
-			if (nb != ctx->max && nb != ctx->min
-				&& get_index_bucket(nb) == di_b)
-				(push_b(), rotate_b(1));
-			else
-				rotate_a(1);
+			i++;
+			--j;
+			continue ;
 		}
+		move_to_top_medium(ctx, distance, j);
 		push_b();
 	}
-	while (ctx->b.len > 0)
-	{
-		get_less_distance(ctx, &di_a, &di_b, get_min_index(&ctx->a));
-		move_to_top_dual(di_a, di_b, ctx);
-		push_a();
-	}
-	move_to_top(get_distance(&ctx->a, ctx->min), ctx->a.len, 1);
+	simple_sort_to_a(ctx, get_min_index(&ctx->a));
 }

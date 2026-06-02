@@ -6,7 +6,7 @@
 /*   By: igomes-d <igomes-d@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/19 17:49:21 by igomes-d          #+#    #+#             */
-/*   Updated: 2026/06/01 11:21:05 by igomes-d         ###   ########.fr       */
+/*   Updated: 2026/06/02 16:06:48 by igomes-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,4 +69,38 @@ int	comparable_distance(int d_a, int d_b, t_ctx *ctx)
 	else if (d_b > drev_b)
 		return (drev_b + d_a);
 	return (d_a + d_b);
+}
+
+void	rotate_dual(int *d_a, int *d_b, void (*r)(int))
+{
+	if (*d_b > *d_a)
+	{
+		r(*d_a);
+		*d_b -= *d_a;
+		*d_a = 0;
+	}
+	else
+	{
+		r(*d_b);
+		*d_a -= *d_b;
+		*d_b = 0;
+	}
+}
+
+int	move_to_top_dual(int d_a, int d_b, t_ctx *ctx)
+{
+	int	drev_a;
+	int	drev_b;
+
+	drev_a = ctx->a.len - d_a;
+	drev_b = ctx->b.len - d_b;
+	if (d_a > drev_a && d_b > drev_b)
+		return (rotate_dual(&drev_a, &drev_b, rev_rotate_r),
+			rev_rotate_a(drev_a), rev_rotate_b(drev_b), 0);
+	else if (d_a <= drev_a && d_b <= drev_b)
+		return (rotate_dual(&d_a, &d_b, rotate_r), rotate_a(d_a), rotate_b(d_b),
+			0);
+	move_to_top(d_a, ctx->a.len, 1);
+	move_to_top(d_b, ctx->b.len, 0);
+	return (0);
 }

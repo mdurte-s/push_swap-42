@@ -6,7 +6,7 @@
 /*   By: igomes-d <igomes-d@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/08 11:37:26 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/06/01 09:34:11 by igomes-d         ###   ########.fr       */
+/*   Updated: 2026/06/02 13:20:17 by igomes-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,8 @@ t_ctx		*get_ctx(t_ctx *init);
 void		print_bench(t_ctx *ctx);
 void		mesure_disorder(t_ctx *ctx);
 void		update_bench_strategy(t_ctx *ctx);
+void		sort_three(t_ctx *ctx);
+void		sort_under_five(t_ctx *ctx, int size);
 void		sort(t_ctx *ctx);
 void		print_stacks(t_ctx *ctx);
 int			argv_to_int(char *argv, int *nb);
@@ -92,16 +94,18 @@ int			check_flag(char *str);
 int			get_distance(t_stk *stk, int val);
 void		move_to_top(int distance, int total, int is_a);
 int			comparable_distance(int d_a, int d_b, t_ctx *ctx);
+void		rotate_dual(int *d_a, int *d_b, void (*r)(int));
+int			move_to_top_dual(int d_a, int d_b, t_ctx *ctx);
 int			get_index_bucket(int num);
 int			get_bucket_distance(t_stk *stk, int bucket, int min, int max);
+void		move_to_top_medium(t_ctx *ctx, int distance, int bucket_rev);
 void		medium(t_ctx *ctx);
 int			get_min_index(t_stk *stk);
 int			get_fit_distance(t_stk *stk, int val, int min_offset);
-int			move_to_top_dual(int d_a, int d_b, t_ctx *ctx);
 void		get_less_distance(t_ctx *ctx, int *di_a, int *di_b, int min_offset);
+void		simple_sort_to_a(t_ctx *ctx, int min_i);
 void		simple(t_ctx *ctx);
-int			get_avg(t_stk *stk, int total, int is_rev);
-void		come_back(t_ctx *ctx, int rotates, int is_a);
+int			get_avg(t_stk *stk, int total);
 void		sort_three_b(t_ctx *ctx);
 void		sort_three_a(t_ctx *ctx);
 void		small_sort_b(t_ctx *ctx, int size);

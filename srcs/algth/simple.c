@@ -6,7 +6,7 @@
 /*   By: igomes-d <igomes-d@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/19 17:50:42 by igomes-d          #+#    #+#             */
-/*   Updated: 2026/06/01 16:15:06 by igomes-d         ###   ########.fr       */
+/*   Updated: 2026/06/02 16:05:43 by igomes-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,34 +57,6 @@ int	get_fit_distance(t_stk *stk, int val, int min_offset)
 	return (-1);
 }
 
-int	move_to_top_dual(int d_a, int d_b, t_ctx *ctx)
-{
-	int	drev_a;
-	int	drev_b;
-
-	drev_a = ctx->a.len - d_a;
-	drev_b = ctx->b.len - d_b;
-	if (d_a > drev_a && d_b > drev_b)
-	{
-		if (drev_b > drev_a)
-			(rev_rotate_r(drev_a), drev_b -= drev_a, drev_a = 0);
-		else
-			(rev_rotate_r(drev_b), drev_a -= drev_b, drev_b = 0);
-		return (rev_rotate_a(drev_a), rev_rotate_b(drev_b), 0);
-	}
-	else if (d_a <= drev_a && d_b <= drev_b)
-	{
-		if (d_b > d_a)
-			(rotate_r(d_a), d_b -= d_a, d_a = 0);
-		else
-			(rotate_r(d_b), d_a -= d_b, d_b = 0);
-		return (rotate_a(d_a), rotate_b(d_b), 0);
-	}
-	move_to_top(d_a, ctx->a.len, 1);
-	move_to_top(d_b, ctx->b.len, 0);
-	return (0);
-}
-
 void	get_less_distance(t_ctx *ctx, int *di_a, int *di_b, int min_offset)
 {
 	int	d_a;
@@ -107,11 +79,24 @@ void	get_less_distance(t_ctx *ctx, int *di_a, int *di_b, int min_offset)
 	}
 }
 
+void	simple_sort_to_a(t_ctx *ctx, int min_i)
+{
+	int	di_b;
+	int	di_a;
+
+	while (ctx->b.len > 0)
+	{
+		get_less_distance(ctx, &di_a, &di_b, min_i);
+		min_i = ((min_i - di_a + ctx->a.len) % (ctx->a.len)) + 1;
+		move_to_top_dual(di_a, di_b, ctx);
+		push_a();
+	}
+	move_to_top(min_i, ctx->a.len, 1);
+}
+
 void	simple(t_ctx *ctx)
 {
 	int	nb;
-	int	di_b;
-	int	di_a;
 
 	move_to_top(get_distance(&ctx->a, ctx->min), ctx->a.len, 1);
 	rotate_a(1);
@@ -124,11 +109,5 @@ void	simple(t_ctx *ctx)
 			rotate_a(1);
 		nb = ctx->a.arr[ctx->a.start].nb;
 	}
-	while (ctx->b.len > 0)
-	{
-		get_less_distance(ctx, &di_a, &di_b, get_min_index(&ctx->a));
-		move_to_top_dual(di_a, di_b, ctx);
-		push_a();
-	}
-	move_to_top(get_distance(&ctx->a, ctx->min), ctx->a.len, 1);
+	simple_sort_to_a(ctx, 0);
 }
