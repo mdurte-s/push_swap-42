@@ -6,7 +6,7 @@
 /*   By: igomes-d <igomes-d@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/08 11:38:35 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/06/02 16:58:20 by igomes-d         ###   ########.fr       */
+/*   Updated: 2026/06/03 14:36:33 by igomes-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,12 @@ void	sort_under_five(t_ctx *ctx, int size)
 {
 	if (size >= 4)
 	{
-		move_to_top(get_distance(&ctx->a, ctx->min), ctx->a.len, 1);
+		move_to_top(find_distance(&ctx->a, ctx->min), ctx->a.len, 1);
 		push_b();
 	}
 	if (size == 5)
 	{
-		move_to_top(get_distance(&ctx->a, ctx->max), ctx->a.len, 1);
+		move_to_top(find_distance(&ctx->a, ctx->max), ctx->a.len, 1);
 		push_b();
 	}
 	sort_three(ctx);
@@ -58,13 +58,13 @@ void	sort(t_ctx *ctx)
 	else
 		ctx->div = ctx->max;
 	if (ctx->strategy == 1)
-		simple(ctx);
+		low_disorder_optimized_insertion_sort(ctx);
 	else if (ctx->strategy == 2)
-		medium(ctx);
+		bucket_sort(ctx);
 	else if (ctx->strategy == 3)
-		complex(ctx);
+		intro_sort(ctx);
 	else
-		adaptive(ctx);
+		disorder_based_sort(ctx);
 }
 
 int	main(int argc, char **argv)
@@ -81,33 +81,5 @@ int	main(int argc, char **argv)
 		sort(&ctx);
 	if (ctx.bench.is_bench == 1)
 		print_bench(&ctx);
-	// print_stacks(&ctx);
 	return (clear(), 0);
-}
-
-void	print_stacks(t_ctx *ctx)
-{
-	ssize_t	i;
-	ssize_t	idx;
-
-	i = -1;
-	ft_printf_fd(2, "\n");
-	while (++i < ctx->a.capacity)
-	{
-		if (i < ctx->a.len)
-		{
-			idx = _i(&ctx->a, i);
-			ft_printf_fd(2, "%d", ctx->a.arr[idx].nb);
-		}
-		else
-			ft_printf_fd(2, " ");
-		ft_printf_fd(2, "  |  ");
-		if (i < ctx->b.len)
-		{
-			idx = _i(&ctx->b, i);
-			ft_printf_fd(2, "%d", ctx->b.arr[idx].nb);
-		}
-		ft_printf_fd(2, "\n");
-	}
-	ft_printf_fd(2, "__ | __\na  |  b\n\n");
 }

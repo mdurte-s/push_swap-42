@@ -11,61 +11,73 @@ RM			= rm -f
 # ---- Paths ----------------------------------------------------------------- #
 
 INCDIR			= includes
-LIBS_HELPER		= libs/helper.sh
 SRCDIR			= srcs
 OBJDIR			= objs
 
-BONINC		= bonus/includes
-BONSRC		= bonus/srcs
-BONOBJ		= bonus/objs
+BONUSDIR		= bonus
 
 # --- Sources ---------------------------------------------------------------- #
 
-LIBS 			= -Llibs/libft -lft -Llibs/ft_printf -lftprintf
-LIBS_OBJS		= $(shell $(LIBS_HELPER) objs)
-
-SRCS 		= $(shell find $(SRCDIR) -name '*.c')
+SRCS 		= 	$(SRCDIR)/op_rev_rotate.c \
+				$(SRCDIR)/algth_adaptive.c \
+				$(SRCDIR)/op_swap.c \
+				$(SRCDIR)/ft_printf.c \
+				$(SRCDIR)/algth_simple.c \
+				$(SRCDIR)/parser_argv_helpers.c \
+				$(SRCDIR)/op_push.c \
+				$(SRCDIR)/ft_printf_utils.c \
+				$(SRCDIR)/mini_libft.c \
+				$(SRCDIR)/algth_medium.c \
+				$(SRCDIR)/algth_complex.c \
+				$(SRCDIR)/ft_split.c \
+				$(SRCDIR)/ft_printf_helpers.c \
+				$(SRCDIR)/main_helpers.c \
+				$(SRCDIR)/parser_argv.c \
+				$(SRCDIR)/stacks.c \
+				$(SRCDIR)/op_rotate.c \
+				$(SRCDIR)/algth_helpers.c \
+				$(SRCDIR)/algth_complex_helpers.c \
+				$(SRCDIR)/main.c
 OBJS		= $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 
-BONUS_SRCS	= $(shell find $(BONSRC) -name '*.c')
-BONUS_OBJS	= $(BONUS_SRCS:$(BONOBJ)/%.c=$(BONOBJ)/%.o)
+BONUS_SRCS	= 	$(BONUSDIR)/op_rev_rotate_bonus.c \
+				$(BONUSDIR)/op_rotate_bonus.c \
+				$(BONUSDIR)/checker_bonus.c \
+				$(BONUSDIR)/op_push_bonus.c \
+				$(BONUSDIR)/mini_libft_bonus.c \
+				$(BONUSDIR)/op_swap_bonus.c \
+				$(BONUSDIR)/init_bonus.c \
+				$(BONUSDIR)/parser_argv_bonus.c
+BONUS_OBJS	= $(BONUS_SRCS:%.c=%.o)
 
 # --- Rules ------------------------------------------------------------------ #
 
-define MAKE_LIB_OBJ
-$(1): $(subst /objs/,/srcs/,$(1:.o=.c))
-	$(LIBS_HELPER) make $(1)
-endef
 
 all:		$(NAME)
 
-$(NAME): 	$(LIBS_OBJS) $(OBJS)
-			$(CC) $(CFLAGS) $(OBJS) $(LIBS) -o $(NAME)
+$(NAME): 	$(OBJS)
+			$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
 
 bonus:		$(BONUS)
 
-$(BONUS):   $(LIBS_OBJS) $(BONUS_OBJS)
-			$(CC) $(CFLAGS) $(BONUS_OBJS) $(LIBS) -o $(BONUS)
+$(BONUS):  	$(BONUS_OBJS)
+			$(CC) $(CFLAGS) $(BONUS_OBJS) -o $(BONUS)
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
 			@mkdir -p $(@D)
 			$(CC) $(CFLAGS) -I $(INCDIR) -c $< -o $@
 
-$(BONOBJ)/%.o: $(BONSRC)/%.c
+$(BONUSDIR)/%.o: $(BONUSDIR)/%.c
 			@mkdir -p $(@D)
-			$(CC) $(CFLAGS) -I $(BONSRC) -c $< -o $@
-
-$(foreach obj,$(LIBS_OBJS),$(eval $(call MAKE_LIB_OBJ,$(obj))))
+			$(CC) $(CFLAGS) -I $(BONUSDIR) -c $< -o $@
 
 clean:
 			$(RM) -r $(OBJDIR)
-			$(RM) -r $(BONOBJ)
-			$(shell $(RM) $(LIBS_OBJS) > /dev/null 2>&1)
+			$(RM) -r $(BONUS_OBJS)
 
 fclean: 	clean
 			$(RM) $(NAME)
 			$(RM) $(BONUS)
-			$(shell $(RM) $(LIBS) > /dev/null 2>&1)
 
 re: 		fclean all
 
