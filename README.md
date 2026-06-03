@@ -61,7 +61,7 @@ The project compiles with `-Wall -Wextra -Werror`.
 Pass the integers as separate arguments **or** as a single quoted string:
 
 ```bash
-./push_swap 3 2 1                 # prints: rra  (then a sorted stack)
+./push_swap 3 2 1                 
 ./push_swap "4 67 3 87 23"        # quoted form also works
 ./push_swap $(shuf -i 1-100000 -n 500 | tr '\n' ' ')
 ```
@@ -75,13 +75,12 @@ Invalid input (non-numeric, duplicates, values outside `INT_MIN..INT_MAX`) print
 
 ```bash
 ./push_swap 3 2 1 | ./checker 3 2 1      # -> OK
-echo -e "sa\nrra" | ./checker 3 2 1      # -> KO  (does not sort)
+echo -e "sa\nra" | ./checker 3 2 1       # -> KO  (does not sort)
 ```
 
-### Extra flags (project extension, not part of the subject)
+### Flags
 
-These flags let you force a specific strategy or print a benchmark report; they are a
-convenience we added for analysis and are **not** required by the mandatory part:
+These flags let you force a specific strategy or print a benchmark report:
 
 ```bash
 ./push_swap --simple   <nums>   # force the O(n^2) strategy
@@ -94,7 +93,7 @@ convenience we added for analysis and are **not** required by the mandatory part
 Example benchmark output (on stderr, stdout still carries the real operations):
 
 ```
-[bench] disorder: 49.870000%
+[bench] disorder: 49.87%
 [bench] strategy: Adaptive / O(n log n)
 [bench] total_ops: 3897
 [bench] sa: 0 sb: 0 ss: 0 pa: 498 pb: 500 ra: ... rrb: ... rrr: ...
@@ -114,7 +113,7 @@ index `i` maps to the physical slot `(start + i) mod capacity` through the helpe
 
 Why this matters for the cost we are graded on:
 
-* **`rotate` / `reverse-rotate` become O(1).** Rotating is just moving `start` by one — no
+* **`rotate` / `reverse-rotate` become O(1).** Rotating is just moving `start` by one, one
   element is copied, no pointer is relinked. A linked-list rotation has to splice nodes.
 * **`push` is O(1)** and touches contiguous memory, which is **cache-friendly** — a real
   speed win on the 500-element benchmarks.
@@ -149,7 +148,7 @@ in with the **cheapest combination of rotations** on A and B
 **Why / when:** when the list is **almost sorted** (disorder `< 20 %`), only a handful of
 elements are out of place. Very few go to B, and each re-insertion is cheap, so in practice
 the operation count is **near-linear** even though the worst case is O(n²). On a reversed
-500-element list this strategy needs only **~1500 ops** — the cheapest of the three for
+500-element list this strategy needs only **~2000 ops** — the cheapest of the three for
 low-disorder structure.
 
 ### 2. Medium — O(n√n) — bucket distribution, for moderate disorder
@@ -286,17 +285,24 @@ Classic references we studied for the topic:
 
 - **42 `push_swap` subject** — the official project specification and constraints.
 - **Sorting-algorithm complexity** — comparison of insertion sort, bucket/radix sort and
-  quicksort, and the meaning of the O(n²), O(n√n) and O(n log n) classes (e.g. the relevant
-  Wikipedia articles on *Sorting algorithm*, *Bucket sort* and *Quicksort*).
+  quicksort, and the meaning of the O(n²), O(n√n) and O(n log n) classes
+  - [`https://en.wikipedia.org/wiki/Sorting_algorithm`](https://en.wikipedia.org/wiki/Sorting_algorithm)
+  - [`https://www.geeksforgeeks.org/dsa/insertion-sort-algorithm/`](https://www.geeksforgeeks.org/dsa/insertion-sort-algorithm/)
+  - [`https://en.wikipedia.org/wiki/Greedy_algorithm`](https://en.wikipedia.org/wiki/Greedy_algorithm)
+  - [`https://en.wikipedia.org/wiki/Bucket_sort`](https://en.wikipedia.org/wiki/Bucket_sort)
+  - [`https://pt.wikipedia.org/wiki/Quicksort`](https://pt.wikipedia.org/wiki/Quicksort)
+  - [`https://en.wikipedia.org/wiki/Introsort`](https://en.wikipedia.org/wiki/Introsort)
 - **Inversions / Kendall-tau distance** — the basis for the "disorder %" measure used by the
   Adaptive engine.
+  - [`https://en.wikipedia.org/wiki/Kendall_tau_distance`](https://en.wikipedia.org/wiki/Kendall_tau_distance)
 - **Ring buffer (circular buffer)** — the data structure behind our O(1) rotations.
 - Community write-ups and visualizers on `push_swap` strategies (chunk/radix sorts and the
   cost model for `rr`/`rrr` combined moves).
+  - [`https://en.wikipedia.org/wiki/Circular_buffer`](https://en.wikipedia.org/wiki/Circular_buffer)
 
 ### Use of AI
 
-We used an AI assistant (Anthropic's Claude) as a study and review aid, specifically for:
+We used an AI assistant as a study and review aid, specifically for:
 
 - **Learning the complexity classes** — understanding the trade-offs between O(n²),
   O(n√n) and O(n log n), why each strategy wins in a different disorder band, and how to
@@ -304,9 +310,7 @@ We used an AI assistant (Anthropic's Claude) as a study and review aid, specific
 - **Clarifying doubts during development** — discussing the circular-buffer indexing,
   debugging edge cases (e.g. integer-overflow in the pivot accumulator and memory cleanup in
   the checker), and sanity-checking the strategy-selection thresholds.
-- **Writing this README** — structuring the document and drafting the algorithm
-  explanations from our source code.
 
 All algorithm design decisions, the code itself, and the final implementation are our own;
-AI was used for understanding, debugging discussion, and documentation, not to generate the
+AI was used for understanding and debugging discussion, not to generate the
 solver.

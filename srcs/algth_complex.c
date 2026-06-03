@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   algth_complex.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: igomes-d <igomes-d@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: mdurte-s <mdurte-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/24 21:30:52 by mdurte-s          #+#    #+#             */
-/*   Updated: 2026/06/03 13:01:19 by igomes-d         ###   ########.fr       */
+/*   Updated: 2026/06/03 16:22:31 by mdurte-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,32 +33,6 @@ void	partial_quick_sort_b(t_ctx *ctx, int size)
 	rev_rotate_b(remainder);
 	if (remainder)
 		partial_quick_sort_b(ctx, remainder);
-}
-
-void	low_nums_partial_quick_sort_a(t_ctx *ctx, int size)
-{
-	int	remainder;
-	int	i;
-	int	pivot;
-	int	nb;
-
-	if (size <= 3)
-		return (small_sort_a(ctx, size));
-	i = -1;
-	remainder = 0;
-	pivot = get_avg(&ctx->a, size);
-	while (++i < size)
-	{
-		nb = ctx->a.arr[ctx->a.start].nb;
-		if (nb > pivot)
-			(rotate_a(1), remainder++);
-		else if (nb != ctx->max && nb != ctx->min)
-			push_b();
-		else
-			rotate_a(1);
-	}
-	if (remainder)
-		low_nums_partial_quick_sort_a(ctx, remainder);
 }
 
 void	partial_quick_sort_a_b(t_ctx *ctx, int size)
@@ -94,7 +68,7 @@ void	intro_sort(t_ctx *ctx)
 
 	count = ctx->a.capacity / 500;
 	if (count < 1)
-		low_nums_partial_quick_sort_a(ctx, ctx->a.len);
+		return (bucket_sort(ctx));
 	while (count--)
 		partial_quick_sort_a_b(ctx, ctx->a.len);
 	low_disorder_optimized_insertion_sort(ctx);
