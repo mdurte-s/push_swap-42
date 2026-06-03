@@ -116,7 +116,6 @@ int			find_nearby_bucket_distance(t_stk *stk, int bucket, int min,
 void		move_to_top_bucket(t_ctx *ctx, int distance, int bucket_rev);
 void		bucket_sort(t_ctx *ctx);
 void		partial_quick_sort_b(t_ctx *ctx, int size);
-void		low_nums_partial_quick_sort_a(t_ctx *ctx, int size);
 void		partial_quick_sort_a_b(t_ctx *ctx, int size);
 void		intro_sort(t_ctx *ctx);
 char		*ft_substr(char const *s, unsigned int start, size_t len);

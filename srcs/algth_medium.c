@@ -6,7 +6,7 @@
 /*   By: igomes-d <igomes-d@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/24 12:34:30 by igomes-d          #+#    #+#             */
-/*   Updated: 2026/06/03 13:01:24 by igomes-d         ###   ########.fr       */
+/*   Updated: 2026/06/03 17:20:29 by igomes-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	calc_bucket_index(int num)
 	t_ctx	*ctx;
 
 	ctx = get_ctx(0);
-	return ((num - ctx->min) / ctx->div);
+	return (((long long)num - (long long)ctx->min) / (long long)ctx->div);
 }
 
 int	find_nearby_bucket_distance(t_stk *stk, int bucket, int min, int max)
