@@ -30,12 +30,7 @@
 
 Experience `push_swap` sorting **500 random integers** (disorder: ~48%) in real time using our **Adaptive Engine**:
 
-<p align="center">
-  <video src="push_swap.mp4" controls width="100%" style="max-width: 850px; border-radius: 8px;">
-    <source src="push_swap.mp4" type="video/mp4">
-    Your browser does not support the video tag.
-  </video>
-</p>
+https://github.com/user-attachments/assets/2e5c64f1-3abe-43a8-9f55-e1e896578d56
 
 > [!TIP]
 > **Reproducing the Demo Locally:**
